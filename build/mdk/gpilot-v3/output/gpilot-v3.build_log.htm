@@ -1,0 +1,71 @@
+<html>
+<body>
+<pre>
+<h1>µVision Build Log</h1>
+<h2>Tool Versions:</h2>
+IDE-Version: ¦ÌVision V5.37.0.0
+Copyright (C) 2022 ARM Ltd and ARM Germany GmbH. All rights reserved.
+License Information: a a, a, LIC=3UURY-IWQJL-D3WM3-AAN58-ZSP4E-LKYHG
+ 
+Tool Versions:
+Toolchain:       MDK-ARM Professional  Version: 5.37.0.0
+Toolchain Path:  D:\__dev_envir\__env\arm_gcc\gcc-arm-none-eabi\bin
+C Compiler:      GCC.exe
+Assembler:       AS.exe
+Linker/Locator:  LD.exe
+Library Manager: AR.exe
+Hex Converter:   OBJCOPY.exe
+CPU DLL:         SARMCM3.DLL V5.37.0.0
+Dialog DLL:      DCM.DLL V1.17.5.0
+Target DLL:      STLink\ST-LINKIII-KEIL_SWO.dll V3.0.9.0
+Dialog DLL:      TCM.DLL V1.56.1.0
+ 
+<h2>Project:</h2>
+C:\Users\miku\Desktop\gpm\build\mdk\gpilot-v3\gpilot-v3.uvprojx
+Project File Date:  09/28/2024
+
+<h2>Output:</h2>
+Build target 'Target 1'
+compiling lld_uart.c...
+../../../platforms/lld_svc/cubeh7/lld_uart.c: In function 'lowlevel_uart_pin_source_init':
+../../../platforms/lld_svc/cubeh7/lld_uart.c(21): warning: comparison between pointer and integer
+../../../platforms/lld_svc/cubeh7/lld_uart.c(22): warning: comparison between pointer and integer
+../../../platforms/lld_svc/cubeh7/lld_uart.c(31): warning: comparison between pointer and integer
+../../../platforms/lld_svc/cubeh7/lld_uart.c(32): warning: comparison between pointer and integer
+../../../platforms/lld_svc/cubeh7/lld_uart.c(41): warning: comparison between pointer and integer
+../../../platforms/lld_svc/cubeh7/lld_uart.c(42): warning: comparison between pointer and integer
+../../../platforms/lld_svc/cubeh7/lld_uart.c(51): warning: comparison between pointer and integer
+../../../platforms/lld_svc/cubeh7/lld_uart.c(52): warning: comparison between pointer and integer
+../../../platforms/lld_svc/cubeh7/lld_uart.c(61): warning: comparison between pointer and integer
+../../../platforms/lld_svc/cubeh7/lld_uart.c(62): warning: comparison between pointer and integer
+../../../platforms/lld_svc/cubeh7/lld_uart.c(71): warning: comparison between pointer and integer
+../../../platforms/lld_svc/cubeh7/lld_uart.c(72): warning: comparison between pointer and integer
+../../../platforms/lld_svc/cubeh7/lld_uart.c(81): warning: comparison between pointer and integer
+../../../platforms/lld_svc/cubeh7/lld_uart.c(82): warning: comparison between pointer and integer
+../../../platforms/lld_svc/cubeh7/lld_uart.c(91): warning: comparison between pointer and integer
+../../../platforms/lld_svc/cubeh7/lld_uart.c(92): warning: comparison between pointer and integer
+../../../platforms/lld_svc/cubeh7/lld_uart.c: In function 'lld_uart_send_bytes':
+../../../platforms/lld_svc/cubeh7/lld_uart.c(255): warning: format '%x' expects argument of type 'unsigned int', but argument 3 has type 'long unsigned int' [-Wformat=]
+  255 |                     sprintf(tmp, "dma addr :%x \r\n", (uint32_t)&obj->txdma.buffer[0]);
+../../../platforms/lld_svc/cubeh7/lld_uart.c: In function 'lld_uart_irq':
+../../../platforms/lld_svc/cubeh7/lld_uart.c(282): warning: variable 'tmp' set but not used [-Wunused-but-set-variable]
+At top level:
+../../../platforms/lld_svc/cubeh7/lld_h7_globalpin.h(351): warning: 'all_timer_port' defined but not used [-Wunused-variable]
+linking...
+".\output\gpilot-v3.elf" - 0 Error(s), 19 Warning(s).
+
+<h2>Software Packages used:</h2>
+
+Package Vendor: Keil
+                http://www.keil.com/pack/Keil.STM32H7xx_DFP.2.7.0.pack
+                Keil.STM32H7xx_DFP.2.7.0
+                STMicroelectronics STM32H7 Series Device Support and Examples
+
+<h2>Collection of Component include folders:</h2>
+  D:/__dev_envir/__env/mdk5/PACK/Keil/STM32H7xx_DFP/2.7.0/Drivers/CMSIS/Device/ST/STM32H7xx/Include
+
+<h2>Collection of Component Files used:</h2>
+Build Time Elapsed:  00:00:01
+</pre>
+</body>
+</html>

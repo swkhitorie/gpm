@@ -1,0 +1,38 @@
+
+gpilot-v1
+	0: use macro USE_STDPERIPH_DRIVER
+
+gpilot-v2
+	0: use macro 
+		STM32F40_41xxx
+		USE_STDPERIPH_DRIVER
+		ARM_MATH_CM4, ARM_MATH_MATRIX_CHECK,
+		ARM_MATH_ROUNDING, __FPU_PRESENT
+	1: use arm compiler v5
+	2: not add source file 
+		stm32f4xx_fmc.c
+		stm32f4xx_fsmc.c
+	3: comment macro DBGMCU_APB2_FZ_DBG_TIM1_STOP ...
+	
+gpilot-v3
+	0. use macro (using hallib)
+		USE_HAL_DRIVER, USE_FULL_LL_DRIVER(if you use ll lib)
+		STM32H743xx
+		__clang__
+	1. use hallib complex driver, add sources:
+		stm32h7xx_ll_delayblock.c
+		stm32h7xx_ll_sdmmc.c
+		stm32h7xx_ll_fmc.c
+		stm32h7xx_ll_usb.c
+	2. useless sources file:
+		stm32h7xx_hal_msp_template.c
+        stm32h7xx_hal_timebase_rtc_alarm_template.c
+        stm32h7xx_hal_timebase_rtc_wakeup_template.c
+        stm32h7xx_hal_timebase_tim_template.c
+
+
+
+
+
+
+

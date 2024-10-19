@@ -1,0 +1,112 @@
+#include "uORB_topic_define.hpp"
+ORB_DEFINE( actuator_armed_s,             TOPIC_ACTUATOR_ARMED )
+ORB_DEFINE( distance_sensor_s,            TOPIC_DISTANCE_SENSOR )
+ORB_DEFINE( ekf2_timestamps_s,            TOPIC_EKF2_TIMESTAMPS )
+ORB_DEFINE( estimator_bias_s,             TOPIC_ESTIMATOR_BIAS )
+ORB_DEFINE( estimator_bias_3d_s,          TOPIC_ESTIMATOR_BIAS_3D )
+ORB_DEFINE( estimator_event_flags_s,      TOPIC_ESTIMATOR_EVENT_FLAGS )
+ORB_DEFINE( estimator_innovations_s,      TOPIC_ESTIMATOR_INNOVATIONS )
+ORB_DEFINE( estimator_selector_status_s,  TOPIC_ESTIMATOR_SELECTOR_STATUS )
+ORB_DEFINE( estimator_sensor_bias_s,      TOPIC_ESTIMATOR_SENSOR_BIAS )
+ORB_DEFINE( estimator_states_s,           TOPIC_ESTIMATOR_STATES )
+ORB_DEFINE( estimator_status_s,           TOPIC_ESTIMATOR_STATUS )
+ORB_DEFINE( estimator_status_flags_s,     TOPIC_ESTIMATOR_STATUS_FLAGS )
+ORB_DEFINE( landing_target_pose_s,        TOPIC_LANDING_TARGET_POSE )
+ORB_DEFINE( magnetometer_bias_estimate_s, TOPIC_MAGNETOMETER_BIAS_ESTIMATE )
+ORB_DEFINE( parameter_update_s,           TOPIC_PARAMETER_UPDATE )
+ORB_DEFINE( sensor_accel_s,               TOPIC_SENSOR_ACCEL )
+ORB_DEFINE( sensor_baro_s,                TOPIC_SENSOR_BARO )
+ORB_DEFINE( sensor_combined_s,            TOPIC_SENSOR_COMBINED )
+ORB_DEFINE( sensor_gps_s,                 TOPIC_SENSOR_GPS )
+ORB_DEFINE( sensor_gyro_s,                TOPIC_SENSOR_GYRO )
+ORB_DEFINE( sensor_gyro_fft_s,            TOPIC_SENSOR_GYRO_FFT )
+ORB_DEFINE( sensor_gyro_fifo_s,           TOPIC_SENSOR_GYRO_FIFO )
+ORB_DEFINE( sensor_mag_s,                 TOPIC_SENSOR_MAG )
+ORB_DEFINE( sensor_opticalflow_s,         TOPIC_SENSOR_OPTICALFLOW )
+ORB_DEFINE( sensor_preflight_mag_s,       TOPIC_SENSOR_PREFLIGHT_MAG)
+ORB_DEFINE( sensor_selections_s,          TOPIC_SENSOR_SELECTION )
+ORB_DEFINE( sensors_status_s,             TOPIC_SENSOR_STATUS )
+ORB_DEFINE( sensors_status_imu_s,         TOPIC_SENSORS_STATUS_IMU )
+ORB_DEFINE( vehicle_acceleration_s,       TOPIC_VEHICLE_ACCELERATION)
+ORB_DEFINE( vehicle_air_data_s,           TOPIC_VEHICLE_AIR_DATA )
+ORB_DEFINE( vehicle_angular_velocity_s,   TOPIC_VEHICLE_ANGULAR_VELOCITY )
+ORB_DEFINE( vehicle_attitude_s,           TOPIC_VEHICLE_ATTITUDE )
+ORB_DEFINE( vehicle_attitude_setpoint_s,  TOPIC_VEHICLE_ATTITUDE_SETPOINT )
+ORB_DEFINE( vehicle_command_s,            TOPIC_VEHICLE_COMMAND )
+ORB_DEFINE( vehicle_control_mode_s,       TOPIC_VEHICLE_CONTROL_MODE )
+ORB_DEFINE( vehicle_global_position_s,    TOPIC_VEHICLE_GLOBAL_POSITION )
+ORB_DEFINE( vehicle_gps_position_s,       TOPIC_VEHICLE_GPS_POSITION )
+ORB_DEFINE( vehicle_imu_s,                TOPIC_VEHICLE_IMU )
+ORB_DEFINE( vehicle_imu_status_s,         TOPIC_VEHICLE_IMU_STATUS )
+ORB_DEFINE( vehicle_land_detected_s,      TOPIC_VEHICLE_LAND_DETECTED )
+ORB_DEFINE( vehicle_local_position_s,     TOPIC_VEHICLE_LOCAL_POSITION )
+ORB_DEFINE( vehicle_local_position_setpoint_s,  TOPIC_VEHICLE_LOCAL_POSITION_SETPOINT )
+ORB_DEFINE( vehicle_magnetometer_s,       TOPIC_VEHICLE_MAGNETOMETER )
+ORB_DEFINE( vehicle_odometry_s,           TOPIC_VEHICLE_ODOMETRY )
+ORB_DEFINE( vehicle_optical_flow_s,       TOPIC_VEHICLE_OPTICAL_FLOW )
+ORB_DEFINE( vehicle_optical_flow_vel_s,   TOPIC_VEHICLE_OPTICAL_FLOW_VEL )
+ORB_DEFINE( vehicle_status_s,             TOPIC_VEHICLE_STATUS )
+ORB_DEFINE( wind_s,                       TOPIC_WIND )
+ORB_DEFINE( yaw_estimator_status_s,       TOPIC_YAW_ESTIMATOR_STATUS )
+ORB_DEFINE( airspeed_s,                   TOPIC_AIRSPEED )
+ORB_DEFINE( ekf_gps_drift_s,              TOPIC_EKF_GPS_DRIFT )
+ORB_DEFINE( ekf_gps_position_s,           TOPIC_EKF_GPS_POSITION )
+ORB_DEFINE( optical_flow_s,               TOPIC_OPTICAL_FLOW )
+ORB_DEFINE( wind_estimate_s,              TOPIC_WIND_ESTIMATE )
+void *uorb_topics_list[uORB::TOTAL_TOPICS] = 
+{
+    ORB_REFERENCE( actuator_armed_s,             TOPIC_ACTUATOR_ARMED ),
+    ORB_REFERENCE( distance_sensor_s,            TOPIC_DISTANCE_SENSOR ),
+    ORB_REFERENCE( ekf2_timestamps_s,            TOPIC_EKF2_TIMESTAMPS ),
+    ORB_REFERENCE( estimator_bias_s,             TOPIC_ESTIMATOR_BIAS ),
+    ORB_REFERENCE( estimator_bias_3d_s,          TOPIC_ESTIMATOR_BIAS_3D ),
+    ORB_REFERENCE( estimator_event_flags_s,      TOPIC_ESTIMATOR_EVENT_FLAGS ),
+    ORB_REFERENCE( estimator_innovations_s,      TOPIC_ESTIMATOR_INNOVATIONS ),
+    ORB_REFERENCE( estimator_selector_status_s,  TOPIC_ESTIMATOR_SELECTOR_STATUS ),
+    ORB_REFERENCE( estimator_sensor_bias_s,      TOPIC_ESTIMATOR_SENSOR_BIAS ),
+    ORB_REFERENCE( estimator_states_s,           TOPIC_ESTIMATOR_STATES ),
+    ORB_REFERENCE( estimator_status_s,           TOPIC_ESTIMATOR_STATUS ),
+    ORB_REFERENCE( estimator_status_flags_s,     TOPIC_ESTIMATOR_STATUS_FLAGS ),
+    ORB_REFERENCE( landing_target_pose_s,        TOPIC_LANDING_TARGET_POSE ),
+    ORB_REFERENCE( magnetometer_bias_estimate_s, TOPIC_MAGNETOMETER_BIAS_ESTIMATE ),
+    ORB_REFERENCE( parameter_update_s,           TOPIC_PARAMETER_UPDATE ),
+    ORB_REFERENCE( sensor_accel_s,               TOPIC_SENSOR_ACCEL ),
+    ORB_REFERENCE( sensor_baro_s,                TOPIC_SENSOR_BARO ),
+    ORB_REFERENCE( sensor_combined_s,            TOPIC_SENSOR_COMBINED ),
+    ORB_REFERENCE( sensor_gps_s,                 TOPIC_SENSOR_GPS ),
+    ORB_REFERENCE( sensor_gyro_s,                TOPIC_SENSOR_GYRO ),
+    ORB_REFERENCE( sensor_gyro_fft_s,            TOPIC_SENSOR_GYRO_FFT ),
+    ORB_REFERENCE( sensor_gyro_fifo_s,           TOPIC_SENSOR_GYRO_FIFO ),
+    ORB_REFERENCE( sensor_mag_s,                 TOPIC_SENSOR_MAG ),
+    ORB_REFERENCE( sensor_opticalflow_s,         TOPIC_SENSOR_OPTICALFLOW ),
+    ORB_REFERENCE( sensor_preflight_mag_s,       TOPIC_SENSOR_PREFLIGHT_MAG),
+    ORB_REFERENCE( sensor_selections_s,          TOPIC_SENSOR_SELECTION ),
+    ORB_REFERENCE( sensors_status_s,             TOPIC_SENSOR_STATUS ),
+    ORB_REFERENCE( sensors_status_imu_s,         TOPIC_SENSORS_STATUS_IMU ),
+    ORB_REFERENCE( vehicle_acceleration_s,       TOPIC_VEHICLE_ACCELERATION),
+    ORB_REFERENCE( vehicle_air_data_s,           TOPIC_VEHICLE_AIR_DATA ),
+    ORB_REFERENCE( vehicle_angular_velocity_s,   TOPIC_VEHICLE_ANGULAR_VELOCITY ),
+    ORB_REFERENCE( vehicle_attitude_s,           TOPIC_VEHICLE_ATTITUDE ),
+    ORB_REFERENCE( vehicle_attitude_setpoint_s,  TOPIC_VEHICLE_ATTITUDE_SETPOINT ),
+    ORB_REFERENCE( vehicle_command_s,            TOPIC_VEHICLE_COMMAND ),
+    ORB_REFERENCE( vehicle_control_mode_s,       TOPIC_VEHICLE_CONTROL_MODE ),
+    ORB_REFERENCE( vehicle_global_position_s,    TOPIC_VEHICLE_GLOBAL_POSITION ),
+    ORB_REFERENCE( vehicle_gps_position_s,       TOPIC_VEHICLE_GPS_POSITION ),
+    ORB_REFERENCE( vehicle_imu_s,                TOPIC_VEHICLE_IMU ),
+    ORB_REFERENCE( vehicle_imu_status_s,         TOPIC_VEHICLE_IMU_STATUS ),
+    ORB_REFERENCE( vehicle_land_detected_s,      TOPIC_VEHICLE_LAND_DETECTED ),
+    ORB_REFERENCE( vehicle_local_position_s,     TOPIC_VEHICLE_LOCAL_POSITION ),
+    ORB_REFERENCE( vehicle_local_position_setpoint_s,  TOPIC_VEHICLE_LOCAL_POSITION_SETPOINT ),
+    ORB_REFERENCE( vehicle_magnetometer_s,       TOPIC_VEHICLE_MAGNETOMETER ),
+    ORB_REFERENCE( vehicle_odometry_s,           TOPIC_VEHICLE_ODOMETRY ),
+    ORB_REFERENCE( vehicle_optical_flow_s,       TOPIC_VEHICLE_OPTICAL_FLOW ),
+    ORB_REFERENCE( vehicle_optical_flow_vel_s,   TOPIC_VEHICLE_OPTICAL_FLOW_VEL ),
+    ORB_REFERENCE( vehicle_status_s,             TOPIC_VEHICLE_STATUS ),
+    ORB_REFERENCE( wind_s,                       TOPIC_WIND ),
+    ORB_REFERENCE( yaw_estimator_status_s,       TOPIC_YAW_ESTIMATOR_STATUS ),
+    ORB_REFERENCE( airspeed_s,                   TOPIC_AIRSPEED ),
+    ORB_REFERENCE( ekf_gps_drift_s,              TOPIC_EKF_GPS_DRIFT ),
+    ORB_REFERENCE( ekf_gps_position_s,           TOPIC_EKF_GPS_POSITION ),
+    ORB_REFERENCE( optical_flow_s,               TOPIC_OPTICAL_FLOW ),
+    ORB_REFERENCE( wind_estimate_s,              TOPIC_WIND_ESTIMATE ),
+};
