@@ -8,4 +8,4 @@ the embedded project to verify inertial navigation, gnss, and loosely coupled na
 - 传感器组+校准模块
 - 导航模块
 
-edit
+edit2
