@@ -7,8 +7,8 @@
 
 lld_uart_t *mcu_uart_list[8] = {0,0,0,0,0,0,0,0};
 
-ALIGN_32BYTES(__attribute__((section("._D1RAM"))) static uint8_t dmaTxBuf[8][USART_DMA_TX_BUFFER_SIZE]);
-ALIGN_32BYTES(__attribute__((section("._D1RAM"))) static uint8_t dmaRxBuf[8][USART_DMA_RX_BUFFER_SIZE]);
+ALIGN_32BYTES(__attribute__((section(".RAM_D1"))) static uint8_t dmaTxBuf[8][USART_DMA_TX_BUFFER_SIZE]);
+ALIGN_32BYTES(__attribute__((section(".RAM_D1"))) static uint8_t dmaRxBuf[8][USART_DMA_RX_BUFFER_SIZE]);
 
 bool lowlevel_uart_pin_source_init(lld_uart_t *obj, uint8_t uart_num, uint8_t uart_tx_selec, uint8_t uart_rx_selec)
 {

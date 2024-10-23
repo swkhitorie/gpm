@@ -4,9 +4,8 @@
 #
 ################################################################################
 
-ifeq (${TC_NAME},arm)
+ifeq (${TC_NAME},armcc)
 
-ifeq ($(findstring V5,${PROJ_COMPILER}),V5)
 CORE_ASMOPTS:=\
   --cpu=Cortex-M4.fp.sp             \
   --apcs=interwork
@@ -14,9 +13,11 @@ CORE_ASMOPTS:=\
 CORE_COPTS:=\
   --cpu=Cortex-M4.fp.sp             \
   --apcs=interwork
-endif 
 
-ifeq ($(findstring V6,${PROJ_COMPILER}),V6)
+endif # TC_NAME - arm cc
+
+ifeq (${TC_NAME},armclang)
+
 CORE_ASMOPTS:=\
   --cpu=Cortex-M4.fp.sp             \
   -g
@@ -25,10 +26,11 @@ CORE_COPTS:=\
   -mcpu=cortex-m4                   \
   -mfpu=fpv4-sp-d16                 \
   -mfloat-abi=hard
-endif 
-endif # TC_NAME
+ 
+endif # TC_NAME - arm clang
 
 ifeq (${TC_NAME},gae)
+
 CORE_ASMOPTS:=\
   -mcpu=cortex-m4                  \
   -mthumb                          \
@@ -50,4 +52,4 @@ CORE_LIBOPTS:=\
   -mthumb                          \
   -mthumb-interwork
   
-endif # TC_GCC_NAME
+endif # TC_NAME - gae

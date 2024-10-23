@@ -7,7 +7,7 @@ extern "C" {
 #endif
 
 #include <stdint.h>
-
+#include <stdbool.h>
 /*! @brief Serialize API:
  *  provide conversion between byte streams and data
  */

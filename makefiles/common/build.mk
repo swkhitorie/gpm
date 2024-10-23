@@ -62,9 +62,9 @@ PROJ_OBJS:=$(foreach obj,$(basename $(notdir ${BUILD_SOURCES})),${OBJS_FOLDER}/$
 #
 # dependency file or dependency variable
 # 
-# C_ADEP := $(call TC_CC_VIA,${TARGET_ROOTDIR}/copts.via)
-# ASM_ADEP := $(call TC_ASM_VIA,${TARGET_ROOTDIR}/asmopts.via)
-# LINK_ADEP := $(call TC_LINK_VIA, ${TARGET_ROOTDIR}/lopts.via)
+#C_ADEP := $(call TC_CC_VIA,${TARGET_ROOTDIR}/copts.via)
+#ASM_ADEP := $(call TC_ASM_VIA,${TARGET_ROOTDIR}/asmopts.via)
+#LINK_ADEP := $(call TC_LINK_VIA, ${TARGET_ROOTDIR}/lopts.via)
 C_ADEP := ${COPTS} ${CDEFS} ${CINCDIRS}
 ASM_ADEP := ${ASMOPTS} ${ASMDEFS} ${ASMINCDIRS}
 LINK_ADEP := ${LIBOPTS} $(call MK_TC_LIBDIRS,${LIBDIRS}) $(call MK_TC_LIBS,${LIBS})
