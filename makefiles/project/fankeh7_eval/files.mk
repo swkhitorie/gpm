@@ -4,6 +4,12 @@
 #
 ################################################################################
 
+ASMSOURCES+=boards/fankeh7/fankeh7_startup_arm.s
+SCF_FILE+=boards/fankeh7/fankeh7_lnk_arm
+CSOURCES+=boards/fankeh7/src/system_stm32h7xx.c
+CSOURCES+=boards/fankeh7/src/stm32h7xx_it.c
+CSOURCES+=boards/fankeh7/src/stm32h7xx_hal_msp.c
+
 CSOURCES+=boards/fankeh7/src/drivers/stm32h7xx_hal.c
 CSOURCES+=boards/fankeh7/src/drivers/stm32h7xx_hal_cortex.c
 CSOURCES+=boards/fankeh7/src/drivers/stm32h7xx_hal_dma.c
@@ -32,13 +38,6 @@ CSOURCES+=boards/fankeh7/src/drivers/stm32h7xx_hal_uart_ex.c
 CSOURCES+=boards/fankeh7/src/drivers/stm32h7xx_hal_usart.c
 CSOURCES+=boards/fankeh7/src/drivers/stm32h7xx_hal_usart_ex.c
 
-CSOURCES+=boards/fankeh7/src/system_stm32h7xx.c
-CSOURCES+=boards/fankeh7/src/stm32h7xx_it.c
-CSOURCES+=boards/fankeh7/src/stm32h7xx_hal_msp.c
-
-ASMSOURCES+=boards/fankeh7/fankeh7_startup_arm.s
-SCF_FILE+=boards/fankeh7/fankeh7_lnk_arm
-
 CSOURCES+=platforms/component/lld_svc/cubeh7/lld_board_kernel.c
 CSOURCES+=platforms/component/lld_svc/cubeh7/lld_kernel.c
 CSOURCES+=platforms/component/lld_svc/cubeh7/lld_interrupt.c
@@ -57,4 +56,3 @@ CSOURCES+=platforms/common/devfifobuffer.c
 CSOURCES+=platforms/common/llddebug.c
 
 CSOURCES+=src/app/fankeh7_eval/app_main.c
-#CSOURCES+=src/app/fankeh7_eval/syscall.c
