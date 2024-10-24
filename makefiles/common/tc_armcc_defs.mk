@@ -52,6 +52,7 @@ TC_TARGETARM:=--arm
 
 # Assembly compiler options
 TC_ASMOPTS:=\
+  -g                          \
   --diag_style=gnu            \
   --diag_suppress=9931
 # --list ".\Obj\*.lst" 
@@ -62,16 +63,22 @@ TC_ASMOPTS:=\
 TC_ASMDEFS:=
 # C compiler options
 TC_COPTS:=\
-  -c                          \
   --c99                       \
+  -c                          \
   -O0                         \
   -g                          \
   --diag_style=gnu            \
   --diag_suppress=1267,9931   \
-  --split_sections            \
-  --cpp11                    
-# --omf_brwose .\Obj\*.crf
-# --depend .\Obj\*d
+  --split_sections                   
+
+TC_CPPOPTS:=\
+  --cpp                       \
+  -c                          \
+  -O0                         \
+  -g                          \
+  --diag_style=gnu            \
+  --diag_suppress=1267,9931   \
+  --split_sections 
 
 # C compiler defines
 TC_CDEFS:=

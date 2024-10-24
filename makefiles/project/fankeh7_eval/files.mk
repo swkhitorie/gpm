@@ -55,4 +55,4 @@ CSOURCES+=platforms/common/ttscheduler.c
 CSOURCES+=platforms/common/devfifobuffer.c
 CSOURCES+=platforms/common/llddebug.c
 
-CSOURCES+=src/app/fankeh7_eval/app_main.c
+CPPSOURCES+=src/app/fankeh7_eval/app_main.cpp

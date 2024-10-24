@@ -59,7 +59,7 @@
           <ListingPath>.\output\</ListingPath>
           <HexFormatSelection>1</HexFormatSelection>
           <Merge32K>0</Merge32K>
-          <CreateBatchFile>1</CreateBatchFile>
+          <CreateBatchFile>0</CreateBatchFile>
           <BeforeCompile>
             <RunUserProg1>0</RunUserProg1>
             <RunUserProg2>0</RunUserProg2>
@@ -352,7 +352,7 @@
             <SplitLS>0</SplitLS>
             <SwStkChk>0</SwStkChk>
             <NoWarn>0</NoWarn>
-            <uSurpInc>0</uSurpInc>
+            <uSurpInc>1</uSurpInc>
             <useXO>0</useXO>
             <ClangAsOpt>1</ClangAsOpt>
             <VariousControls>

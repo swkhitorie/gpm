@@ -111,6 +111,8 @@ ASMINCDIRS:=$(foreach inc,$(strip ${TC_ASMINCDIRS} ${PROJ_ASMINCDIRS} ${OS_ASMIN
 #####################################
 COPTS:=$(strip ${TC_COPTS} ${TC_DBG_COPTS} ${CORE_COPTS} ${PROJ_COPTS} ${EXT_COPTS})
 
+CPPOPTS:=$(strip ${TC_CPPOPTS} ${TC_DBG_COPTS} ${CORE_COPTS} ${PROJ_COPTS} ${EXT_COPTS})
+
 CDEFS:=$(foreach def,$(strip ${TC_CDEFS} ${PROJ_CDEFS} ${OS_CDEFS} ${EXT_CDEFS}),-D${def})
 
 CINCDIRS:=$(foreach inc,$(strip ${PROJ_CINCDIRS} ${OS_CINCDIRS} ${EXT_CINCDIRS}),-I$(call MK_TC_PATH,${SDK_ROOTDIR}/${inc}))

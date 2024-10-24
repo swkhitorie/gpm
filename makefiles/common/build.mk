@@ -66,6 +66,7 @@ PROJ_OBJS:=$(foreach obj,$(basename $(notdir ${BUILD_SOURCES})),${OBJS_FOLDER}/$
 #ASM_ADEP := $(call TC_ASM_VIA,${TARGET_ROOTDIR}/asmopts.via)
 #LINK_ADEP := $(call TC_LINK_VIA, ${TARGET_ROOTDIR}/lopts.via)
 C_ADEP := ${COPTS} ${CDEFS} ${CINCDIRS}
+CPP_ADEP := ${CPPOPTS} ${CDEFS} ${CINCDIRS}
 ASM_ADEP := ${ASMOPTS} ${ASMDEFS} ${ASMINCDIRS}
 LINK_ADEP := ${LIBOPTS} $(call MK_TC_LIBDIRS,${LIBDIRS}) $(call MK_TC_LIBS,${LIBS})
 
@@ -107,7 +108,7 @@ ${COPTS_FILE}: ${CONFIG_FILE} ${LIST_DEFSINC} ${PROJ_MAKEFILE}
 ${CPPOPTS_FILE}: ${CONFIG_FILE} ${LIST_DEFSINC} ${PROJ_MAKEFILE}
 	$(call MK_APPGET,Generating Cpp compiler via file for ${PROJ_TC} builder)
 	$(call MK_RMFILE,${CPPOPTS_FILE})
-	$(call MK_APPEND,${COPTS},"${CPPOPTS_FILE}")
+	$(call MK_APPEND,${CPPOPTS},"${CPPOPTS_FILE}")
 	$(call MK_APPEND,${CDEFS},"${CPPOPTS_FILE}")
 	$(call MK_APPEND,${CINCDIRS},"${CPPOPTS_FILE}")
 
@@ -132,7 +133,7 @@ ${OBJS_FOLDER}/%.o: %.cpp ${CPPOPTS_FILE}
 	$(eval SRCFILE:=$(call MK_LOOKUPSRC,$^,${BUILD_CPPSOURCES}))
 	$(eval SRCMODE:=$(if $(findstring $<,${BUILD_CARMSOURCES}),${TC_TARGETARM},${TC_TARGETTHUMB}))
 	$(call MK_ECHO,Compiling ${SRCFILE})
-	@${TC_CPP} ${C_ADEP} ${SRCMODE} -o $@ ${SRCFILE}
+	@${TC_CPP} ${CPP_ADEP} ${SRCMODE} -o $@ ${SRCFILE}
 
 # asm file suffix for arm is (.s), not (.asm)
 ${OBJS_FOLDER}/%.o: %.s ${ASMOPTS_FILE}

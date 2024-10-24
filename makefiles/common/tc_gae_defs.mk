@@ -75,9 +75,15 @@ TC_COPTS:=\
   -w -Wno-invalid-source-encoding \
   -w -Wno-writable-strings
 
-  # -fdata-sections       \
-  # -ffunction-sections   \
-# -MMD -MP -MF"$(@:%.o=%.d)"
+TC_CPPOPTS:=\
+  -c                    \
+  -O0                   \
+  -gdwarf-2             \
+  -MD                   \
+  -w -Wno-empty-body       \
+  -w -Wno-macro-redefined  \
+  -w -Wno-invalid-source-encoding \
+  -w -Wno-writable-strings
 
 TC_DBG_COPTS:=
   # -g          \

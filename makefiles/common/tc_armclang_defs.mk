@@ -57,15 +57,33 @@ TC_ASMOPTS:=\
   -masm=auto                        \
   -c                                \
   -gdwarf-4
-
+  
 # Assembly compiler defines
 TC_ASMDEFS:=
 
+# debug: why c opts -xc -std=c11 could not work with -xc++ -std=c++11???
 # C compiler options
 TC_COPTS:=\
   --target=arm-arm-none-eabi        \
   -xc                               \
   -std=c11                          \
+  -gdwarf-4                         \
+  -O1                               \
+  -c                                \
+  -fno-rtti                         \
+  -funsigned-char -fshort-enums -fshort-wchar -ffunction-sections \
+  -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes \
+  -Wno-missing-noreturn -Wno-nonportable-include-path -Wno-sign-conversion \
+  -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command \
+  -Wno-documentation -Wno-license-management \
+  -Wno-parentheses-equality -Wno-reserved-identifier \
+  -Wno-empty-body \
+  -Wno-macro-redefined \
+  -Wno-invalid-source-encoding \
+  -Wno-writable-strings
+
+TC_CPPOPTS:=\
+  --target=arm-arm-none-eabi        \
   -xc++                             \
   -std=c++11                        \
   -gdwarf-4                         \
@@ -95,7 +113,6 @@ TC_LIBOPTS:=\
   --xref                                  \
   --callgraph                             \
   --symbols                               \
-  --verbose                               \
   --info=summarysizes                     \
   --info=sizes                            \
   --info=totals                           \
@@ -104,6 +121,7 @@ TC_LIBOPTS:=\
   --info=stack                            \
   --diag_style=gnu                        \
   --diag_suppress=6314,9931               \
+  --verbose                               \
   --load_addr_map_info
 
 # Scatter file extension

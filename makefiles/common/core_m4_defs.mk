@@ -14,6 +14,9 @@ CORE_COPTS:=\
   --cpu=Cortex-M4.fp.sp             \
   --apcs=interwork
 
+CORE_LIBOPTS:=\
+  --cpu=Cortex-M4.fp.sp
+
 endif # TC_NAME - arm cc
 
 ifeq (${TC_NAME},armclang)
