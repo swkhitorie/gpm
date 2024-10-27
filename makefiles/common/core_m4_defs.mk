@@ -22,14 +22,16 @@ endif # TC_NAME - arm cc
 ifeq (${TC_NAME},armclang)
 
 CORE_ASMOPTS:=\
-  --cpu=Cortex-M4.fp.sp             \
+  -mcpu=cortex-m4                   \
+  -mfpu=fpv4-sp-d16                 \
+  -mfloat-abi=hard                  \
   -g
 
 CORE_COPTS:=\
   -mcpu=cortex-m4                   \
   -mfpu=fpv4-sp-d16                 \
   -mfloat-abi=hard
- 
+
 endif # TC_NAME - arm clang
 
 ifeq (${TC_NAME},gae)

@@ -22,6 +22,7 @@ int main()
     lld_kernel_init(0);
     lld_uart_init(&com3,3,115200,true,true,true,USART_Parity_No,USART_WordLength_8b,USART_StopBits_1);
 
+    lldprint("[init] hello world \r\n");
     ttscheduler_init();
     ttscheduler_add_task("debug", debug, NULL, 100, 0);
     

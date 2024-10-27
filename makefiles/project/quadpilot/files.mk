@@ -47,3 +47,6 @@ CPPSOURCES+=src/app/quadpilot_eval/app_main.cpp
 
 ASMSOURCES+=boards/quadpilot/quadpilot_startup_arm.s
 SCF_FILE+=boards/quadpilot/quadpilot_lnk_arm
+
+#ASMSOURCES+=boards/quadpilot/quadpilot_startup_gcc.s
+#SCF_FILE+=boards/quadpilot/quadpilot_lnk_gcc
