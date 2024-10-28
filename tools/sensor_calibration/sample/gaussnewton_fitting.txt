@@ -1,0 +1,17 @@
+
+function:
+	g^2 = (scale_x * accx - offx)^2 + (scale_y * accy - offy)^2 + (scale_z * accz - offz)^2
+		->
+	1 = ((accx - ox) / rx)^2 + ((accy - oy) / ry)^2 + ((accz - oz) / rz)^2
+		rx = g*scale_x   ry = g*scale_y   rz = g*scale_z
+		ox = offx/rx     oy = offy/ry     oz = offz/rz
+	y = f(acc, B), B = [ox, oy, oz, rx, ry, rz]^T
+
+residual:
+	find the best solution of B, make residual sum of squares shortest->
+	S = ∑(ri^2)
+	ri = yi - f(acci, B)
+	∂S/∂B = 0 -> 2∑ri*∂ri/∂Bj = 0
+	make ∂ri/∂Bj = 0
+ 
+ 
