@@ -35,6 +35,16 @@ static const uint32_t tbl_CRC24Q[]={
     0x42FA2F,0xC4B6D4,0xC82F22,0x4E63D9,0xD11CCE,0x575035,0x5BC9C3,0xDD8538
 };
 
+void rtk_crc24q_init(uint32_t *crc)
+{
+	*crc = 0;
+}
+
+void rtk_crc24q_update(uint8_t c, uint32_t *crc)
+{
+	*crc=((*crc<<8)&0xFFFFFF)^tbl_CRC24Q[(*crc>>16)^c];
+}
+
 uint32_t rtk_crc24q(const uint8_t *buff, int len)
 {
 	uint32_t crc = 0;

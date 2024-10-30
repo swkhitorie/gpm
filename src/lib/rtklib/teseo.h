@@ -1,44 +1,8 @@
-#ifndef RTCM3_H_
-#define RTCM3_H_
+#ifndef TESEO_H_
+#define TESEO_H_
 
 #include <stdint.h>
 #include "rtkcmn.h"
-
-/*
- * RTCM frame format:
- * | preamble(8bits) | 000000(6bits) | datalen(10bits) | data | crc(24bits) |
- * RTCM df format: start pos -> bits HSB -> LSB, example:
- * byte array: 62 113 80
- * 0011 1110  0111 0001  0101 0000
- * member 1: msgid: 12 bits
- * member 2: subid: 8 bits
- * member 3: reserved: 4 bits
- *        0011 1110  0111  0001  0101  0000
- * msgid: |hsb ->     lsb|    999
- * subid:                 |hsb->  lsb|   21
- * reserved:                           |   | 0
- *
- * but the c bit field format:
- *        0 0 1 1 1 1 1 0
- *        |    <-msg lsb|
- *        0 1 1 1  0 0 0 1
- *     <-subid lsb| msg msb
- *        0 1 0 1  0 0 0 0
- *                | subid msb
- * msgid: 318
- * subid: 7
- * reserved: 5
- */
-
-#define RTCM3_PREAMBLE                     (0xD3)
-#define RTCM_INITIAL_BUFFER_LENGTH         (300)
-#define RTCM_MIN_BUFFER_LENGTH             (20)
-
-#define RTCM_MESSAGE_LENGTH(premable_b1, premable_b2) \
-		((((uint16_t)premable_b1 & 0x11) << 8) | premable_b2)
-
-#define RTCM_MESSAGE_CRC(crc1, crc2, crc3) \
-		((uint32_t)crc1 << 16 | (uint32_t)crc2 << 8 | (uint32_t)crc3)
 
 typedef struct __st_sensor {
 	uint16_t msg_number;
@@ -150,6 +114,5 @@ void rtcm_st_sens_decode(rtcm_st_sens_t *f, uint8_t *p, uint16_t framelen);
 
 void rtcm_st_utc_pva_decode(rtcm_st_utc_pva *f, uint8_t *p, uint16_t framelen);
 void rtcm_st_utc_pva_packsend(rtcm_st_utc_pva *f, uint8_t *p, uint16_t *len);
-
 
 #endif

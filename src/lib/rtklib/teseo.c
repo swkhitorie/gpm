@@ -1,4 +1,4 @@
-#include "rtcm3.h"
+#include "teseo.h"
 
 void rtcm_st_pvt_decode(rtcm_st_pvt_t *f, uint8_t *p, uint16_t framelen)
 {
@@ -278,6 +278,3 @@ void rtcm_st_utc_pva_packsend(rtcm_st_utc_pva *f, uint8_t *p, uint16_t *len)
 
 	*len = 6 + msg_len;
 }
-
-
-

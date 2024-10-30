@@ -12,6 +12,8 @@
 #define FE_WGS84    (1.0/298.257223563) /* earth flattening (WGS84) */
 
 uint32_t      rtk_crc24q(const uint8_t *buff, int len);
+void           rtk_crc24q_init(uint32_t *crc);
+void           rtk_crc24q_update(uint8_t c, uint32_t *crc);
 unsigned int  getbitu(const unsigned char *buff, int pos, int len);
 int           getbits(const unsigned char *buff, int pos, int len);
 uint64_t      getbitlu(const unsigned char *buff, int pos, int len);
