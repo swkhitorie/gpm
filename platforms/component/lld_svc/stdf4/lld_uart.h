@@ -12,7 +12,7 @@ extern "C" {
 
 #include "lld_kernel.h"
 #include "lld_gpio.h"
-#include "devfifobuffer.h"
+#include "platforms_common.h"
 
 #define USART_DMA_TX_BUFFER_SIZE (300)
 #define USART_DMA_RX_BUFFER_SIZE (300)
@@ -35,8 +35,8 @@ typedef struct __lld_uart {
     uint16_t stopbits;
     lld_gpio_t tx_pin;
     lld_gpio_t rx_pin;
-    devfifobuffer_t txbuf;
-    devfifobuffer_t rxbuf;
+    devbuf_t txbuf;
+    devbuf_t rxbuf;
     bool txdma_enable;
     bool tx_busy;
     bool rxdma_enable;

@@ -1,12 +1,22 @@
 ################################################################################
-#
-# Standard set of files for the project
-#
+# application configuration defaults section
 ################################################################################
+  # STM32F40_41xxx                         
+  # STM32F407xx                
+PROJ_CDEFS:=\
+  STM32F40_41xxx                      \
+  USE_STDPERIPH_DRIVER                \
+  __FPU_PRESENT                       \
+  __CC_ARM
 
-#
-# stdf4 lib only support arm compiler v5
-#
+PROJ_CINCDIRS:=\
+  boards/quadpilot/src/core           \
+  boards/quadpilot/src/driver         \
+  boards/quadpilot/src                \
+  platforms/common                    \
+  platforms/common/include            \
+  platforms/component/lld_svc/stdf4   \
+  src/app/quadpilot
 
 CSOURCES+=boards/quadpilot/src/driver/misc.c
 CSOURCES+=boards/quadpilot/src/driver/stm32f4xx_adc.c
@@ -39,8 +49,7 @@ CSOURCES+=platforms/component/lld_svc/stdf4/lld_spi.c
 CSOURCES+=platforms/component/lld_svc/stdf4/lld_i2c.c
 CSOURCES+=platforms/component/lld_svc/stdf4/lld_timer.c
 CSOURCES+=platforms/common/ttscheduler.c
-CSOURCES+=platforms/common/devfifobuffer.c
-CSOURCES+=platforms/common/llddebug.c
+CSOURCES+=platforms/common/common_utils.c
 
 CPPSOURCES+=src/app/quadpilot_eval/test_cpp.cpp
 CPPSOURCES+=src/app/quadpilot_eval/app_main.cpp
@@ -48,5 +57,3 @@ CPPSOURCES+=src/app/quadpilot_eval/app_main.cpp
 ASMSOURCES+=boards/quadpilot/quadpilot_startup_arm.s
 SCF_FILE+=boards/quadpilot/quadpilot_lnk_arm
 
-#ASMSOURCES+=boards/quadpilot/quadpilot_startup_gcc.s
-#SCF_FILE+=boards/quadpilot/quadpilot_lnk_gcc

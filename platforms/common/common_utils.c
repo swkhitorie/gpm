@@ -1,7 +1,8 @@
 #include "platforms_common.h"
 
 #ifdef USE_COMMON_UTILS
-
+#include <stdarg.h>
+#include <string.h>
 #ifdef __GNUC__
     __attribute__((weak)) void prtsendbytes(const uint8_t *pdata, uint16_t len) {}
 #else 

@@ -8,11 +8,11 @@
 
 include ${MAKEFILES_ROOTDIR}/common/const.mk
 
+include ${MAKEFILES_ROOTDIR}/common/dbg_openocd.mk 
+
 include ${MAKEFILES_ROOTDIR}/common/check.mk
 
 include ${MAKEFILES_ROOTDIR}/common/common.mk
-
-include ${MAKEFILES_ROOTDIR}/common/dbg_openocd.mk 
 
 ################################################################################
 #
@@ -126,7 +126,7 @@ ${LOPTS_FILE}: ${CONFIG_FILE} ${LIST_DEFSINC} ${PROJ_MAKEFILE}
 ${OBJS_FOLDER}/%.o: %.c ${COPTS_FILE}
 	$(eval SRCFILE:=$(call MK_LOOKUPSRC,$^,${BUILD_CSOURCES} ${BUILD_CARMSOURCES}))
 	$(eval SRCMODE:=$(if $(findstring $<,${BUILD_CARMSOURCES}),${TC_TARGETARM},${TC_TARGETTHUMB}))
-	$(call MK_ECHO,Compiling ${SRCFILE})
+	$(call MK_ECHO,Compiling ${SRCFILE} )
 	@${TC_CC} ${C_ADEP} ${SRCMODE} -o $@ ${SRCFILE}
 
 ${OBJS_FOLDER}/%.o: %.cpp ${CPPOPTS_FILE}

@@ -1,20 +1,21 @@
 
 #include "lld_include.h"
 #include "ttscheduler.h"
-#include "llddebug.h"
+#include "platforms_common.h"
 
 #include <stdlib.h>
 #include <stdarg.h>
 #include <string.h>
 #include "test_cpp.h"
+#define USE_COMMON_UTILS
 
 lld_uart_t com3;
 
 void debug(void *p)
 {
-    lldprint("[debug] edit armcc cpu time: %f \r\n", lld_kernel_get_time(0) / 1e6);
-    test_obj a;
-    a.test_1();
+    print("[debug] edit now armccaa cpu time: %f \r\n", lld_kernel_get_time(0) / 1e6);
+    //test_obj a;
+    //a.test_1();
 }
 
 int main()
@@ -22,7 +23,7 @@ int main()
     lld_kernel_init(0);
     lld_uart_init(&com3,3,115200,true,true,true,USART_Parity_No,USART_WordLength_8b,USART_StopBits_1);
 
-    lldprint("[init] hello world \r\n");
+    print("[init] hello world \r\n");
     ttscheduler_init();
     ttscheduler_add_task("debug", debug, NULL, 100, 0);
     
@@ -31,7 +32,7 @@ int main()
     }
 }
 
-void lldlogsendbytes(const uint8_t *pdata, uint16_t len) 
+void prtsendbytes(const uint8_t *pdata, uint16_t len) 
 {
     lld_uart_send_bytes(&com3, pdata, len, RWIT); 
 }

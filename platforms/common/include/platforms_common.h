@@ -80,8 +80,8 @@ void devbuf_reset(devbuf_t *obj);
 void devbuf_init(devbuf_t *obj, uint8_t *p, uint16_t capacity);
 
 uint16_t devbuf_write(devbuf_t *obj, const uint8_t *p, uint16_t len);
-uint16_t devbuf_read(devbuf_t *obj, uint8_t p, uint16_t len);
-uint16_t devbuf_query(devbuf_t *obj, uint16_t offset, uint8_t p, uint16_t len);
+uint16_t devbuf_read(devbuf_t *obj, uint8_t *p, uint16_t len);
+uint16_t devbuf_query(devbuf_t *obj, uint16_t offset, uint8_t *p, uint16_t len);
 
 /*! @brief Serialize API:
  *  provide conversion between byte streams and data

@@ -1,22 +1,23 @@
 
+
 # Path to root dir
 SDK_CUR_DIR = $(dir $(realpath $(lastword ${MAKEFILE_LIST})))
 ifeq ($(wildcard $(SDK_CUR_DIR)/build/makefile/build.mk),)
     SDK_CUR_DIR = $(CURRENT_DIR)
 endif
-SDK_ROOTDIR:=$(realpath $(SDK_CUR_DIR)../../../)
+SDK_ROOTDIR:=$(realpath $(SDK_CUR_DIR)../../)
 
 # Absolute path to makefiles
 MAKEFILES_ROOTDIR := ${SDK_ROOTDIR}/makefiles
 
-CompileDate        := $(shell echo %date:~0,4%%date:~5,2%%date:~8,2%)
-CompileHour0       := $(shell echo %time:~0,2%)
-CompileMinSec      := $(shell echo %time:~3,2%%time:~6,2%)
-zero               := 0
-empty              :=
-space              := $(empty) $(empty)
-CompileHour        := $(subst $(space),$(zero),$(CompileHour0))
-CompileDateTime    := $(CompileDate)_$(CompileHour)$(CompileMinSec)
+COMPILE_DATE        := $(shell echo %date:~0,4%%date:~5,2%%date:~8,2%)
+COMPILE_HOUR0       := $(shell echo %time:~0,2%)
+COMPILE_MINSEC      := $(shell echo %time:~3,2%%time:~6,2%)
+ZERO                := 0
+EMPTY               :=
+SPACE               := $(EMPTY) $(EMPTY)
+COMPILE_HOUR        := $(subst $(SPACE),$(ZERO),$(COMPILE_HOUR0))
+COMPILE_TIME        := $(COMPILE_DATE)_$(COMPILE_HOUR)$(COMPILE_MINSEC)
 
 PROJ_CFG           := general_config
 
@@ -28,12 +29,7 @@ include ${PROJ_CFG}.mk
 #
 # including sources file list
 #
-include app_defs.mk
-
-#
-# including sources file list
-#
-include files.mk
+include app_files_defs.mk
 
 #
 # including common build makefile

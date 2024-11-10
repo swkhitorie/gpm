@@ -4,7 +4,7 @@ SDK_CUR_DIR = $(dir $(realpath $(lastword ${MAKEFILE_LIST})))
 ifeq ($(wildcard $(SDK_CUR_DIR)/build/makefile/build.mk),)
     SDK_CUR_DIR = $(CURRENT_DIR)
 endif
-SDK_ROOTDIR:=$(realpath $(SDK_CUR_DIR)../../../)
+SDK_ROOTDIR:=$(realpath $(SDK_CUR_DIR)../../)
 
 # Absolute path to makefiles
 MAKEFILES_ROOTDIR := ${SDK_ROOTDIR}/makefiles
@@ -28,12 +28,7 @@ include ${PROJ_CFG}.mk
 #
 # including sources file list
 #
-include app_defs.mk
-
-#
-# including sources file list
-#
-include files.mk
+include app_files_defs.mk
 
 #
 # including common build makefile

@@ -8,13 +8,16 @@
 
 lld_uart_t *mcu_uart_list[8] = {0, 0, 0, 0, 0, 0, 0, 0};
 
+static uint8_t devbuf_txarray[8][512];
+static uint8_t devbuf_rxarray[8][512];
+
 void lld_uart_init(lld_uart_t *obj, uint8_t com, uint32_t baud, 
         bool remap, bool txdma_en, bool rxdma_en,
         uint16_t parity, uint16_t wordlen, uint16_t stopbits)
 {
-    if (!devfifo_init(&obj->txbuf, NULL, 512, DEVFIFO_ALLOC)) return;
-    if (!devfifo_init(&obj->rxbuf, NULL, 512, DEVFIFO_ALLOC)) return;
-    
+	devbuf_init(&obj->txbuf, &devbuf_txarray[com - 1][0], 512);
+	devbuf_init(&obj->rxbuf, &devbuf_rxarray[com - 1][0], 512);
+
     obj->txdma_enable = ((com <= 6) ? txdma_en : false);
     obj->rxdma_enable = ((com <= 6) ? rxdma_en : false);
     
@@ -204,7 +207,7 @@ void lld_uart_irq(lld_uart_t *obj)
 		if (USART_GetITStatus(obj->huart, USART_IT_RXNE) != RESET) {
 			USART_ClearITPendingBit(obj->huart, USART_IT_RXNE);
             c = USART_ReceiveData(obj->huart);
-            devfifo_write(&obj->rxbuf, &c, 1);
+            devbuf_write(&obj->rxbuf, &c, 1);
 		}
 	} else {
 		// DMA Rx
@@ -217,7 +220,7 @@ void lld_uart_irq(lld_uart_t *obj)
 			
 			bytecount = USART_DMA_RX_BUFFER_SIZE - obj->rxdma.stream->NDTR;
 			if (bytecount > 0 && bytecount < USART_DMA_RX_BUFFER_SIZE) {
-                devfifo_write(&obj->rxbuf, &obj->rxdma.buffer[0], bytecount);
+                devbuf_write(&obj->rxbuf, &obj->rxdma.buffer[0], bytecount);
             }
 			DMA_SetCurrDataCounter(obj->rxdma.stream, USART_DMA_RX_BUFFER_SIZE);
 			DMA_Cmd(obj->rxdma.stream, ENABLE);
@@ -229,8 +232,8 @@ void lld_uart_irq(lld_uart_t *obj)
 	if (!obj->txdma_enable) {
 		if (USART_GetITStatus(obj->huart, USART_IT_TXE) != RESET || 
             USART_GetITStatus(obj->huart, USART_IT_TC) != RESET) {
-            if (devfifo_size(&obj->txbuf) > 0) {
-                devfifo_read(&obj->txbuf, &c, 1);
+            if (devbuf_size(&obj->txbuf) > 0) {
+                devbuf_read(&obj->txbuf, &c, 1);
                 obj->huart->DR = (c & (uint16_t)0x01FF);
             } else {
 				USART_ITConfig(obj->huart, USART_IT_TXE, DISABLE);
@@ -250,13 +253,13 @@ void lld_uart_irq_txdma(lld_uart_t *obj)
 		DMA_ClearFlag(obj->txdma.stream, obj->txdma.flag_tc);
 		DMA_Cmd(obj->txdma.stream, DISABLE);
 		
-        if (devfifo_size(&obj->txbuf) > 0) {
-            if (devfifo_size(&obj->txbuf) <= USART_DMA_TX_BUFFER_SIZE) {
-                obj->txdma.stream->NDTR = (uint32_t)devfifo_size(&obj->txbuf);
-                devfifo_read(&obj->txbuf, &obj->txdma.buffer[0], devfifo_size(&obj->txbuf));
+        if (devbuf_size(&obj->txbuf) > 0) {
+            if (devbuf_size(&obj->txbuf) <= USART_DMA_TX_BUFFER_SIZE) {
+                obj->txdma.stream->NDTR = (uint32_t)devbuf_size(&obj->txbuf);
+                devbuf_read(&obj->txbuf, &obj->txdma.buffer[0], devbuf_size(&obj->txbuf));
             } else {
                 obj->txdma.stream->NDTR = USART_DMA_TX_BUFFER_SIZE;
-                devfifo_read(&obj->txbuf, &obj->txdma.buffer[0], USART_DMA_TX_BUFFER_SIZE);   
+                devbuf_read(&obj->txbuf, &obj->txdma.buffer[0], USART_DMA_TX_BUFFER_SIZE);   
             }
             DMA_Cmd(obj->txdma.stream, ENABLE);
         } else {
@@ -278,7 +281,7 @@ void lld_uart_irq_rxdma(lld_uart_t *obj)
 		
 		bytecount = USART_DMA_RX_BUFFER_SIZE - obj->rxdma.stream->NDTR;
 		if (bytecount > 0 && bytecount < USART_DMA_RX_BUFFER_SIZE) {
-            devfifo_write(&obj->rxbuf, &obj->rxdma.buffer[0], bytecount);
+            devbuf_write(&obj->rxbuf, &obj->rxdma.buffer[0], bytecount);
         }
 		DMA_SetCurrDataCounter(obj->rxdma.stream, bytecount);
 		DMA_Cmd(obj->rxdma.stream, ENABLE);
@@ -300,19 +303,19 @@ bool lld_uart_send_bytes(lld_uart_t *obj, const uint8_t *p, uint16_t size, lld_r
     case RWIT:
     case RWDMA:
         {
-            devfifo_write(&obj->txbuf, &p[0], size);
+            devbuf_write(&obj->txbuf, &p[0], size);
             if (obj->tx_busy) return false;
             obj->tx_busy = true;
             
             if (obj->txdma_enable) {
                 USART_DMACmd(obj->huart, USART_DMAReq_Tx, ENABLE);
                 
-                if (devfifo_size(&obj->txbuf) <= USART_DMA_TX_BUFFER_SIZE) {
-                    obj->txdma.stream->NDTR = (uint32_t)devfifo_size(&obj->txbuf);
-                    devfifo_read(&obj->txbuf, &obj->txdma.buffer[0], devfifo_size(&obj->txbuf));
+                if (devbuf_size(&obj->txbuf) <= USART_DMA_TX_BUFFER_SIZE) {
+                    obj->txdma.stream->NDTR = (uint32_t)devbuf_size(&obj->txbuf);
+                    devbuf_read(&obj->txbuf, &obj->txdma.buffer[0], devbuf_size(&obj->txbuf));
                 } else {
                     obj->txdma.stream->NDTR = USART_DMA_TX_BUFFER_SIZE;
-                    devfifo_read(&obj->txbuf, &obj->txdma.buffer[0], USART_DMA_TX_BUFFER_SIZE);   
+                    devbuf_read(&obj->txbuf, &obj->txdma.buffer[0], USART_DMA_TX_BUFFER_SIZE);   
                 }
                 DMA_Cmd(obj->txdma.stream, ENABLE);
             } else {
@@ -320,7 +323,7 @@ bool lld_uart_send_bytes(lld_uart_t *obj, const uint8_t *p, uint16_t size, lld_r
                 USART_ClearITPendingBit(obj->huart,USART_IT_TXE);
                 USART_ITConfig(obj->huart, USART_IT_TC, ENABLE);
                 USART_GetFlagStatus(obj->huart, USART_FLAG_TC);
-                devfifo_read(&obj->txbuf, &c, 1);
+                devbuf_read(&obj->txbuf, &c, 1);
                 USART_SendData(obj->huart, c);  
             }
             break;

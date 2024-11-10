@@ -1,8 +1,20 @@
 ################################################################################
-#
-# Standard set of files for the project
-#
+# application configuration defaults section
 ################################################################################
+
+PROJ_CDEFS:=\
+  USE_HAL_DRIVER                         \
+  STM32H743xx                            \
+  __clang__      
+
+PROJ_CINCDIRS:=\
+  boards/fankeh7/src/core       \
+  boards/fankeh7/src/drivers       \
+  boards/fankeh7/src/drivers/Legacy    \
+  boards/fankeh7/src/  \
+  platforms/common                          \
+  platforms/component/lld_svc/cubeh7            \
+  src/app/fankeh7_eval                 
 
 ASMSOURCES+=boards/fankeh7/fankeh7_startup_arm.s
 SCF_FILE+=boards/fankeh7/fankeh7_lnk_arm
@@ -56,3 +68,5 @@ CSOURCES+=platforms/common/devfifobuffer.c
 CSOURCES+=platforms/common/llddebug.c
 
 CPPSOURCES+=src/app/fankeh7_eval/app_main.cpp
+
+
