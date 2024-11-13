@@ -67,7 +67,7 @@ TC_ASMDEFS:=
 # C compiler options
 TC_COPTS:=\
   -c                    \
-  -O0                   \
+  -O1                   \
   -gdwarf-2             \
   -MD                   \
   -w -Wno-empty-body       \
@@ -77,7 +77,7 @@ TC_COPTS:=\
 
 TC_CPPOPTS:=\
   -c                    \
-  -O0                   \
+  -O1                   \
   -gdwarf-2             \
   -MD                   \
   -w -Wno-empty-body       \
