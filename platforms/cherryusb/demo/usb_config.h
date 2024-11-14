@@ -187,7 +187,13 @@
 // #define CONFIG_USB_DWC2_TX6_FIFO_SIZE (0 / 4)
 // #define CONFIG_USB_DWC2_TX7_FIFO_SIZE (0 / 4)
 // #define CONFIG_USB_DWC2_TX8_FIFO_SIZE (0 / 4)
-
+#if defined (STM32F427xx)
+ #define CONFIG_USB_DWC2_RXALL_FIFO_SIZE (512 / 4)
+ #define CONFIG_USB_DWC2_TX0_FIFO_SIZE (64 / 4)
+ #define CONFIG_USB_DWC2_TX1_FIFO_SIZE (512 / 4)
+ #define CONFIG_USB_DWC2_TX2_FIFO_SIZE (64 / 4)
+ #define CONFIG_USB_DWC2_TX3_FIFO_SIZE (64 / 4)
+#endif
 /* ---------------- MUSB Configuration ---------------- */
 // #define CONFIG_USB_MUSB_SUNXI
 
