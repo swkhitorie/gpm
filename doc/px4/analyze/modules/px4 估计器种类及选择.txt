@@ -1,0 +1,19 @@
+可用的估計器:
+
+
+## EKF2 attitude, position and wind states estimator (recommended) - 
+	An extended Kalman filter estimating attitude, 3D position / velocity and wind states.
+
+## LPE position estimator (deprecated) - 
+	An extended Kalman filter for 3D position and velocity states. (注意) LPE is deprecated. It works (at time of writing, in PX4 v1.14) but is no longer supported or maintained
+
+## Q attitude estimator - 
+	A very simple, quaternion based complementary filter for attitude. It does not require a GPS, magnetometer, or barometer.
+
+如何启用不同的估计器
+	对于多旋翼和垂直起降，使用参数SYS_MC_EST_GROUP在以下配置之间进行选择（固定翼不支持LPE）。
+	SYS_MC_EST_GROUP: 1  Q Estimator 启用, LPE 启用, EKF2 闲置
+	SYS_MC_EST_GROUP: 2  Q Estimator 闲置, LPE 闲置, EKF2 启用
+	SYS_MC_EST_GROUP: 0  Q Estimator 启用, LPE 闲置, EKF2 闲置
+	
+	
