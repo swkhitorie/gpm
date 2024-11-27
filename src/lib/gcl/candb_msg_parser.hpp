@@ -1,18 +1,18 @@
 
-#ifndef __DBC_MSG_PARSER_H_
-#define __DBC_MSG_PARSER_H_
+#ifndef __CANDB_MSG_PARSER_H_
+#define __CANDB_MSG_PARSER_H_
 
 #include "stdint.h"
 
 namespace ESAF
 {
 /*!
- * @brief DBC message parser
+ * @brief CANDB message parser
  * convert motorola/intel message between signal value
  * only use for little endian memory
  * signal value should be 8/16/32 ...
  */
-class dbc_msg_parser
+class candb_msg_parser
 {
   public:
     /**
@@ -180,4 +180,4 @@ class dbc_msg_parser
 
 }  // namespace ESAF
 
-#endif  // dbc_msg_parser_H
+#endif  // candb_msg_parser_H
