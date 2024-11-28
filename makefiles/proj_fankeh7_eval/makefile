@@ -20,7 +20,7 @@ CompileDateTime    := $(CompileDate)_$(CompileHour)$(CompileMinSec)
 
 PROJ_CFG           := general_config
 
-include $(MAKEFILES_ROOTDIR)/common_toolchain.mk
+include $(MAKEFILES_ROOTDIR)/toolchain_path.mk
 
 #
 # including defines related to configuration

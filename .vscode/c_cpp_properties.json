@@ -1,8 +1,8 @@
 {
     "env" : {
-        "arm_cc_path" : "D:/__dev_envir/__env/mdk5/CORE/ARM/ARMCC",
-        "arm_clang_path" : "D:/__dev_envir/__env/mdk5/CORE/ARM/ARMCLANG",
-        "gcc_arm_path" : "D:/__dev_envir/__env/arm_gcc/gcc-arm-none-eabi/bin"
+        "arm_cc_path" : "C:/Keil_v5/ARM/ARMCC",
+        "arm_clang_path" : "C:/Keil_v5/ARM/ARMCLANG",
+        "gcc_arm_path" : "D:/envir/gcc-arm-none-eabi/bin"
     },
 
     "configurations": [
@@ -17,19 +17,14 @@
                 "${gcc_arm_path}/../lib/gcc/arm-none-eabi/10.3.1/include-fixed",
                 "${gcc_arm_path}/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/include",
 
-                "${workspaceFolder}/boards/st/stdf4/v1.9.0/user",
-                "${workspaceFolder}/boards/st/stdf4/v1.9.0/driver",
-                "${workspaceFolder}/boards/st/stdf4/v1.9.0/core",
+                "${workspaceFolder}/boards/msdk/stdf1",
+                "${workspaceFolder}/boards/msdk/stdf4",
+                "${workspaceFolder}/boards/msdk/cubeh7",
 
-                "${workspaceFolder}/boards/st/cubeh7/v1.11.2/user",
-                "${workspaceFolder}/boards/st/cubeh7/v1.11.2/drivers",
-                "${workspaceFolder}/boards/st/cubeh7/v1.11.2/core",
+                "${workspaceFolder}/boards/fmu-v6c/src",
+                "${workspaceFolder}/boards/fmu-v6c/src/core",
+                "${workspaceFolder}/boards/fmu-v6c/src/drivers"
 
-                "${workspaceFolder}/platforms",
-                "${workspaceFolder}/platforms/lld_svc",
-                "${workspaceFolder}/platforms/lld_svc/stdf4",
-                "${workspaceFolder}/platforms/lld_svc/stdf1",
-                "${workspaceFolder}/platforms/lld_svc/cubeh7"
             ],
             //"compilerPath": "D:/__dev_envir/__env/arm_gcc/gcc-arm-none-eabi/bin/arm-none-eabi-gcc.exe",
             "intelliSenseMode": "gcc-x64",

@@ -1,9 +1,25 @@
 {
     "files.associations": {
+        "*.mk": "makefile",
         "times.h": "c",
         "time.h": "c",
         "platforms_common.h": "c",
         "board_config.h": "c",
-        "stm32f4xx_it.h": "c"
-    }
+        "stm32f4xx_it.h": "c",
+        "limits.h": "c",
+        "errno.h": "c",
+        "utils.h": "c",
+        "freertos_posix.h": "c",
+        "pthread.h": "c",
+        "signal.h": "c",
+        "atomic.h": "c",
+        "freertos_posix_portable.h": "c",
+        "fr_posix.h": "c",
+        "semaphore.h": "c",
+        "fr_posix_portable.h": "c",
+        "fr_posix_portable_default.h": "c",
+        "freertos.h": "c",
+        "freertosconfig.h": "c"
+    },
+    "C_Cpp.errorSquiggles": "disabled"
 }
