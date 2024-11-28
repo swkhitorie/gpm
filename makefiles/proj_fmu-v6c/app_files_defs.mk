@@ -12,13 +12,13 @@ PROJ_CINCDIRS:=\
   boards/fmu-v6c/src/drivers            \
   boards/fmu-v6c/src/drivers/Legacy     \
   boards/fmu-v6c/src/                   \
+  boards/msdk/cubeh7                    \
   platforms/common/include              \
-  platforms/lld_svc/cubeh7              \
-  platforms/cherryusb/class/cdc         \
-  platforms/cherryusb/common            \
-  platforms/cherryusb/core              \
-  platforms/cherryusb/port/dwc2         \
-  platforms/cherryusb/demo              \
+  platforms/opmd/cherryusb/class/cdc         \
+  platforms/opmd/cherryusb/common            \
+  platforms/opmd/cherryusb/core              \
+  platforms/opmd/cherryusb/port/dwc2         \
+  platforms/opmd/cherryusb/demo              \
   src/app/fmu-v6c_app
 
 # ld script and startup arm file
@@ -61,27 +61,27 @@ CSOURCES+=boards/fmu-v6c/src/board_init.c
 CSOURCES+=boards/fmu-v6c/src/board_usb.c
 
 # Low Level Driver depend on STM32CubeH7 HAL
-# CSOURCES+=platforms/lld_svc/cubeh7/lld_board_kernel.c
-# CSOURCES+=platforms/lld_svc/cubeh7/lld_kernel.c
-# CSOURCES+=platforms/lld_svc/cubeh7/lld_interrupt.c
-# CSOURCES+=platforms/lld_svc/cubeh7/lld_iwdg.c
-# CSOURCES+=platforms/lld_svc/cubeh7/lld_flash.c
-# CSOURCES+=platforms/lld_svc/cubeh7/lld_gpio.c
-# CSOURCES+=platforms/lld_svc/cubeh7/lld_exirq.c
-# CSOURCES+=platforms/lld_svc/cubeh7/lld_spi.c
-# CSOURCES+=platforms/lld_svc/cubeh7/lld_uart.c
-# CSOURCES+=platforms/lld_svc/cubeh7/lld_i2c.c
-# CSOURCES+=platforms/lld_svc/cubeh7/lld_can.c
-# CSOURCES+=platforms/lld_svc/cubeh7/lld_timer.c
+# CSOURCES+=boards/msdk/cubeh7/lld_board_kernel.c
+# CSOURCES+=boards/msdk/cubeh7/lld_kernel.c
+# CSOURCES+=boards/msdk/cubeh7/lld_interrupt.c
+# CSOURCES+=boards/msdk/cubeh7/lld_iwdg.c
+# CSOURCES+=boards/msdk/cubeh7/lld_flash.c
+# CSOURCES+=boards/msdk/cubeh7/lld_gpio.c
+# CSOURCES+=boards/msdk/cubeh7/lld_exirq.c
+# CSOURCES+=boards/msdk/cubeh7/lld_spi.c
+# CSOURCES+=boards/msdk/cubeh7/lld_uart.c
+# CSOURCES+=boards/msdk/cubeh7/lld_i2c.c
+# CSOURCES+=boards/msdk/cubeh7/lld_can.c
+# CSOURCES+=boards/msdk/cubeh7/lld_timer.c
 # CSOURCES+=platforms/common/common_utils.c
 
 # CherryUSB
-CSOURCES+=platforms/cherryusb/class/cdc/usbd_cdc_acm.c
-CSOURCES+=platforms/cherryusb/class/cdc/usbd_cdc_ecm.c
-CSOURCES+=platforms/cherryusb/core/usbd_core.c
-CSOURCES+=platforms/cherryusb/port/dwc2/usb_dc_dwc2.c
-CSOURCES+=platforms/cherryusb/port/dwc2/usb_glue_st.c
-CSOURCES+=platforms/cherryusb/demo/cdc_acm_template.c
+CSOURCES+=platforms/opmd/cherryusb/class/cdc/usbd_cdc_acm.c
+CSOURCES+=platforms/opmd/cherryusb/class/cdc/usbd_cdc_ecm.c
+CSOURCES+=platforms/opmd/cherryusb/core/usbd_core.c
+CSOURCES+=platforms/opmd/cherryusb/port/dwc2/usb_dc_dwc2.c
+CSOURCES+=platforms/opmd/cherryusb/port/dwc2/usb_glue_st.c
+CSOURCES+=platforms/opmd/cherryusb/demo/cdc_acm_template.c
 
 CPPSOURCES+=src/app/fmu-v6c_app/app_main.cpp
 CSOURCES+=src/app/fmu-v6c_app/syscalls.c

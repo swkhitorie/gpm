@@ -6,7 +6,7 @@ include ${MAKEFILES_ROOTDIR}/common/macros.mk
 #
 # This is the default installation path for gcc arm. Change it if different
 # 
-TC_PATH_INST_GCC:=D:\__dev_envir\__env\arm_gcc\gcc-arm-none-eabi
+# TC_PATH_INST_GCC:=D:\__dev_envir\__env\arm_gcc\gcc-arm-none-eabi
 TC_GCC_PREFIX = arm-none-eabi-
 
 #

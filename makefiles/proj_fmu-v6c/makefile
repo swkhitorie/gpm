@@ -21,6 +21,7 @@ COMPILE_TIME        := $(COMPILE_DATE)_$(COMPILE_HOUR)$(COMPILE_MINSEC)
 
 PROJ_CFG           := general_config
 
+include $(MAKEFILES_ROOTDIR)/common_toolchain.mk
 #
 # including defines related to configuration
 #

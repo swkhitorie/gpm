@@ -6,7 +6,7 @@ include ${MAKEFILES_ROOTDIR}/common/macros.mk
 #
 # This is the default installation path for Keil/MDK. Change it if different
 # 
-TC_PATH_INST_ARMCC := D:\__dev_envir\__env\mdk5\CORE\ARM\ARMCC
+# TC_PATH_INST_ARMCC := D:\__dev_envir\__env\mdk5\CORE\ARM\ARMCC
 
 #
 # ARM Compiler related section

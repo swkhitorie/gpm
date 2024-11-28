@@ -6,7 +6,7 @@ include ${MAKEFILES_ROOTDIR}/common/macros.mk
 #
 # This is the default installation path for Keil/MDK. Change it if different
 # 
-TC_PATH_INST_ARMCLANG := D:\__dev_envir\__env\mdk5\CORE\ARM\ARMCLANG
+# TC_PATH_INST_ARMCLANG := D:\__dev_envir\__env\mdk5\CORE\ARM\ARMCLANG
 
 #
 # ARM Compiler related section

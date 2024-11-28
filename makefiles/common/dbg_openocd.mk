@@ -2,7 +2,7 @@
 # open download (from github)
 #######################################
 
-TC_OPENOCD_PATH := D:\__dev_envir\__env\openocd\xpack-openocd-0.11.0-1
+# TC_OPENOCD_PATH := D:\__dev_envir\__env\openocd\xpack-openocd-0.11.0-1
 
 TC_OPENOCD_DEBUG_CFG_PATH := ${TC_OPENOCD_PATH}\scripts\interface
 
