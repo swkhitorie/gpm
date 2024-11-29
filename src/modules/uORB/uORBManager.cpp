@@ -32,7 +32,7 @@
  ****************************************************************************/
 
 #include <sys/types.h>
-#include <sys/stat.h>
+// #include <sys/stat.h>
 #include <stdarg.h>
 #include <fcntl.h>
 

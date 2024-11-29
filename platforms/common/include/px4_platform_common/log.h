@@ -38,6 +38,9 @@
 
 #pragma once
 
+#include <sys/cdefs.h>
+#include <sys/config.h>
+
 #define _PX4_LOG_LEVEL_DEBUG		0
 #define _PX4_LOG_LEVEL_INFO		1
 #define _PX4_LOG_LEVEL_WARN		2
@@ -230,7 +233,7 @@ __END_DECLS
 
 #define __px4_log_modulename(level, fmt, ...) \
 	do { \
-		px4_log_modulename(level, MODULE_NAME, fmt, ##__VA_ARGS__); \
+		px4_log_modulename(level, "module", fmt, ##__VA_ARGS__); \
 	} while(0)
 
 /****************************************************************************

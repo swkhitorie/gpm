@@ -1,2 +1,0 @@
-PLL_M 8
-HSE_VALUE ((uint32_t)8000000)

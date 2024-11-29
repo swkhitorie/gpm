@@ -43,7 +43,8 @@
 #pragma once
 
 #include <stdbool.h>
-
+#define __PX4_POSIX
+#define __PX4_CYGWIN
 #if defined(__PX4_NUTTX)
 typedef int px4_task_t;
 

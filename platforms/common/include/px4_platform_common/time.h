@@ -2,6 +2,8 @@
 
 #include <unistd.h>
 #include <sys/types.h>
+#include <sys/cdefs.h>
+#include <sys/config.h>
 #include <time.h>
 #include <pthread.h>
 

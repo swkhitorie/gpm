@@ -15,17 +15,17 @@ PROJ_CINCDIRS:=\
   boards/fmu-v6c/src/                                     \
   boards/ahl                                              \
   boards/ahl/cubeh7                                       \
-  platforms/common/include                                \
-  platforms/opmd/cherryusb/class/cdc                      \
-  platforms/opmd/cherryusb/common                         \
-  platforms/opmd/cherryusb/core                           \
-  platforms/opmd/cherryusb/port/dwc2                      \
-  platforms/opmd/cherryusb/demo                           \
   platforms/rtos/fr/include                               \
   platforms/rtos/fr/portable/GCC/ARM_CM7/r0p1             \
   platforms/rtos/posix/fr/include                         \
   platforms/rtos/posix/fr/include/portable                \
   platforms/rtos/posix/fr/include/sys                     \
+  platforms/opmd/cherryusb/class/cdc                      \
+  platforms/opmd/cherryusb/common                         \
+  platforms/opmd/cherryusb/core                           \
+  platforms/opmd/cherryusb/port/dwc2                      \
+  platforms/opmd/cherryusb/demo                           \
+  platforms/common/include                                \
   src/                                                    \
   src/drivers                                             \
   src/include                                             \
@@ -86,7 +86,7 @@ CSOURCES+=boards/fmu-v6c/src/board_usb.c
 # CSOURCES+=boards/msdk/cubeh7/lld_i2c.c
 # CSOURCES+=boards/msdk/cubeh7/lld_can.c
 # CSOURCES+=boards/msdk/cubeh7/lld_timer.c
-CSOURCES+=platforms/common/work_queue/sq_queue.c
+
 
 CSOURCES+=platforms/rtos/fr/fr_user.c
 CSOURCES+=platforms/rtos/fr/fr_croutine.c
@@ -110,6 +110,21 @@ CSOURCES+=platforms/rtos/posix/fr/fr_posix_timer.c
 CSOURCES+=platforms/rtos/posix/fr/fr_posix_unistd.c
 CSOURCES+=platforms/rtos/posix/fr/fr_posix_utils.c
 
+
+
+CSOURCES+=platforms/common/work_queue/sq_queue.c
+CPPSOURCES+=platforms/common/module.cpp
+CPPSOURCES+=platforms/common/px4_sem.cpp
+CPPSOURCES+=platforms/common/px4_log.cpp
+CPPSOURCES+=platforms/common/tasks.cpp
+CPPSOURCES+=src/modules/uORB/Subscription.cpp
+CPPSOURCES+=src/modules/uORB/uORB.cpp
+CPPSOURCES+=src/modules/uORB/uORBDeviceMaster.cpp
+CPPSOURCES+=src/modules/uORB/uORBDeviceNode.cpp
+CPPSOURCES+=src/modules/uORB/uORBMain.cpp
+CPPSOURCES+=src/modules/uORB/uORBManager.cpp
+CPPSOURCES+=src/modules/uORB/uORBUtils.cpp
+
 # CherryUSB
 CSOURCES+=platforms/opmd/cherryusb/class/cdc/usbd_cdc_acm.c
 CSOURCES+=platforms/opmd/cherryusb/class/cdc/usbd_cdc_ecm.c
@@ -121,12 +136,5 @@ CSOURCES+=platforms/opmd/cherryusb/demo/cdc_acm_template.c
 CPPSOURCES+=src/app/fmu-v6c_app/app_main.cpp
 #CSOURCES+=src/app/fmu-v6c_app/syscalls.c
 
-CPPSOURCES+=src/modules/uORB/Subscription.cpp
-CPPSOURCES+=src/modules/uORB/uORB.cpp
-CPPSOURCES+=src/modules/uORB/uORBDeviceMaster.cpp
-CPPSOURCES+=src/modules/uORB/uORBDeviceNode.cpp
-CPPSOURCES+=src/modules/uORB/uORBMain.cpp
-CPPSOURCES+=src/modules/uORB/uORBManager.cpp
-CPPSOURCES+=src/modules/uORB/uORBUtils.cpp
 
 

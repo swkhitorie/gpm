@@ -40,6 +40,8 @@
  */
 
 #include <sys/types.h>
+#include <sys/cdefs.h>
+#include <sys/config.h>
 #include <stdint.h>
 #include <stdbool.h>
 

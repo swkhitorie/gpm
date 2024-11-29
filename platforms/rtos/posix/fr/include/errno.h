@@ -39,12 +39,22 @@
 /* Undefine all errnos to avoid redefinition errors with system errnos. */
 #undef EPERM
 #undef ENOENT
+#undef ESRCH
+#undef ENOFILE
+#undef EINTR
+#undef EIO
+#undef ENXIO
+#undef E2BIG
+#undef ENOEXEC
 #undef EBADF
+#undef ECHILD 
 #undef EAGAIN
 #undef ENOMEM
+#undef EFAULT
 #undef EEXIST
 #undef EBUSY
 #undef EINVAL
+#undef ENOTTY
 #undef ENOSPC
 #undef ERANGE
 #undef ENAMETOOLONG
@@ -61,12 +71,22 @@
 /**@{ */
 #define EPERM           1   /**< Operation not permitted. */
 #define ENOENT          2   /**< No such file or directory. */
+#define ESRCH           3
+#define ENOFILE     ENOENT
+#define EINTR           4
+#define EIO             5
+#define ENXIO           6
+#define E2BIG           7
+#define ENOEXEC         8
 #define EBADF           9   /**< Bad file descriptor. */
+#define ECHILD          10
 #define EAGAIN          11  /**< Resource unavailable, try again. */
 #define ENOMEM          12  /**< Not enough space. */
+#define EFAULT          14
 #define EEXIST          17  /**< File exists. */
 #define EBUSY           16  /**< Device or resource busy. */
 #define EINVAL          22  /**< Invalid argument. */
+#define ENOTTY          25
 #define ENOSPC          28  /**< No space left on device. */
 #define ERANGE          34  /**< Result too large. */
 #define ENAMETOOLONG    36  /**< File name too long. */
@@ -79,6 +99,36 @@
 /**@} */
 
 /**
+#define EBADF 9
+#define EAGAIN 11
+#define ENOMEM 12
+#define EACCES 13
+#define EFAULT 14
+#define EBUSY 16
+#define EEXIST 17
+#define EXDEV 18
+#define ENODEV 19
+#define ENOTDIR 20
+#define EISDIR 21
+#define ENFILE 23
+#define EMFILE 24
+#define ENOTTY 25
+#define EFBIG 27
+#define ENOSPC 28
+#define ESPIPE 29
+#define EROFS 30
+#define EMLINK 31
+#define EPIPE 32
+#define EDOM 33
+#define EDEADLK 36
+#define ENAMETOOLONG 38
+#define ENOLCK 39
+#define ENOSYS 40
+#define ENOTEMPTY 41
+ */
+
+
+/**
  * @name System Variable
  *
  * @brief Define FreeRTOS+POSIX errno, if enabled.
@@ -86,9 +136,12 @@
  *
  * @{
  */
+#ifndef configUSE_POSIX_ERRNO
+    #define configUSE_POSIX_ERRNO 1
+#endif
 #if ( configUSE_POSIX_ERRNO == 1 )
     extern int FreeRTOS_errno;
-    #define errno    FreeRTOS_errno
+    #define errno FreeRTOS_errno
 #endif
 /**@} */
 

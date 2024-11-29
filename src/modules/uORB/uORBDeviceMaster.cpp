@@ -44,8 +44,8 @@
 #include <systemlib/px4_macros.h>
 
 #include <math.h>
-
-#ifndef __PX4_QURT // QuRT has no poll()
+#define __PX4_QURT_LOCAL
+#ifndef __PX4_QURT_LOCAL // QuRT has no poll()
 #include <poll.h>
 #endif // PX4_QURT
 
@@ -324,7 +324,7 @@ void uORB::DeviceMaster::showTop(char **topic_filter, int num_filters)
 		PX4_ERR("addNewDeviceNodes failed (%i)", ret);
 	}
 
-#ifdef __PX4_QURT // QuRT has no poll()
+#ifdef __PX4_QURT_LOCAL // QuRT has no poll()
 	only_once = true;
 #else
 	const int stdin_fileno = 0;
@@ -339,7 +339,7 @@ void uORB::DeviceMaster::showTop(char **topic_filter, int num_filters)
 
 	while (!quit) {
 
-#ifndef __PX4_QURT
+#ifndef __PX4_QURT_LOCAL
 
 		if (!only_once) {
 			/* Sleep 200 ms waiting for user input five times ~ 1.4s */

@@ -84,7 +84,8 @@ constexpr bool PX4_ISFINITE(double x) { return __builtin_isfinite(x); }
 #define PX4_O_MODE_600 (S_IRUSR | S_IWUSR)
 
 // NuttX _IOC is equivalent to Linux _IO
-#define _PX4_IOC(x,y) _IO(x,y)
+#define _IOC(type,nr)   ((type)|(nr))
+#define _PX4_IOC(x,y) _IOC(x,y)
 
 #define USEC_PER_TICK (1000000/PX4_TICKS_PER_SEC)
 #define USEC2TICK(x) (((x)+(USEC_PER_TICK/2))/USEC_PER_TICK)

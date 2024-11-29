@@ -1,5 +1,7 @@
 #include "app_main.h"
 #include "FreeRTOS.h"
+#define __PX4_POSIX
+#include <visibility.h>
 #include <px4_platform_common/atomic.h>
 #include <px4_platform_common/atomic_bitset.h>
 #include <px4_platform_common/log.h>
@@ -13,7 +15,8 @@
 #include <containers/IntrusiveSortedList.hpp>
 #include <containers/List.hpp>
 #include <containers/LockGuard.hpp>
-#include <visibility.h>
+
+#include <uORB/uORB.h>
 
 int main(void)
 {
