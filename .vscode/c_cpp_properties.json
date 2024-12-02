@@ -17,16 +17,15 @@
                 "${gcc_arm_path}/../lib/gcc/arm-none-eabi/10.3.1/include-fixed",
                 "${gcc_arm_path}/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/include",
 
-                "${workspaceFolder}/boards/msdk/stdf1",
-                "${workspaceFolder}/boards/msdk/stdf4",
-                "${workspaceFolder}/boards/msdk/cubeh7",
+                "${workspaceFolder}/boards/ahl/stdf1",
+                "${workspaceFolder}/boards/ahl/stdf4",
+                "${workspaceFolder}/boards/ahl/cubeh7",
 
                 "${workspaceFolder}/boards/fmu-v6c/src",
                 "${workspaceFolder}/boards/fmu-v6c/src/core",
                 "${workspaceFolder}/boards/fmu-v6c/src/drivers"
 
             ],
-            //"compilerPath": "D:/__dev_envir/__env/arm_gcc/gcc-arm-none-eabi/bin/arm-none-eabi-gcc.exe",
             "intelliSenseMode": "gcc-x64",
             "cStandard": "c17",
             "cppStandard": "gnu++14",
