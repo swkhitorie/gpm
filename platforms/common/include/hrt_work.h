@@ -1,6 +1,6 @@
 /****************************************************************************
  *
- *   Copyright (c) 2014 PX4 Development Team. All rights reserved.
+ * Copyright (C) 2015 Mark Charlebois. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -31,28 +31,33 @@
  *
  ****************************************************************************/
 
-/**
- * @file drv_device.h
- *
- * Generic device / sensor interface.
- */
+#include <px4_platform_common/log.h>
+#include <px4_platform_common/posix.h>
+#include <semaphore.h>
+#include <px4_platform_common/workqueue.h>
 
-#ifndef _DRV_DEVICE_H
-#define _DRV_DEVICE_H
+#pragma once
 
-#include <stdint.h>
-// #include <sys/ioctl.h>
+__BEGIN_DECLS
 
-#include "drv_sensor.h"
-#include "drv_orb_dev.h"
+extern px4_sem_t _hrt_work_lock;
+extern struct wqueue_s g_hrt_work;
 
-#define _DEVICEIOCBASE          (0x100)
-#define _DEVICEIOC(_n)          (_PX4_IOC(_DEVICEIOCBASE, _n))
+void hrt_work_queue_init(void);
+int hrt_work_queue(struct work_s *work, worker_t worker, void *arg, uint32_t usdelay);
+void hrt_work_cancel(struct work_s *work);
 
-/**
- * Return device ID, to enable matching of configuration parameters
- * (such as compass offsets) to specific sensors
- */
-#define DEVIOCGDEVICEID _DEVICEIOC(2)
+static inline void hrt_work_lock(void);
+static inline void hrt_work_lock()
+{
+	px4_sem_wait(&_hrt_work_lock);
+}
 
-#endif /* _DRV_DEVICE_H */
+static inline void hrt_work_unlock(void);
+static inline void hrt_work_unlock()
+{
+	px4_sem_post(&_hrt_work_lock);
+}
+
+__END_DECLS
+

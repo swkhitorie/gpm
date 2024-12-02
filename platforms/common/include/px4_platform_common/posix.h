@@ -43,14 +43,9 @@
 #include <px4_platform_common/tasks.h>
 #include <stdint.h>
 #include <unistd.h>
+#include <errno.h>
 #include <fcntl.h>
-
-#if defined(__PX4_QURT)
-#include <dspal_types.h>
-#else
 #include <sys/types.h>
-#endif
-
 #include "sem.h"
 
 #define  PX4_F_RDONLY 1

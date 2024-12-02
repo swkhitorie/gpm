@@ -51,6 +51,10 @@
 #include <drivers/drv_hrt.h>
 #include "work_lock.h"
 
+#define CONFIG_SCHED_WORKQUEUE
+#define CONFIG_SCHED_HPWORK
+#define CONFIG_SCHED_LPWORK
+
 #ifdef CONFIG_SCHED_WORKQUEUE
 
 /****************************************************************************
@@ -104,7 +108,7 @@ static void work_process(struct wqueue_s *wqueue, int lock_id)
 	 * we process items in the work list.
 	 */
 
-	next  = CONFIG_SCHED_WORKPERIOD;
+	next  = 50000;
 
 	work_lock(lock_id);
 

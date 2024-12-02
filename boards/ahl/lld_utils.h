@@ -1,7 +1,7 @@
 /**
- * @file platforms_common.h
+ * @file lld_utils.h
  *
- * Generally used magic defines and tools function
+ * Generally used tools function
 */
 #ifndef __PLAFTORM_DEFINE_H_
 #define __PLAFTORM_DEFINE_H_
@@ -12,10 +12,6 @@ extern "C" {
 
 #include <stdint.h>
 #include <stdbool.h>
-
-#define USE_COMMON_UTILS
-
-#ifdef USE_COMMON_UTILS
 
 typedef struct __devbuf {
 	uint8_t *buf;
@@ -67,8 +63,6 @@ int32_t bytes_to_s32(const uint8_t array[], bool reverse);
 int16_t bytes_to_s16(const uint8_t array[], bool reverse);
 uint32_t bytes_to_u32(const uint8_t array[], bool reverse);
 uint16_t bytes_to_u16(const uint8_t array[], bool reverse);
-
-#endif // Macro USE_COMMON_UTILS
 
 #ifdef __cplusplus
 }

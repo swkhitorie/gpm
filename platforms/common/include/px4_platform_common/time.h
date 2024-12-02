@@ -37,5 +37,7 @@ __END_DECLS
 #define px4_usleep system_usleep
 #define px4_sleep system_sleep
 #define px4_pthread_cond_timedwait system_pthread_cond_timedwait
-
+#ifndef system_pthread_cond_timedwait
+#define system_pthread_cond_timedwait pthread_cond_timedwait
+#endif
 #endif

@@ -35,6 +35,8 @@
 
 #include "sys/types.h"
 
+#define	F_OK	0
+
 /**
  * @brief Suspend execution for an interval of time.
  *

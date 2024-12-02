@@ -42,8 +42,8 @@
 
 const cdev::px4_file_operations_t cdev::CDev::fops = {};
 
-pthread_mutex_t devmutex = PTHREAD_MUTEX_INITIALIZER;
-pthread_mutex_t filemutex = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t devmutex;// = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t filemutex;// = PTHREAD_MUTEX_INITIALIZER;
 
 struct px4_dev_t {
 	char *name{nullptr};
@@ -56,7 +56,7 @@ struct px4_dev_t {
 
 	~px4_dev_t()
 	{
-		free(name);
+		//free(name);
 	}
 private:
 	px4_dev_t() = default;

@@ -68,9 +68,9 @@
  * They are defined here to provide portability between platforms.
  */
 /**@{ */
-#ifndef PTHREAD_STACK_MIN
+//#ifndef PTHREAD_STACK_MIN
     #define PTHREAD_STACK_MIN    configMINIMAL_STACK_SIZE * sizeof( StackType_t ) /**< Minimum size in bytes of thread stack storage. */
-#endif
+//#endif
 #ifndef NAME_MAX
     #define NAME_MAX             64                                               /**< Maximum number of bytes in a filename (not including terminating null). */
 #endif

@@ -1,7 +1,5 @@
 #include "platforms_common.h"
 
-#ifdef USE_COMMON_UTILS
-
 /*! @brief union for Convert memory
  *
  */
@@ -271,4 +269,3 @@ uint16_t devbuf_query(devbuf_t *obj, uint16_t offset, uint8_t *p, uint16_t len)
 	return query_len;
 }
 
-#endif // Macro USE_COMMON_UTILS

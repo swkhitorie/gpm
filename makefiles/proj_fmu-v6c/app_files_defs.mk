@@ -5,7 +5,6 @@
 PROJ_CDEFS:=\
   USE_HAL_DRIVER                         \
   STM32H743xx                            \
-  USE_COMMON_UTILS                       \
   __PX4_POSIX
 
 PROJ_CINCDIRS:=\
@@ -15,11 +14,11 @@ PROJ_CINCDIRS:=\
   boards/fmu-v6c/src/                                     \
   boards/ahl                                              \
   boards/ahl/cubeh7                                       \
-  platforms/rtos/fr/include                               \
-  platforms/rtos/fr/portable/GCC/ARM_CM7/r0p1             \
-  platforms/rtos/posix/fr/include                         \
-  platforms/rtos/posix/fr/include/portable                \
-  platforms/rtos/posix/fr/include/sys                     \
+  platforms/freertos/include                               \
+  platforms/freertos/portable/GCC/ARM_CM7/r0p1             \
+  platforms/freertos/posix/include                         \
+  platforms/freertos/posix/include/portable                \
+  platforms/freertos/posix/include/sys                     \
   platforms/opmd/cherryusb/class/cdc                      \
   platforms/opmd/cherryusb/common                         \
   platforms/opmd/cherryusb/core                           \
@@ -35,8 +34,8 @@ PROJ_CINCDIRS:=\
   src/app/fmu-v6c_app
 
 # ld script and startup arm file
-ASMSOURCES+=boards/fmu-v6c/fmu_startup.s
-SCF_FILE+=boards/fmu-v6c/fmu_lnk_script
+ASMSOURCES += boards/fmu-v6c/fmu_startup.s
+SCF_FILE   += boards/fmu-v6c/fmu_lnk_script
 
 # STM32CubeH7 HAL driver
 CSOURCES+=boards/fmu-v6c/src/drivers/stm32h7xx_hal.c
@@ -48,9 +47,7 @@ CSOURCES+=boards/fmu-v6c/src/drivers/stm32h7xx_hal_rcc_ex.c
 CSOURCES+=boards/fmu-v6c/src/drivers/stm32h7xx_hal_gpio.c
 # CSOURCES+=boards/fmu-v6c/src/drivers/stm32h7xx_hal_dma.c
 # CSOURCES+=boards/fmu-v6c/src/drivers/stm32h7xx_hal_dma_ex.c
-# CSOURCES+=boards/fmu-v6c/src/drivers/stm32h7xx_hal_dma2d.c
 # CSOURCES+=boards/fmu-v6c/src/drivers/stm32h7xx_hal_exti.c
-# CSOURCES+=boards/fmu-v6c/src/drivers/stm32h7xx_hal_fdcan.c
 # CSOURCES+=boards/fmu-v6c/src/drivers/stm32h7xx_hal_flash.c
 # CSOURCES+=boards/fmu-v6c/src/drivers/stm32h7xx_hal_flash_ex.c
 # CSOURCES+=boards/fmu-v6c/src/drivers/stm32h7xx_hal_i2c.c
@@ -73,50 +70,48 @@ CSOURCES+=boards/fmu-v6c/src/stm32h7xx_it.c
 CSOURCES+=boards/fmu-v6c/src/board_init.c
 CSOURCES+=boards/fmu-v6c/src/board_usb.c
 
-# Low Level Driver depend on STM32CubeH7 HAL
-# CSOURCES+=boards/msdk/cubeh7/lld_board_kernel.c
-# CSOURCES+=boards/msdk/cubeh7/lld_kernel.c
-# CSOURCES+=boards/msdk/cubeh7/lld_interrupt.c
-# CSOURCES+=boards/msdk/cubeh7/lld_iwdg.c
-# CSOURCES+=boards/msdk/cubeh7/lld_flash.c
-# CSOURCES+=boards/msdk/cubeh7/lld_gpio.c
-# CSOURCES+=boards/msdk/cubeh7/lld_exirq.c
-# CSOURCES+=boards/msdk/cubeh7/lld_spi.c
-# CSOURCES+=boards/msdk/cubeh7/lld_uart.c
-# CSOURCES+=boards/msdk/cubeh7/lld_i2c.c
-# CSOURCES+=boards/msdk/cubeh7/lld_can.c
-# CSOURCES+=boards/msdk/cubeh7/lld_timer.c
-
-
-CSOURCES+=platforms/rtos/fr/fr_user.c
-CSOURCES+=platforms/rtos/fr/fr_croutine.c
-CSOURCES+=platforms/rtos/fr/fr_event_groups.c
-CSOURCES+=platforms/rtos/fr/fr_list.c
-CSOURCES+=platforms/rtos/fr/fr_queue.c
-CSOURCES+=platforms/rtos/fr/fr_stream_buffer.c
-CSOURCES+=platforms/rtos/fr/fr_tasks.c
-CSOURCES+=platforms/rtos/fr/fr_timers.c
-CSOURCES+=platforms/rtos/fr/portable/MemMang/heap_4.c
-CSOURCES+=platforms/rtos/fr/portable/GCC/ARM_CM7/r0p1/port.c
-CSOURCES+=platforms/rtos/posix/fr/fr_posix_clock.c
-CSOURCES+=platforms/rtos/posix/fr/fr_posix_mqueue.c
-CSOURCES+=platforms/rtos/posix/fr/fr_posix_pthread_barrier.c
-CSOURCES+=platforms/rtos/posix/fr/fr_posix_pthread_cond.c
-CSOURCES+=platforms/rtos/posix/fr/fr_posix_pthread_mutex.c
-CSOURCES+=platforms/rtos/posix/fr/fr_posix_pthread.c
-CSOURCES+=platforms/rtos/posix/fr/fr_posix_sched.c
-CSOURCES+=platforms/rtos/posix/fr/fr_posix_semaphore.c
-CSOURCES+=platforms/rtos/posix/fr/fr_posix_timer.c
-CSOURCES+=platforms/rtos/posix/fr/fr_posix_unistd.c
-CSOURCES+=platforms/rtos/posix/fr/fr_posix_utils.c
-
-
+CSOURCES+=platforms/freertos/fr_user.c
+CSOURCES+=platforms/freertos/fr_croutine.c
+CSOURCES+=platforms/freertos/fr_event_groups.c
+CSOURCES+=platforms/freertos/fr_list.c
+CSOURCES+=platforms/freertos/fr_queue.c
+CSOURCES+=platforms/freertos/fr_stream_buffer.c
+CSOURCES+=platforms/freertos/fr_tasks.c
+CSOURCES+=platforms/freertos/fr_timers.c
+CSOURCES+=platforms/freertos/portable/MemMang/heap_4.c
+CSOURCES+=platforms/freertos/portable/GCC/ARM_CM7/r0p1/port.c
+CSOURCES+=platforms/freertos/posix/fr_posix_clock.c
+CSOURCES+=platforms/freertos/posix/fr_posix_mqueue.c
+CSOURCES+=platforms/freertos/posix/fr_posix_pthread_barrier.c
+CSOURCES+=platforms/freertos/posix/fr_posix_pthread_cond.c
+CSOURCES+=platforms/freertos/posix/fr_posix_pthread_mutex.c
+CSOURCES+=platforms/freertos/posix/fr_posix_pthread.c
+CSOURCES+=platforms/freertos/posix/fr_posix_sched.c
+CSOURCES+=platforms/freertos/posix/fr_posix_semaphore.c
+CSOURCES+=platforms/freertos/posix/fr_posix_timer.c
+CSOURCES+=platforms/freertos/posix/fr_posix_unistd.c
+CSOURCES+=platforms/freertos/posix/fr_posix_utils.c
 
 CSOURCES+=platforms/common/work_queue/sq_queue.c
+CSOURCES+=platforms/common/work_queue/dq_addlast.c
+CSOURCES+=platforms/common/work_queue/dq_rem.c
+CSOURCES+=platforms/common/work_queue/dq_remfirst.c
+CSOURCES+=platforms/common/work_queue/hrt_queue.c
+CSOURCES+=platforms/common/work_queue/hrt_thread.c
+CSOURCES+=platforms/common/work_queue/hrt_work_cancel.c
+CSOURCES+=platforms/common/work_queue/sq_addafter.c
+CSOURCES+=platforms/common/work_queue/sq_addlast.c
+CSOURCES+=platforms/common/work_queue/sq_remfirst.c
+CSOURCES+=platforms/common/work_queue/work_cancel.c
+CSOURCES+=platforms/common/work_queue/work_lock.c
+CSOURCES+=platforms/common/work_queue/work_thread.c
+
 CPPSOURCES+=platforms/common/module.cpp
 CPPSOURCES+=platforms/common/px4_sem.cpp
 CPPSOURCES+=platforms/common/px4_log.cpp
 CPPSOURCES+=platforms/common/tasks.cpp
+CPPSOURCES+=src/lib/cdev/CDev.cpp
+CPPSOURCES+=src/lib/cdev/posix/cdev_platform.cpp
 CPPSOURCES+=src/modules/uORB/Subscription.cpp
 CPPSOURCES+=src/modules/uORB/uORB.cpp
 CPPSOURCES+=src/modules/uORB/uORBDeviceMaster.cpp

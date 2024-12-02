@@ -38,6 +38,10 @@
  */
 /**@{ */
 #define SCHED_OTHER    0    /**< Another scheduling policy. */
+#define SCHED_FIFO      1
+#define SCHED_RR        2
+#define SCHED_MIN       SCHED_OTHER
+#define SCHED_MAX       SCHED_RR
 /**@} */
 
 /**

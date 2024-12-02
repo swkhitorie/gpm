@@ -80,7 +80,7 @@ __EXPORT void px4_log_modulename(int level, const char *moduleName, const char *
 	bool use_color = true;
 
 #ifdef __PX4_POSIX
-	out = get_stdout(&use_color);
+	//out = get_stdout(&use_color);
 #endif
 
 #ifndef PX4_LOG_COLORIZED_OUTPUT
@@ -150,7 +150,7 @@ __EXPORT void px4_log_raw(int level, const char *fmt, ...)
 	bool use_color = true;
 
 #ifdef __PX4_POSIX
-	out = get_stdout(&use_color);
+	//out = get_stdout(&use_color);
 #endif
 
 #ifndef PX4_LOG_COLORIZED_OUTPUT

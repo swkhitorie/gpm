@@ -33,11 +33,16 @@
 #ifndef _FREERTOS_POSIX_PTHREAD_H_
 #define _FREERTOS_POSIX_PTHREAD_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /* FreeRTOS+POSIX includes. POSIX states that this header shall make symbols
  * defined in sched.h and time.h visible. */
 #include "sched.h"
 #include "time.h"
-
+#define posixconfigENABLE_PTHREAD_MUTEX_T 1
+#include "fr_posix_internal.h"
 /**
  * @name pthread detach state.
  */
@@ -497,5 +502,20 @@ pthread_t pthread_self( void );
 int pthread_setschedparam( pthread_t thread,
                            int policy,
                            const struct sched_param * param );
+
+int pthread_condattr_init(pthread_condattr_t *attr);
+int pthread_condattr_setclock(pthread_condattr_t *attr, clockid_t clock_id);
+
+int pthread_setname_np(pthread_t thread, const char *name);
+int pthread_getname_np(pthread_t thread, char *name, int namelen);
+
+int pthread_attr_setinheritsched(pthread_attr_t *attr, int inheritsched);
+
+int pthread_cancel(pthread_t thread);
+int pthread_kill(pthread_t thread, int sig);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* _FREERTOS_POSIX_PTHREAD_H_ */

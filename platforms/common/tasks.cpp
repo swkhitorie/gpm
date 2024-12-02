@@ -66,7 +66,7 @@
 #define SHELL_TASK_ID (PX4_MAX_TASKS+1)
 
 pthread_t _shell_task_id = 0;
-pthread_mutex_t task_mutex = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t task_mutex;// = PTHREAD_MUTEX_INITIALIZER;
 
 struct task_entry {
 	pthread_t pid;
@@ -172,7 +172,7 @@ px4_task_t px4_task_spawn_cmd(const char *name, int scheduler, int priority, int
 	}
 
 #ifndef __PX4_DARWIN
-
+	#define PTHREAD_STACK_MIN 128 * 4
 	if (stack_size < PTHREAD_STACK_MIN) {
 		stack_size = PTHREAD_STACK_MIN;
 	}
@@ -188,7 +188,7 @@ px4_task_t px4_task_spawn_cmd(const char *name, int scheduler, int priority, int
 
 #endif
 
-	rv = pthread_attr_setinheritsched(&attr, PTHREAD_EXPLICIT_SCHED);
+	rv = pthread_attr_setinheritsched(&attr, 0);
 
 	if (rv != 0) {
 		PX4_ERR("px4_task_spawn_cmd: failed to set inherit sched");

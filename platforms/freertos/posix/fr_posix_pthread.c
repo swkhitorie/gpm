@@ -507,4 +507,26 @@ int pthread_setschedparam( pthread_t thread,
     return iStatus;
 }
 
+
+int pthread_setname_np(pthread_t thread, const char *name) { return -1; }
+int pthread_getname_np(pthread_t thread, char *name, int namelen) { return -1; }
+int pthread_cancel(pthread_t thread) { return -1; }
+int pthread_kill(pthread_t thread, int sig) { return -1; }
+int pthread_attr_setinheritsched(pthread_attr_t *attr, int inheritsched) { return -1; }
+int pthread_condattr_setclock(pthread_condattr_t *attr, clockid_t clock_id) { return -1; }
+int pthread_condattr_init(pthread_condattr_t *attr)
+{ 
+    int ret = 0;
+
+    if (!attr) {
+        ret = EINVAL;
+    } else {
+      *attr = 0;
+    }
+
+    return ret;
+}
+
+
+
 /*-----------------------------------------------------------*/

@@ -83,9 +83,11 @@
 #define EAGAIN          11  /**< Resource unavailable, try again. */
 #define ENOMEM          12  /**< Not enough space. */
 #define EFAULT          14
-#define EEXIST          17  /**< File exists. */
 #define EBUSY           16  /**< Device or resource busy. */
+#define EEXIST          17  /**< File exists. */
+#define ENODEV          19
 #define EINVAL          22  /**< Invalid argument. */
+#define ENFILE          23
 #define ENOTTY          25
 #define ENOSPC          28  /**< No space left on device. */
 #define ERANGE          34  /**< Result too large. */
