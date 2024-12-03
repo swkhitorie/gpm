@@ -50,7 +50,7 @@
 #include <pthread.h>
 #include <drivers/drv_hrt.h>
 #include "work_lock.h"
-
+#include <visibility.h>
 #define CONFIG_SCHED_WORKQUEUE
 #define CONFIG_SCHED_HPWORK
 #define CONFIG_SCHED_LPWORK
@@ -108,7 +108,7 @@ static void work_process(struct wqueue_s *wqueue, int lock_id)
 	 * we process items in the work list.
 	 */
 
-	next  = 50000;
+	//next  = 50000;
 
 	work_lock(lock_id);
 
@@ -121,7 +121,7 @@ static void work_process(struct wqueue_s *wqueue, int lock_id)
 		 * zero.  Therefore a delay of zero will always execute immediately.
 		 */
 
-		elapsed = USEC2TICK(clock_systimer() - work->qtime);
+		//elapsed = USEC2TICK(clock_systimer() - work->qtime);
 
 		//printf("work_process: in ticks elapsed=%lu delay=%u\n", elapsed, work->delay);
 		if (elapsed >= work->delay) {
@@ -167,7 +167,7 @@ static void work_process(struct wqueue_s *wqueue, int lock_id)
 			 */
 
 			/* Here: elapsed < work->delay */
-			remaining = USEC_PER_TICK * (work->delay - elapsed);
+			remaining = 10000 * (work->delay - elapsed);
 
 			if (remaining < next) {
 				/* Yes.. Then schedule to wake up when the work is ready */

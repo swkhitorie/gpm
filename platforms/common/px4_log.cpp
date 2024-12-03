@@ -58,90 +58,90 @@ __EXPORT const char *__px4_log_level_color[_PX4_LOG_LEVEL_PANIC + 1] =
 
 void px4_log_initialize(void)
 {
-	assert(orb_log_message_pub == nullptr);
+	// assert(orb_log_message_pub == nullptr);
 
-	/* we need to advertise with a valid message */
-	struct log_message_s log_message;
-	log_message.timestamp = hrt_absolute_time();
-	log_message.severity = 6; //info
-	strcpy((char *)log_message.text, "initialized uORB logging");
+	// /* we need to advertise with a valid message */
+	// struct log_message_s log_message;
+	// log_message.timestamp = hrt_absolute_time();
+	// log_message.severity = 6; //info
+	// strcpy((char *)log_message.text, "initialized uORB logging");
 
-	orb_log_message_pub = orb_advertise_queue(ORB_ID(log_message), &log_message, 2);
+	// orb_log_message_pub = orb_advertise_queue(ORB_ID(log_message), &log_message, 2);
 
-	if (!orb_log_message_pub) {
-		PX4_ERR("failed to advertise log_message");
-	}
+	// if (!orb_log_message_pub) {
+	// 	PX4_ERR("failed to advertise log_message");
+	// }
 }
 
 
 __EXPORT void px4_log_modulename(int level, const char *moduleName, const char *fmt, ...)
 {
-	FILE *out = stdout;
-	bool use_color = true;
+// 	FILE *out = stdout;
+// 	bool use_color = true;
 
-#ifdef __PX4_POSIX
-	//out = get_stdout(&use_color);
-#endif
+// #ifdef __PX4_POSIX
+// 	//out = get_stdout(&use_color);
+// #endif
 
-#ifndef PX4_LOG_COLORIZED_OUTPUT
-	use_color = false;
-#endif
+// #ifndef PX4_LOG_COLORIZED_OUTPUT
+// 	use_color = false;
+// #endif
 
-	if (level >= _PX4_LOG_LEVEL_INFO) {
-		if (use_color) { fputs(__px4_log_level_color[level], out); }
+// 	if (level >= _PX4_LOG_LEVEL_INFO) {
+// 		if (use_color) { fputs(__px4_log_level_color[level], out); }
 
-		fprintf(out, __px4__log_level_fmt __px4__log_level_arg(level));
+// 		fprintf(out, __px4__log_level_fmt __px4__log_level_arg(level));
 
-		if (use_color) { fputs(PX4_ANSI_COLOR_GRAY, out); }
+// 		if (use_color) { fputs(PX4_ANSI_COLOR_GRAY, out); }
 
-		fprintf(out, __px4__log_modulename_pfmt, moduleName);
+// 		fprintf(out, __px4__log_modulename_pfmt, moduleName);
 
-		if (use_color) { fputs(__px4_log_level_color[level], out); }
+// 		if (use_color) { fputs(__px4_log_level_color[level], out); }
 
-		va_list argptr;
-		va_start(argptr, fmt);
-		vfprintf(out, fmt, argptr);
-		va_end(argptr);
+// 		va_list argptr;
+// 		va_start(argptr, fmt);
+// 		vfprintf(out, fmt, argptr);
+// 		va_end(argptr);
 
-		if (use_color) { fputs(PX4_ANSI_COLOR_RESET, out); }
+// 		if (use_color) { fputs(PX4_ANSI_COLOR_RESET, out); }
 
-		fputc('\n', out);
-	}
+// 		fputc('\n', out);
+// 	}
 
-	/* publish an orb log message */
-	if (level >= _PX4_LOG_LEVEL_INFO && orb_log_message_pub) { //publish all messages
+// 	/* publish an orb log message */
+// 	if (level >= _PX4_LOG_LEVEL_INFO && orb_log_message_pub) { //publish all messages
 
-		struct log_message_s log_message;
-		const unsigned max_length_pub = sizeof(log_message.text);
-		log_message.timestamp = hrt_absolute_time();
+// 		struct log_message_s log_message;
+// 		const unsigned max_length_pub = sizeof(log_message.text);
+// 		log_message.timestamp = hrt_absolute_time();
 
-		const uint8_t log_level_table[] = {
-			7, /* _PX4_LOG_LEVEL_DEBUG */
-			6, /* _PX4_LOG_LEVEL_INFO */
-			4, /* _PX4_LOG_LEVEL_WARN */
-			3, /* _PX4_LOG_LEVEL_ERROR */
-			0  /* _PX4_LOG_LEVEL_PANIC */
-		};
-		log_message.severity = log_level_table[level];
+// 		const uint8_t log_level_table[] = {
+// 			7, /* _PX4_LOG_LEVEL_DEBUG */
+// 			6, /* _PX4_LOG_LEVEL_INFO */
+// 			4, /* _PX4_LOG_LEVEL_WARN */
+// 			3, /* _PX4_LOG_LEVEL_ERROR */
+// 			0  /* _PX4_LOG_LEVEL_PANIC */
+// 		};
+// 		log_message.severity = log_level_table[level];
 
-		unsigned pos = 0;
+// 		unsigned pos = 0;
 
-		va_list argptr;
+// 		va_list argptr;
 
-		pos += snprintf((char *)log_message.text + pos, max_length_pub - pos, __px4__log_modulename_pfmt, moduleName);
-		va_start(argptr, fmt);
-		pos += vsnprintf((char *)log_message.text + pos, max_length_pub - pos, fmt, argptr);
-		va_end(argptr);
-		log_message.text[max_length_pub - 1] = 0; //ensure 0-termination
+// 		pos += snprintf((char *)log_message.text + pos, max_length_pub - pos, __px4__log_modulename_pfmt, moduleName);
+// 		va_start(argptr, fmt);
+// 		pos += vsnprintf((char *)log_message.text + pos, max_length_pub - pos, fmt, argptr);
+// 		va_end(argptr);
+// 		log_message.text[max_length_pub - 1] = 0; //ensure 0-termination
 
-		orb_publish(ORB_ID(log_message), orb_log_message_pub, &log_message);
-	}
+// 		orb_publish(ORB_ID(log_message), orb_log_message_pub, &log_message);
+// 	}
 
-#ifdef CONFIG_ARCH_BOARD_PX4_SITL
-	// Without flushing it's tricky to see stdout output when PX4 is started by
-	// a script like for the MAVSDK tests.
-	fflush(out);
-#endif
+// #ifdef CONFIG_ARCH_BOARD_PX4_SITL
+// 	// Without flushing it's tricky to see stdout output when PX4 is started by
+// 	// a script like for the MAVSDK tests.
+// 	fflush(out);
+// #endif
 }
 
 __EXPORT void px4_log_raw(int level, const char *fmt, ...)

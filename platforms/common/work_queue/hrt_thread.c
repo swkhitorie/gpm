@@ -51,7 +51,7 @@
 #include <px4_platform_common/workqueue.h>
 #include <drivers/drv_hrt.h>
 #include "hrt_work.h"
-
+#include <visibility.h>
 #include <string.h>
 
 /****************************************************************************

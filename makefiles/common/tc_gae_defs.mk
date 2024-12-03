@@ -67,6 +67,8 @@ TC_ASMDEFS:=
 # C compiler options
 TC_COPTS:=\
   -c                    \
+  -ffunction-sections   \
+  -fdata-sections       \
   -O1                   \
   -gdwarf-2             \
   -MD                   \
@@ -77,6 +79,8 @@ TC_COPTS:=\
 
 TC_CPPOPTS:=\
   -c                    \
+  -ffunction-sections   \
+  -fdata-sections       \
   -O1                   \
   -gdwarf-2             \
   -MD                   \
@@ -96,6 +100,7 @@ TC_CDEFS:=
 TC_LIBOPTS:=\
   -W                        \
   -W --no-cond-mismatch     \
+  -Wl,--gc-sections         \
   --data-sections           \
   --specs=nano.specs        \
   -u _printf_float          \

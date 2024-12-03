@@ -1,22 +1,22 @@
 #include "app_main.h"
 #include "FreeRTOS.h"
-#define __PX4_POSIX
-#include <visibility.h>
-#include <px4_platform_common/atomic.h>
-#include <px4_platform_common/atomic_bitset.h>
-#include <px4_platform_common/log.h>
-#include <px4_platform_common/defines.h>
+// #define __PX4_POSIX
+// #include <visibility.h>
+// #include <px4_platform_common/atomic.h>
+// #include <px4_platform_common/atomic_bitset.h>
+// #include <px4_platform_common/log.h>
+// #include <px4_platform_common/defines.h>
 
-#include <containers/Array.hpp>
-#include <containers/Bitset.hpp>
-#include <containers/BlockingList.hpp>
-#include <containers/BlockingQueue.hpp>
-#include <containers/IntrusiveQueue.hpp>
-#include <containers/IntrusiveSortedList.hpp>
-#include <containers/List.hpp>
-#include <containers/LockGuard.hpp>
+// #include <containers/Array.hpp>
+// #include <containers/Bitset.hpp>
+// #include <containers/BlockingList.hpp>
+// #include <containers/BlockingQueue.hpp>
+// #include <containers/IntrusiveQueue.hpp>
+// #include <containers/IntrusiveSortedList.hpp>
+// #include <containers/List.hpp>
+// #include <containers/LockGuard.hpp>
 
-#include <uORB/uORB.h>
+// #include <uORB/uORB.h>
 
 int main(void)
 {
@@ -24,10 +24,10 @@ int main(void)
 	board_io_array_init();
 	board_app_init();
 
-    px4::atomic<int> a;
-    a.fetch_sub(3);
-    px4::AtomicBitset<10> b;
-    b.set(0, true);
+    // px4::atomic<int> a;
+    // a.fetch_sub(3);
+    // px4::AtomicBitset<10> b;
+    // b.set(0, true);
 
     HAL_Init();
 
