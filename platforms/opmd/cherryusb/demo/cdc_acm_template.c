@@ -207,3 +207,15 @@ void cdc_acm_data_send_with_dtr_test(uint8_t busid)
         }
     }
 }
+
+#include <string.h>
+#include <stdio.h>
+#include <stdarg.h>
+void cdc_acm_print(uint8_t busid, const char *fmt, ...)
+{
+    va_list args;
+    va_start(args, fmt);
+    vsnprintf(write_buffer, 2048, fmt, args);
+    usbd_ep_start_write(busid, CDC_IN_EP, write_buffer, strlen(write_buffer));
+    va_end(args);
+}

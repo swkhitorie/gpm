@@ -12,3 +12,9 @@ void vApplicationGetTimerTaskMemory( StaticTask_t **ppxTimerTaskTCBBuffer,
 {
 
 }
+
+void vApplicationMallocFailedHook( void )
+{
+    extern void cdc_acm_print(uint8_t busid, const char *fmt, ...);
+    cdc_acm_print(0, "malloc failed \r\n");
+}

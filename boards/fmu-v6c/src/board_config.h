@@ -78,6 +78,8 @@
 
 void board_system_rcc_config();
 
+void board_system_config();
+
 void board_app_vector_init();
 
 void board_io_array_init();

@@ -50,7 +50,7 @@
 #define configUSE_COUNTING_SEMAPHORES			1                       /* 1: Enable Counting Mutex Semaphore */
 #define configUSE_QUEUE_SETS					1                       /* 1: Enable message queue */
 #define configUSE_PREEMPTION					1                       /* 1: preemption core, 0: croutine core */
-#define configUSE_MALLOC_FAILED_HOOK			0                       /* 1: Enable Malloc Failed Hook */
+#define configUSE_MALLOC_FAILED_HOOK			1                       /* 1: Enable Malloc Failed Hook */
 #define configUSE_IDLE_HOOK						0                       /* 1: Enable Idle Task Hook */
 #define configUSE_TICK_HOOK						0                       /* 1: Enable Tick interrupt Hook */
 #define configUSE_APPLICATION_TASK_TAG			1 

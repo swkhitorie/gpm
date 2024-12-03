@@ -17,7 +17,7 @@
 #define GPIO_nLED_PIN    (GPIO_PIN_12)
 
 #define BOARD_LED(on_true)            HAL_GPIO_WritePin(GPIO_nLED_BLUE_PORT, \
-                                     GPIO_nLED_BLUE_PIN, !(on_true))
+                                        GPIO_nLED_BLUE_PIN, !(on_true))
 
 void board_app_vector_init();
 
