@@ -20,11 +20,11 @@ void usb_dc_low_level_init(uint8_t busid)
     PeriphClkInitStruct.PLL3.PLL3Q = 10;
     PeriphClkInitStruct.PLL3.PLL3R = 10;
     */
-    PeriphClkInitStruct.PLL3.PLL3M = 1;
-    PeriphClkInitStruct.PLL3.PLL3N = 6;
-    PeriphClkInitStruct.PLL3.PLL3P = 2;
-    PeriphClkInitStruct.PLL3.PLL3Q = 2;
-    PeriphClkInitStruct.PLL3.PLL3R = 2;
+    PeriphClkInitStruct.PLL3.PLL3M = 25;
+    PeriphClkInitStruct.PLL3.PLL3N = 480;
+    PeriphClkInitStruct.PLL3.PLL3P = 10;
+    PeriphClkInitStruct.PLL3.PLL3Q = 10;
+    PeriphClkInitStruct.PLL3.PLL3R = 10;
     PeriphClkInitStruct.PLL3.PLL3RGE = RCC_PLL3VCIRANGE_3;
     PeriphClkInitStruct.PLL3.PLL3VCOSEL = RCC_PLL3VCOWIDE;
     PeriphClkInitStruct.PLL3.PLL3FRACN = 0;

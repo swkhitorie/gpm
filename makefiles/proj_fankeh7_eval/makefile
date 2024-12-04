@@ -9,15 +9,14 @@ SDK_ROOTDIR:=$(realpath $(SDK_CUR_DIR)../../)
 # Absolute path to makefiles
 MAKEFILES_ROOTDIR := ${SDK_ROOTDIR}/makefiles
 
-CompileDate        := $(shell echo %date:~0,4%%date:~5,2%%date:~8,2%)
-CompileHour0       := $(shell echo %time:~0,2%)
-CompileMinSec      := $(shell echo %time:~3,2%%time:~6,2%)
-zero               := 0
-empty              :=
-space              := $(empty) $(empty)
-CompileHour        := $(subst $(space),$(zero),$(CompileHour0))
-CompileDateTime    := $(CompileDate)_$(CompileHour)$(CompileMinSec)
-
+COMPILE_DATE        := $(shell echo %date:~0,4%%date:~5,2%%date:~8,2%)
+COMPILE_HOUR0       := $(shell echo %time:~0,2%)
+COMPILE_MINSEC      := $(shell echo %time:~3,2%%time:~6,2%)
+ZERO                := 0
+EMPTY               :=
+SPACE               := $(EMPTY) $(EMPTY)
+COMPILE_HOUR        := $(subst $(SPACE),$(ZERO),$(COMPILE_HOUR0))
+COMPILE_TIME        := $(COMPILE_DATE)_$(COMPILE_HOUR)$(COMPILE_MINSEC)
 PROJ_CFG           := general_config
 
 include $(MAKEFILES_ROOTDIR)/toolchain_path.mk
@@ -37,4 +36,4 @@ include app_files_defs.mk
 #
 include $(MAKEFILES_ROOTDIR)/common/build.mk
 
-all: prebuild build postbuild program
+all: prebuild build postbuild #program

@@ -11,6 +11,9 @@ _estack = ORIGIN(RAM_D1) + LENGTH(RAM_D1);    /* end of RAM */
 _Min_Heap_Size = 0x1000;      /* required amount of heap  */
 _Min_Stack_Size = 0x1000; /* required amount of stack */
 
+/* ORIGIN = 0x08020000, LENGTH = 1920K */
+/* ORIGIN = 0x08000000, LENGTH = 2048K */
+
 /* Specify the memory areas */
 MEMORY
 {

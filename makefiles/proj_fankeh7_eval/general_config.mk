@@ -8,7 +8,7 @@ PROJ_NAME         :=  fankeh7_eval
 #
 # Toolchain used in this project
 #
-PROJ_TC           :=  armclang
+PROJ_TC           :=  gae
 
 MOD_ARCH          :=  m7
 
