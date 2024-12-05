@@ -12,6 +12,9 @@
  *  bug 2: v6c can not enter OTG_FS_IRQHandler() irq
  *        change h7 usb's clock source HSI48 -> PLL3Q 
  *        edit VID and PID to default 0xFFFF, why????
+ *  bug 3: porting freertos v10.2.0
+ *        enter hardfault in prvInitialiseNewTask() (called by xTaskCreate and static )
+ *        change configLIBRARY_MAX_SYSCALL_INTERRUPT_PRIORITY 5 -> 9????
  */
 #include "stm32h7xx_hal.h"
 #include <stdint.h>
@@ -52,29 +55,29 @@
 #define GPIO_OTGFS_VBUS_PIN           (GPIO_PIN_9)
 
 #define VDD_5V_PERIPH_EN(on_true)          HAL_GPIO_WritePin(GPIO_VDD_5V_PERIPH_nOC_PORT, \
-                                                   GPIO_VDD_5V_PERIPH_nEN_PIN, !(on_true))
+                                                    GPIO_VDD_5V_PERIPH_nEN_PIN, !(on_true))
 #define VDD_5V_HIPOWER_EN(on_true)         HAL_GPIO_WritePin(GPIO_VDD_5V_HIPOWER_nEN_PORT, \
-                                                   GPIO_VDD_5V_HIPOWER_nEN_PIN, !(on_true))
+                                                    GPIO_VDD_5V_HIPOWER_nEN_PIN, !(on_true))
 #define VDD_3V3_SENSORS_EN(on_true)       HAL_GPIO_WritePin(GPIO_VDD_3V3_SENSORS_EN_PORT, \
-                                                   GPIO_VDD_3V3_SENSORS_EN_PIN, (on_true))
+                                                    GPIO_VDD_3V3_SENSORS_EN_PIN, (on_true))
 
 #define BOARD_ADC_USB_CONNECTED           (HAL_GPIO_ReadPin(GPIO_OTGFS_VBUS_PORT, \
-                                                   GPIO_OTGFS_VBUS_PIN))
+                                                    GPIO_OTGFS_VBUS_PIN))
 
 #define BOARD_ADC_USB_VALID               (!HAL_GPIO_ReadPin(GPIO_nPOWER_IN_C_PORT, \
-                                                   GPIO_nPOWER_IN_C_PIN))
+                                                    GPIO_nPOWER_IN_C_PIN))
 
 #define BOARD_ADC_BRICK1_VALID  (!HAL_GPIO_ReadPin(GPIO_nPOWER_IN_A_PORT, GPIO_nPOWER_IN_A_PIN))
 #define BOARD_ADC_BRICK2_VALID  (!HAL_GPIO_ReadPin(GPIO_nPOWER_IN_B_PORT, GPIO_nPOWER_IN_B_PIN))
 
 #define BOARD_ADC_PERIPH_5V_OC  (!HAL_GPIO_ReadPin(GPIO_VDD_5V_PERIPH_nOC_PORT, \
-                                                   GPIO_VDD_5V_PERIPH_nOC_PIN))
+                                                    GPIO_VDD_5V_PERIPH_nOC_PIN))
 #define BOARD_ADC_HIPOWER_5V_OC (!HAL_GPIO_ReadPin(GPIO_VDD_5V_HIPOWER_nOC_PORT, \
-                                                   GPIO_VDD_5V_HIPOWER_nOC_PIN))
+                                                    GPIO_VDD_5V_HIPOWER_nOC_PIN))
 #define BOARD_BLUE_LED(on_true)            HAL_GPIO_WritePin(GPIO_nLED_BLUE_PORT, \
-                                                   GPIO_nLED_BLUE_PIN, !(on_true))
+                                                    GPIO_nLED_BLUE_PIN, !(on_true))
 #define BOARD_RED_LED(on_true)            HAL_GPIO_WritePin(GPIO_nLED_RED_PORT, \
-                                                   GPIO_nLED_RED_PIN, !(on_true))
+                                                    GPIO_nLED_RED_PIN, !(on_true))
 
 void board_system_rcc_config();
 

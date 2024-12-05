@@ -8,8 +8,10 @@ void error_handler()
 void board_app_vector_init()
 {
     SCB->VTOR = APP_LOAD_ADDRESS;
-	
-    HAL_RCC_DeInit();
+
+	__disable_irq();
+	HAL_DeInit();
+	HAL_RCC_DeInit();
     SysTick->CTRL = 0;
     SysTick->LOAD = 0;
     SysTick->VAL = 0;
@@ -18,6 +20,8 @@ void board_app_vector_init()
         NVIC->ICPR[i] = 0xFFFFFFFF;
     }
     __set_BASEPRI(0);
+	__set_PRIMASK(0);
+	__set_CONTROL(0);
     __enable_irq();
 }
 

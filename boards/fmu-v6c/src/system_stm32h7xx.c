@@ -47,6 +47,9 @@
 #include "stm32h7xx.h"
 #include <math.h>
 
+#define __FPU_PRESENT 1
+#define __FPU_USED 1
+
 #if !defined  (HSE_VALUE)
 #define HSE_VALUE    ((uint32_t)16000000) /*!< Value of the External oscillator in Hz */
 #endif /* HSE_VALUE */

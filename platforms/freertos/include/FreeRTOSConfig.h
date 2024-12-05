@@ -3,9 +3,8 @@
 #define FREERTOS_CONFIG_H
 
 /* FreeRTOS POSIX Cannot support create task dynamic */
-
 extern uint32_t SystemCoreClock;
-#define vAssertCalled(char,int) //printf("Error:%s,%d\r\n",char,int)
+#define vAssertCalled(char,int) //board_blue_led_toggle()
 #define configASSERT(x) if((x)==0) vAssertCalled(__FILE__,__LINE__)
 
 /****************************************************************************
@@ -13,6 +12,7 @@ extern uint32_t SystemCoreClock;
  ****************************************************************************/
 #define xPortPendSVHandler 	PendSV_Handler
 #define vPortSVCHandler 	SVC_Handler
+// #define xPortSysTickHandler SysTick_Handler
 
 #ifdef __NVIC_PRIO_BITS
 	#define configPRIO_BITS       		__NVIC_PRIO_BITS
@@ -21,7 +21,7 @@ extern uint32_t SystemCoreClock;
 #endif
 #define configUSE_PORT_OPTIMISED_TASK_SELECTION         1     /* 1: Enable special way to select next task,  CLZ: Counting leading zero */
 #define configLIBRARY_LOWEST_INTERRUPT_PRIORITY			15    /* Interrupt Min Priority */
-#define configLIBRARY_MAX_SYSCALL_INTERRUPT_PRIORITY	5     /* Interrupt Max Priority can be managed */
+#define configLIBRARY_MAX_SYSCALL_INTERRUPT_PRIORITY	9     /* Interrupt Max Priority can be managed */
 #define configKERNEL_INTERRUPT_PRIORITY      \
             ( configLIBRARY_LOWEST_INTERRUPT_PRIORITY << (8 - configPRIO_BITS) )
 #define configMAX_SYSCALL_INTERRUPT_PRIORITY 	\
