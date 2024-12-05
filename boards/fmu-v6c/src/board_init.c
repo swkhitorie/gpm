@@ -209,9 +209,6 @@ void board_system_rcc_config()
 
 void board_system_config()
 {
-    SCB_EnableICache();
-	SCB_EnableDCache();
-
 	MPU_Region_InitTypeDef MPU_InitStruct;
 
 	HAL_MPU_Disable();
@@ -256,4 +253,10 @@ void board_system_config()
 	MPU_InitStruct.DisableExec      = MPU_INSTRUCTION_ACCESS_ENABLE;
 	HAL_MPU_ConfigRegion(&MPU_InitStruct);
 	HAL_MPU_Enable(MPU_PRIVILEGED_DEFAULT);
+
+	SCB_InvalidateICache();
+	SCB_InvalidateDCache();
+	
+    SCB_EnableICache();
+	SCB_EnableDCache();
 }
