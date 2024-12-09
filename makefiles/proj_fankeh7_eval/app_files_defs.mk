@@ -3,7 +3,9 @@
 ################################################################################
 
 PROJ_CDEFS := USE_HAL_DRIVER STM32H743xx
-
+#  platforms/freertos/posix/include                         
+#  platforms/freertos/posix/include/portable                
+#  platforms/freertos/posix/include/sys                     
 PROJ_CINCDIRS := \
   boards/fankeh7/src/core                                 \
   boards/fankeh7/src/drivers                              \
@@ -12,15 +14,13 @@ PROJ_CINCDIRS := \
   boards/ahl/cubeh7                                       \
   platforms/freertos/include                               \
   platforms/freertos/portable/GCC/ARM_CM7/r0p1             \
-  platforms/freertos/posix/include                         \
-  platforms/freertos/posix/include/portable                \
-  platforms/freertos/posix/include/sys                     \
   platforms/opmd/cherryusb/class/cdc                      \
   platforms/opmd/cherryusb/common                         \
   platforms/opmd/cherryusb/core                           \
   platforms/opmd/cherryusb/port/dwc2                      \
   platforms/opmd/cherryusb/demo                           \
   platforms/common/include                                \
+  src/lib/rtklib/src                                      \
   src/app/fmu-v6c_app
 
 # ld script and startup arm file
@@ -75,6 +75,12 @@ CSOURCES+=platforms/opmd/cherryusb/core/usbd_core.c
 CSOURCES+=platforms/opmd/cherryusb/port/dwc2/usb_dc_dwc2.c
 CSOURCES+=platforms/opmd/cherryusb/port/dwc2/usb_glue_st.c
 CSOURCES+=platforms/opmd/cherryusb/demo/cdc_acm_template.c
+
+
+CSOURCES+=src/lib/rtklib/src/rtcm.c
+CSOURCES+=src/lib/rtklib/src/rtcm2.c
+CSOURCES+=src/lib/rtklib/src/rtcm3.c
+CSOURCES+=src/lib/rtklib/src/rtkcmn.c
 
 CPPSOURCES+=src/app/fankeh7_eval/app_main.cpp
 
