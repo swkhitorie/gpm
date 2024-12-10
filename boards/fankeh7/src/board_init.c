@@ -38,6 +38,8 @@ void board_io_array_init()
 void board_app_init()
 {
 	BOARD_BLUE_LED(false);
+
+    board_rtc_init();
 }
 
 void board_blue_led_toggle()
@@ -78,9 +80,11 @@ void board_system_rcc_config()
     * in the RCC_OscInitTypeDef structure.
     * HSE: 16M -> 16M / PLLM * PLLN / PLLP
     */
-    RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE | RCC_OSCILLATORTYPE_HSI48;
+    RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE | RCC_OSCILLATORTYPE_HSI48
+                                        | RCC_OSCILLATORTYPE_LSE;
     RCC_OscInitStruct.HSEState = RCC_HSE_ON;
     RCC_OscInitStruct.HSI48State = RCC_HSI48_ON;
+    RCC_OscInitStruct.LSEState = RCC_LSE_ON;
     RCC_OscInitStruct.HSIState = RCC_HSI_OFF;
     RCC_OscInitStruct.CSIState = RCC_CSI_OFF;
     RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
@@ -139,7 +143,7 @@ void board_system_rcc_config()
     __HAL_RCC_BKPRAM_CLKAM_ENABLE();
     __HAL_RCC_D3SRAM1_CLKAM_ENABLE();
 
-	HAL_Delay(1500);
+	HAL_Delay(1200);
 }
 
 void board_system_config()

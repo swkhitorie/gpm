@@ -6,12 +6,13 @@
 TaskHandle_t hdebug;
 void debug(void *p)
 {
-    rtcm_t f1;
-    unsigned char c;
-    int b;
+    struct tm *time_now;
     for (;;) {
-        b = input_rtcm3(&f1, c);
-        cdc_acm_print(0, "[core] fankeh7 running %d \r\n", HAL_GetTick());
+        time_now = board_rtc_timeget();
+        cdc_acm_print(0, "[core] fankeh7 running %d, %d-%d-%d|%d-%d-%d\r\n",
+            HAL_GetTick(), 
+            time_now->tm_year + 1900, time_now->tm_mon + 1, time_now->tm_mday,
+            time_now->tm_hour, time_now->tm_min, time_now->tm_sec);
         board_blue_led_toggle();
         vTaskDelay(500);
     }

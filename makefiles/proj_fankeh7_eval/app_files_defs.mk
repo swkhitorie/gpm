@@ -30,6 +30,7 @@ SCF_FILE   += boards/fankeh7/fankeh7_lnk_gcc
 # STM32CubeH7 HAL driver, and enter file, config rcc and usb rcc and fmuv6c setting
 CSOURCES += boards/fankeh7/src/board_init.c
 CSOURCES += boards/fankeh7/src/board_usb.c
+CSOURCES += boards/fankeh7/src/board_rtc.c
 CSOURCES += boards/fankeh7/src/system_stm32h7xx.c
 CSOURCES += boards/fankeh7/src/stm32h7xx_it.c
 CSOURCES += boards/fankeh7/src/drivers/stm32h7xx_hal.c
