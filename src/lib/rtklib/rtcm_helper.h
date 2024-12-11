@@ -1,6 +1,10 @@
 #ifndef RTCM_HELPER_H_
 #define RTCM_HELPER_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <stdint.h>
 #include "rtkcmn.h"
 
@@ -51,6 +55,10 @@ typedef struct _ubx_parse {
 } rtcm_msg_t;
 
 uint8_t rtcm_frame_char_buffer(rtcm_msg_t *msg, rtcm_status_t *status, uint8_t c);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
 

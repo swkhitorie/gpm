@@ -35,11 +35,11 @@ void board_blue_led_toggle();
 
 void board_debug_delay();
 
+void board_reboot();
 void board_rtc_init();
-
 struct tm *board_rtc_timeget();
-
 void board_rtc_timeset(struct tm *val);
+uint64_t board_kernel_timeget(uint8_t way);
 
 #ifdef __cplusplus
 }

@@ -3,12 +3,12 @@
  * module uart
 */
 
-#include "lld_uart.h"
+#include "include/lld_uart.h"
 
 lld_uart_t *mcu_uart_list[8] = {0,0,0,0,0,0,0,0};
 
-ALIGN_32BYTES(__attribute__((section(".RAM_D1"))) static uint8_t dmaTxBuf[8][USART_DMA_TX_BUFFER_SIZE]);
-ALIGN_32BYTES(__attribute__((section(".RAM_D1"))) static uint8_t dmaRxBuf[8][USART_DMA_RX_BUFFER_SIZE]);
+ALIGN_32BYTES(__attribute__((section(SECTIONS_H7_RAMD1))) static uint8_t dmaTxBuf[8][USART_DMA_TX_BUFFER_SIZE]);
+ALIGN_32BYTES(__attribute__((section(SECTIONS_H7_RAMD1))) static uint8_t dmaRxBuf[8][USART_DMA_RX_BUFFER_SIZE]);
 static uint8_t devbuf_txarray[8][512];
 static uint8_t devbuf_rxarray[8][512];
 
@@ -318,3 +318,222 @@ void lld_uart_irq_rxdma(lld_uart_t *obj)
 	HAL_UART_Receive_DMA(&obj->huart, &obj->rxdma.buffer[0], USART_DMA_RX_BUFFER_SIZE);
 }
 
+
+
+/*****************************************************************
+ *****  CubeH7 UART interrupt and callback
+ ****************************************************************
+*/
+
+void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart)
+{
+    uint8_t idx = 0;
+    
+    if (huart->Instance == USART1)		idx = 0;
+    else if (huart->Instance == USART2)	idx = 1;
+    else if (huart->Instance == USART3)	idx = 2;
+    else if (huart->Instance == UART4)	idx = 3;
+    else if (huart->Instance == UART5)	idx = 4;
+    else if (huart->Instance == USART6)	idx = 5;
+    else if (huart->Instance == UART7)	idx = 6;
+    else if (huart->Instance == UART8)	idx = 7;
+
+    if (mcu_uart_list[idx]) {
+        lld_uart_irq_txdma(mcu_uart_list[idx]);
+    }
+}
+
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+{
+    static uint8_t idx = 0;
+    
+    if (huart->Instance == USART1)		idx = 0;
+    else if (huart->Instance == USART2)	idx = 1;
+    else if (huart->Instance == USART3)	idx = 2;
+    else if (huart->Instance == UART4)	idx = 3;
+    else if (huart->Instance == UART5)	idx = 4;
+    else if (huart->Instance == USART6)	idx = 5;
+    else if (huart->Instance == UART7)	idx = 6;
+    else if (huart->Instance == UART8)	idx = 7;
+
+    if (mcu_uart_list[idx]) {
+        lld_uart_irq_rxdma(mcu_uart_list[idx]);
+    }
+}
+/**
+ * @brief UARTx_IRQHandler
+*/
+/** UART1 IRQ */
+void USART1_IRQHandler(void)
+{
+    if(mcu_uart_list[0])
+        lld_uart_irq(mcu_uart_list[0]);
+}
+
+/** UART2 IRQ */
+void USART2_IRQHandler(void)
+{	
+    if(mcu_uart_list[1])	
+        lld_uart_irq(mcu_uart_list[1]);
+}
+
+/** UART3 IRQ */
+void USART3_IRQHandler(void)
+{	
+    if(mcu_uart_list[2])	
+        lld_uart_irq(mcu_uart_list[2]);
+}
+
+/** UART4 IRQ */
+void UART4_IRQHandler(void)
+{	
+    if(mcu_uart_list[3])	
+        lld_uart_irq(mcu_uart_list[3]);
+}
+
+/** UART5 IRQ */
+void UART5_IRQHandler(void)
+{
+    if(mcu_uart_list[4])	
+        lld_uart_irq(mcu_uart_list[4]);
+}
+
+/** UART6 IRQ */
+void USART6_IRQHandler(void)
+{
+    if(mcu_uart_list[5])	
+        lld_uart_irq(mcu_uart_list[5]);
+}
+
+/** UART7 IRQ */
+void UART7_IRQHandler(void)
+{
+    if(mcu_uart_list[6])	
+        lld_uart_irq(mcu_uart_list[6]);
+}
+
+/** UART8 IRQ */
+void UART8_IRQHandler(void)
+{
+    if(mcu_uart_list[7])	
+        lld_uart_irq(mcu_uart_list[7]);
+}
+
+
+/*****************************************************************
+ *****  CubeH7 DMA interrupt and callback
+ ****************************************************************
+*/
+
+/** DMA1 Stream0  IRQ */
+void DMA1_Stream0_IRQHandler(void)
+{  
+    if(mcu_uart_list[0])	
+        HAL_DMA_IRQHandler(mcu_uart_list[0]->huart.hdmatx);
+}
+
+/** DMA1 Stream1  IRQ */
+void DMA1_Stream1_IRQHandler(void)
+{  
+    if(mcu_uart_list[1])	
+        HAL_DMA_IRQHandler(mcu_uart_list[1]->huart.hdmatx);
+}
+
+/** DMA1 Stream2  IRQ */
+void DMA1_Stream2_IRQHandler(void)
+{  
+    if(mcu_uart_list[2])	
+        HAL_DMA_IRQHandler(mcu_uart_list[2]->huart.hdmatx);
+}
+
+/** DMA1 Stream3  IRQ */
+void DMA1_Stream3_IRQHandler(void)
+{  
+    if(mcu_uart_list[3])	
+        HAL_DMA_IRQHandler(mcu_uart_list[3]->huart.hdmatx);
+}
+
+/** DMA1 Stream4  IRQ */
+void DMA1_Stream4_IRQHandler(void)
+{  
+    if(mcu_uart_list[4])	
+        HAL_DMA_IRQHandler(mcu_uart_list[4]->huart.hdmatx);
+}
+
+/** DMA1 Stream5  IRQ */
+void DMA1_Stream5_IRQHandler(void)
+{  
+    if(mcu_uart_list[5])	
+        HAL_DMA_IRQHandler(mcu_uart_list[5]->huart.hdmatx);
+}
+
+/** DMA1 Stream6  IRQ */
+void DMA1_Stream6_IRQHandler(void)
+{  
+    if(mcu_uart_list[6])	
+        HAL_DMA_IRQHandler(mcu_uart_list[6]->huart.hdmatx);
+}
+
+/** DMA1 Stream7  IRQ */
+void DMA1_Stream7_IRQHandler(void)
+{  
+    if(mcu_uart_list[7])	
+        HAL_DMA_IRQHandler(mcu_uart_list[7]->huart.hdmatx);
+}
+
+
+/** DMA2 Stream0  IRQ */
+void DMA2_Stream0_IRQHandler(void)
+{  
+    if(mcu_uart_list[0])	
+        HAL_DMA_IRQHandler(mcu_uart_list[0]->huart.hdmarx);
+}
+
+/** DMA2 Stream1  IRQ */
+void DMA2_Stream1_IRQHandler(void)
+{  
+    if(mcu_uart_list[1])	
+        HAL_DMA_IRQHandler(mcu_uart_list[1]->huart.hdmarx);
+}
+
+/** DMA2 Stream2  IRQ */
+void DMA2_Stream2_IRQHandler(void)
+{  
+    if(mcu_uart_list[2])	
+        HAL_DMA_IRQHandler(mcu_uart_list[2]->huart.hdmarx);
+}
+
+/** DMA2 Stream3  IRQ */
+void DMA2_Stream3_IRQHandler(void)
+{  
+    if(mcu_uart_list[3])	
+        HAL_DMA_IRQHandler(mcu_uart_list[3]->huart.hdmarx);	
+}
+
+/** DMA2 Stream4  IRQ */
+void DMA2_Stream4_IRQHandler(void)
+{  
+    if(mcu_uart_list[4])	
+        HAL_DMA_IRQHandler(mcu_uart_list[4]->huart.hdmarx);	
+}
+
+/** DMA2 Stream5  IRQ */
+void DMA2_Stream5_IRQHandler(void)
+{  
+    if(mcu_uart_list[5])	
+        HAL_DMA_IRQHandler(mcu_uart_list[5]->huart.hdmarx);	
+}
+
+/** DMA2 Stream6  IRQ */
+void DMA2_Stream6_IRQHandler(void)
+{  
+    if(mcu_uart_list[6])	
+        HAL_DMA_IRQHandler(mcu_uart_list[6]->huart.hdmarx);	
+}
+
+/** DMA2 Stream7  IRQ */
+void DMA2_Stream7_IRQHandler(void)
+{  
+    if(mcu_uart_list[7])	
+        HAL_DMA_IRQHandler(mcu_uart_list[7]->huart.hdmarx);	
+}

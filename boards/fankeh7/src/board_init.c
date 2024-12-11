@@ -199,3 +199,38 @@ void board_system_config()
     SCB_EnableICache();
 	SCB_EnableDCache();
 }
+
+volatile uint64_t abs_time = 0;
+uint64_t board_kernel_timeget(uint8_t way)
+{
+    abs_time = 0;
+    
+    if (way == 0) {
+        uint64_t m0 = HAL_GetTick();
+        volatile uint64_t u0 = SysTick->VAL;
+        const uint64_t tms = SysTick->LOAD + 1;
+        abs_time = (m0 * 1000 + ((tms - u0) * 1000) / tms);
+    } else {
+        uint32_t primask = __get_PRIMASK();
+        __disable_irq();
+        uint32_t m = HAL_GetTick();
+        volatile uint32_t v = SysTick->VAL;
+        // If an overflow happened since we disabled irqs, it cannot have been
+        // processed yet, so increment m and reload VAL to ensure we get the
+        // post-overflow value.
+        if (SCB->ICSR & SCB_ICSR_PENDSTSET_Msk) {
+            ++m;
+            v = SysTick->VAL;
+        }
+        // Restore irq status
+        __set_PRIMASK(primask);
+        const uint32_t tms = SysTick->LOAD + 1;
+        abs_time = (m * 1000 + ((tms - v) * 1000) / tms);
+    }
+    return abs_time;
+}
+
+void board_reboot()
+{
+    NVIC_SystemReset();
+}

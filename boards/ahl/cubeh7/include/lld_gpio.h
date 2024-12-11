@@ -10,7 +10,7 @@ extern "C" {
  * module gpio
 */
 
-#include "lld_kernel.h"
+#include "lld_h7_global.h"
 
 typedef struct __lld_gpio {
 	GPIO_TypeDef *port;   

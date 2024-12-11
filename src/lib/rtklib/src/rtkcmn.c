@@ -1347,7 +1347,7 @@ extern gtime_t timeadd(gtime_t t, double sec)
 *-----------------------------------------------------------------------------*/
 extern double timediff(gtime_t t1, gtime_t t2)
 {
-    return difftime(t1.time,t2.time)+t1.sec-t2.sec;
+    return 0;//difftime(t1.time,t2.time)+t1.sec-t2.sec;
 }
 /* get current time in utc -----------------------------------------------------
 * get current time in utc
@@ -1356,8 +1356,8 @@ extern double timediff(gtime_t t1, gtime_t t2)
 *-----------------------------------------------------------------------------*/
 static double timeoffset_=0.0;        /* time offset (s) */
 
-// extern gtime_t timeget(void)
-// {
+extern gtime_t timeget(void)
+{
 //     double ep[6]={0};
 // #ifdef WIN32
 //     SYSTEMTIME ts;
@@ -1375,7 +1375,9 @@ static double timeoffset_=0.0;        /* time offset (s) */
 //     }
 // #endif
 //     return timeadd(epoch2time(ep),timeoffset_);
-// }
+    gtime_t tmp;
+    return tmp;
+}
 /* set current time in utc -----------------------------------------------------
 * set current time in utc
 * args   : gtime_t          I   current time in utc
@@ -1384,10 +1386,10 @@ static double timeoffset_=0.0;        /* time offset (s) */
 *          the time offset is reflected to only timeget()
 *          not reentrant
 *-----------------------------------------------------------------------------*/
-// extern void timeset(gtime_t t)
-// {
-//     timeoffset_+=timediff(t,timeget());
-// }
+extern void timeset(gtime_t t)
+{
+    //timeoffset_+=timediff(t,timeget());
+}
 /* read leap seconds table -----------------------------------------------------
 * read leap seconds table
 * args   : char    *file    I   leap seconds table file
@@ -1561,29 +1563,30 @@ extern int adjgpsweek(int week)
 * args   : none
 * return : current tick in ms
 *-----------------------------------------------------------------------------*/
-// extern unsigned int tickget(void)
-// {
-// #ifdef WIN32
-//     return (unsigned int)timeGetTime();
-// #else
-//     struct timespec tp={0};
-//     struct timeval  tv={0};
+extern unsigned int tickget(void)
+{
+#ifdef WIN32
+    return (unsigned int)timeGetTime();
+#else
+    // struct timespec tp={0};
+    // struct timeval  tv={0};
     
-// #ifdef CLOCK_MONOTONIC_RAW
-//     /* linux kernel > 2.6.28 */
-//     if (!clock_gettime(CLOCK_MONOTONIC_RAW,&tp)) {
-//         return tp.tv_sec*1000u+tp.tv_nsec/1000000u;
-//     }
-//     else {
-//         gettimeofday(&tv,NULL);
-//         return tv.tv_sec*1000u+tv.tv_usec/1000u;
-//     }
-// #else
-//     gettimeofday(&tv,NULL);
-//     return tv.tv_sec*1000u+tv.tv_usec/1000u;
-// #endif
-// #endif /* WIN32 */
-// }
+#ifdef CLOCK_MONOTONIC_RAW
+    /* linux kernel > 2.6.28 */
+    if (!clock_gettime(CLOCK_MONOTONIC_RAW,&tp)) {
+        return tp.tv_sec*1000u+tp.tv_nsec/1000000u;
+    }
+    else {
+        gettimeofday(&tv,NULL);
+        return tv.tv_sec*1000u+tv.tv_usec/1000u;
+    }
+#else
+    // gettimeofday(&tv,NULL);
+    // return tv.tv_sec*1000u+tv.tv_usec/1000u;
+    return 0;
+#endif
+#endif /* WIN32 */
+}
 /* sleep ms --------------------------------------------------------------------
 * sleep ms
 * args   : int   ms         I   miliseconds to sleep (<0:no sleep)

@@ -10,7 +10,7 @@ extern "C" {
  * module cpu flash
 */
 
-#include "lld_kernel.h"
+#include "lld_h7_global.h"
 
 #define NOR_FLASH_BASE_ADDR		(0x08000000)
 #define NOR_FLASH_END_ADDR		(0x081FFFFF)

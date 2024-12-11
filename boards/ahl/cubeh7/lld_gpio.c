@@ -3,7 +3,7 @@
  * module gpio
 */
 
-#include "lld_gpio.h"
+#include "include/lld_gpio.h"
 
 void lld_gpio_init(lld_gpio_t *obj, GPIO_TypeDef *port, uint16_t pin, 
     uint32_t mode, uint32_t pull, uint32_t speed, uint32_t alternate)

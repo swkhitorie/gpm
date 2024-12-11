@@ -10,7 +10,7 @@ extern "C" {
  * module external interrupt
 */
 
-#include "lld_kernel.h"
+#include "lld_h7_global.h"
 #include "lld_gpio.h"
 
 typedef void (*lld_exit_irq_callback)();

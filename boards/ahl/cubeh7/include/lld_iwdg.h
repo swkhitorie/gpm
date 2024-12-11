@@ -10,7 +10,7 @@ extern "C" {
  * module independent watch dog
 */
 
-#include "lld_kernel.h"
+#include "lld_h7_global.h"
 
 typedef enum __lld_iwdt_presc {
     PRE_4 = IWDG_PRESCALER_4,

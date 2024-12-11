@@ -3,7 +3,7 @@
  * module timer
 */
 
-#include "lld_timer.h"
+#include "include/lld_timer.h"
 
 lld_timer_t *mcu_timer_list[8] = {0, 0, 0, 0, 0, 0, 0, 0};
 
@@ -444,6 +444,111 @@ double lld_timer_ic_period(lld_timer_t *obj, uint8_t chnum, bool rising)
 }
 
 
+/*****************************************************************
+ *****  CubeH7 Timer interrupt and callback
+ ****************************************************************
+*/
+/**
+ * @brief 	Timer Update IRQ callback Function (when coutner overflow)
+ *			it will be called by HAL_TIM_IRQHandler
+*/
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+{
+	if (htim->Instance == TIM1)			lld_timer_irq(mcu_timer_list[0]);
+	else if (htim->Instance == TIM2)	lld_timer_irq(mcu_timer_list[1]);
+	else if (htim->Instance == TIM3)	lld_timer_irq(mcu_timer_list[2]);
+	else if (htim->Instance == TIM4)	lld_timer_irq(mcu_timer_list[3]);
+	else if (htim->Instance == TIM5)	lld_timer_irq(mcu_timer_list[4]);
+	else if (htim->Instance == TIM6)	lld_timer_irq(mcu_timer_list[5]);
+	else if (htim->Instance == TIM7)	lld_timer_irq(mcu_timer_list[6]);
+	else if (htim->Instance == TIM8)	lld_timer_irq(mcu_timer_list[7]);
+}
+
+/**
+ * @brief 	Timer InputCapture IRQ callback Function
+ *			it will be called by HAL_TIM_IRQHandler
+*/
+void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim)
+{
+	if (htim->Instance == TIM1)			lld_timer_irq(mcu_timer_list[0]);
+	else if (htim->Instance == TIM2)	lld_timer_irq(mcu_timer_list[1]);
+	else if (htim->Instance == TIM3)	lld_timer_irq(mcu_timer_list[2]);
+	else if (htim->Instance == TIM4)	lld_timer_irq(mcu_timer_list[3]);
+	else if (htim->Instance == TIM5)	lld_timer_irq(mcu_timer_list[4]);
+	else if (htim->Instance == TIM6)	lld_timer_irq(mcu_timer_list[5]);
+	else if (htim->Instance == TIM7)	lld_timer_irq(mcu_timer_list[6]);
+	else if (htim->Instance == TIM8)	lld_timer_irq(mcu_timer_list[7]);
+}
+
+/** TIM1 Up  IRQ */
+void TIM1_UP_IRQHandler(void)
+{ 
+	if (mcu_timer_list[0]) 
+		HAL_TIM_IRQHandler(&(mcu_timer_list[0]->htim));
+}
+
+/** TIM1 CC  IRQ */
+void TIM1_CC_IRQHandler(void)
+{ 
+	if (mcu_timer_list[0]) 
+		HAL_TIM_IRQHandler(&(mcu_timer_list[0]->htim));
+}
+
+/** TIM2 IRQ */
+void TIM2_IRQHandler(void)
+{ 
+	if (mcu_timer_list[1]) 
+		HAL_TIM_IRQHandler(&(mcu_timer_list[1]->htim));
+}
+
+/** TIM3 IRQ */
+void TIM3_IRQHandler(void)
+{ 
+	if (mcu_timer_list[2]) 
+		HAL_TIM_IRQHandler(&(mcu_timer_list[2]->htim));
+}
+
+/** TIM4 IRQ */
+void TIM4_IRQHandler(void)
+{ 
+	if (mcu_timer_list[3]) 
+		HAL_TIM_IRQHandler(&(mcu_timer_list[3]->htim));
+}
+
+/** TIM5 IRQ */
+void TIM5_IRQHandler(void) 
+{ 
+	if (mcu_timer_list[4]) 
+		HAL_TIM_IRQHandler(&(mcu_timer_list[4]->htim));
+}
+
+/** TIM6 DAC IRQ */
+void TIM6_DAC_IRQHandler(void)
+{ 
+	if (mcu_timer_list[5]) 
+		HAL_TIM_IRQHandler(&(mcu_timer_list[5]->htim));
+}
+
+/** TIM7 IRQ */
+void TIM7_IRQHandler(void)
+{ 
+	if (mcu_timer_list[6]) 
+		HAL_TIM_IRQHandler(&(mcu_timer_list[6]->htim));
+}
+
+/** TIM8 UP IRQ */
+void TIM8_UP_TIM13_IRQHandler(void)
+{ 
+	if (mcu_timer_list[7]) 
+		HAL_TIM_IRQHandler(&(mcu_timer_list[7]->htim));
+}
+
+/** TIM8 CC IRQ */
+void TIM8_CC_IRQHandler(void)
+{ 
+	if (mcu_timer_list[7]) 
+		HAL_TIM_IRQHandler(&(mcu_timer_list[7]->htim));
+}
 
 
 

@@ -2,7 +2,17 @@
 #ifndef __LLD_H7_GLOBALPIN_H_
 #define __LLD_H7_GLOBALPIN_H_
 
+#include <stdint.h>
+#include <stdbool.h>
 #include "stm32h7xx.h"
+
+#define SECTIONS_H7_RAMD1 ".RAM_D1"
+
+typedef enum __lld_rwway {
+    RWPOLL,
+    RWIT,
+    RWDMA
+} lld_rwway;
 
 /**
  * @brief the abstraction of peripherals's pin resource

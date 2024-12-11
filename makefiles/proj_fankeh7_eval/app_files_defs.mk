@@ -2,18 +2,15 @@
 # application configuration defaults section
 ################################################################################
 
-PROJ_CDEFS := USE_HAL_DRIVER STM32H743xx
-#  platforms/freertos/posix/include                         
-#  platforms/freertos/posix/include/portable                
-#  platforms/freertos/posix/include/sys                     
+PROJ_CDEFS := USE_HAL_DRIVER STM32H743xx ENAGLO ENAGAL
+
 PROJ_CINCDIRS := \
   boards/fankeh7/src/core                                 \
   boards/fankeh7/src/drivers                              \
   boards/fankeh7/src/                                     \
   boards/ahl                                              \
-  boards/ahl/cubeh7                                       \
-  platforms/freertos/include                               \
-  platforms/freertos/portable/GCC/ARM_CM7/r0p1             \
+  platforms/freertos/include                              \
+  platforms/freertos/portable/GCC/ARM_CM7/r0p1            \
   platforms/opmd/cherryusb/class/cdc                      \
   platforms/opmd/cherryusb/common                         \
   platforms/opmd/cherryusb/core                           \
@@ -58,32 +55,38 @@ CSOURCES += boards/fankeh7/src/drivers/stm32h7xx_hal_rtc.c
 CSOURCES += boards/fankeh7/src/drivers/stm32h7xx_hal_rtc_ex.c
 CSOURCES += boards/fankeh7/src/drivers/stm32h7xx_hal_tim.c
 CSOURCES += boards/fankeh7/src/drivers/stm32h7xx_hal_tim_ex.c
+CSOURCES += boards/ahl/lld_utils.c
+CSOURCES += boards/ahl/cubeh7/lld_gpio.c
+CSOURCES += boards/ahl/cubeh7/lld_uart.c
 
-CSOURCES+=platforms/freertos/fr_user.c
-CSOURCES+=platforms/freertos/fr_tasks.c
-CSOURCES+=platforms/freertos/fr_timers.c
-CSOURCES+=platforms/freertos/fr_list.c
-CSOURCES+=platforms/freertos/fr_queue.c
-CSOURCES+=platforms/freertos/fr_stream_buffer.c
-CSOURCES+=platforms/freertos/fr_event_groups.c
-CSOURCES+=platforms/freertos/portable/MemMang/heap_4.c
-CSOURCES+=platforms/freertos/portable/GCC/ARM_CM7/r0p1/port.c
+CSOURCES += platforms/freertos/fr_user.c
+CSOURCES += platforms/freertos/fr_tasks.c
+CSOURCES += platforms/freertos/fr_timers.c
+CSOURCES += platforms/freertos/fr_list.c
+CSOURCES += platforms/freertos/fr_queue.c
+CSOURCES += platforms/freertos/fr_stream_buffer.c
+CSOURCES += platforms/freertos/fr_event_groups.c
+CSOURCES += platforms/freertos/portable/MemMang/heap_4.c
+CSOURCES += platforms/freertos/portable/GCC/ARM_CM7/r0p1/port.c
 
 # CherryUSB
-CSOURCES+=platforms/opmd/cherryusb/class/cdc/usbd_cdc_acm.c
-CSOURCES+=platforms/opmd/cherryusb/class/cdc/usbd_cdc_ecm.c
-CSOURCES+=platforms/opmd/cherryusb/core/usbd_core.c
-CSOURCES+=platforms/opmd/cherryusb/port/dwc2/usb_dc_dwc2.c
-CSOURCES+=platforms/opmd/cherryusb/port/dwc2/usb_glue_st.c
-CSOURCES+=platforms/opmd/cherryusb/demo/cdc_acm_template.c
+CSOURCES += platforms/opmd/cherryusb/class/cdc/usbd_cdc_acm.c
+CSOURCES += platforms/opmd/cherryusb/class/cdc/usbd_cdc_ecm.c
+CSOURCES += platforms/opmd/cherryusb/core/usbd_core.c
+CSOURCES += platforms/opmd/cherryusb/port/dwc2/usb_dc_dwc2.c
+CSOURCES += platforms/opmd/cherryusb/port/dwc2/usb_glue_st.c
+CSOURCES += platforms/opmd/cherryusb/demo/cdc_acm_template.c
 
 
-CSOURCES+=src/lib/rtklib/src/rtcm.c
-CSOURCES+=src/lib/rtklib/src/rtcm2.c
-CSOURCES+=src/lib/rtklib/src/rtcm3.c
-CSOURCES+=src/lib/rtklib/src/rtkcmn.c
+CSOURCES += src/lib/rtklib/src/rtcm.c
+CSOURCES += src/lib/rtklib/src/rtcm2.c
+CSOURCES += src/lib/rtklib/src/rtcm3.c
+CSOURCES += src/lib/rtklib/src/rtkcmn.c
 
-CPPSOURCES+=src/app/fankeh7_eval/app_main.cpp
+# CSOURCES += src/lib/rtklib/rtcm_helper.c
+# CSOURCES += src/lib/rtklib/rtkcmn.c
+
+CPPSOURCES += src/app/fankeh7_eval/app_main.cpp
 
 
 

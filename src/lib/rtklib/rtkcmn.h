@@ -1,6 +1,10 @@
 #ifndef RTKCOMMON_H_
 #define RTKCOMMON_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <stdint.h>
 #include <math.h>
 
@@ -29,5 +33,7 @@ void          covecef(const double *pos, const double *Q, double *P);
 void          matmul(const char *tr, int n, int k, int m, double alpha,
                  const double *A, const double *B, double beta, double *C);
 
-
+#ifdef __cplusplus
+}
+#endif
 #endif

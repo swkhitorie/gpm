@@ -3,7 +3,7 @@
  * module can
 */
 
-#include "lld_can.h"
+#include "include/lld_can.h"
 
 lld_can_t *mcu_can_list[2] = {0, 0};
 
@@ -148,7 +148,7 @@ void lld_can_init(lld_can_t *obj, uint8_t can, uint32_t baud, uint8_t tx_selec, 
 	obj->hcan.Init.StdFiltersNbr = 1;
 	obj->hcan.Init.ExtFiltersNbr = 0;
 	
-	/* ¹Ø¼ü´úÂëÐÞ¸Ä */
+	/* ï¿½Ø¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Þ¸ï¿½ */
 	obj->hcan.Init.RxFifo0ElmtsNbr = 2;
 	obj->hcan.Init.RxFifo0ElmtSize = FDCAN_DATA_BYTES_8;
 	obj->hcan.Init.RxFifo1ElmtsNbr = 0;
@@ -228,3 +228,59 @@ void lld_can_rx_irq(lld_can_t *obj, uint32_t fifox)
     lld_canframelist_write(&obj->rxlist, &frame);
 }
 
+/*****************************************************************
+ *****  CubeH7 CAN interrupt and callback
+ ****************************************************************
+*/
+void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo0ITs)
+{
+	if ((RxFifo0ITs & FDCAN_IT_RX_FIFO0_NEW_MESSAGE) != RESET) {
+		if (hfdcan->Instance == FDCAN1)
+			lld_can_rx_irq(mcu_can_list[0], FDCAN_RX_FIFO0);
+		else if (hfdcan->Instance == FDCAN2)
+			lld_can_rx_irq(mcu_can_list[1], FDCAN_RX_FIFO0);
+			
+		HAL_FDCAN_ActivateNotification(hfdcan, FDCAN_IT_RX_FIFO0_NEW_MESSAGE, 0);
+	}
+}
+void HAL_FDCAN_RxFifo1Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo1ITs)
+{
+	if((RxFifo1ITs & FDCAN_IT_RX_FIFO1_NEW_MESSAGE) != RESET) {
+		if (hfdcan->Instance == FDCAN1)
+			lld_can_rx_irq(mcu_can_list[0], FDCAN_RX_FIFO1);
+		else if (hfdcan->Instance == FDCAN2)
+			lld_can_rx_irq(mcu_can_list[1], FDCAN_RX_FIFO1);
+		
+		HAL_FDCAN_ActivateNotification(hfdcan, FDCAN_IT_RX_FIFO1_NEW_MESSAGE, 0);
+	}
+}
+/**
+ * @brief CAN_IRQHandler
+*/
+/** CAN1 Rx FIFO0 IRQ */
+void FDCAN1_IT0_IRQHandler(void)
+{
+	if (mcu_can_list[0]) 
+		HAL_FDCAN_IRQHandler(&(mcu_can_list[0]->hcan));  
+}
+
+/** CAN1 Rx FIFO1 IRQ */
+void FDCAN1_IT1_IRQHandler(void)
+{
+	if (mcu_can_list[0]) 
+		HAL_FDCAN_IRQHandler(&(mcu_can_list[0]->hcan));   
+}
+
+/** CAN2 Rx FIFO0 IRQ */
+void FDCAN2_IT0_IRQHandler(void)
+{
+	if (mcu_can_list[1]) 
+		HAL_FDCAN_IRQHandler(&(mcu_can_list[1]->hcan));
+}
+
+/** CAN2 Rx FIFO1 IRQ */
+void FDCAN2_IT1_IRQHandler(void)
+{
+	if (mcu_can_list[1]) 
+		HAL_FDCAN_IRQHandler(&(mcu_can_list[1]->hcan)); 
+}

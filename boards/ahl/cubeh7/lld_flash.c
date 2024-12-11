@@ -3,7 +3,7 @@
  * module cpu flash
 */
 
-#include "lld_flash.h"
+#include "include/lld_flash.h"
 
 void lld_flash_unlock()
 {
@@ -44,15 +44,15 @@ uint8_t lld_flash_get_status(uint8_t bank_x)
 	else if(bank_x == 2)
 		status_reg = FLASH->SR2;
 	
-	if (status_reg & (1 << 17))			return 1;	//WRPERR=1,Ğ´±£»¤´íÎó
-	else if (status_reg & (1 << 18))	return 2;	//PGSERR=1,±à³ÌĞòÁĞ´íÎó
-	else if (status_reg & (1 << 19))	return 3;	//STRBERR=1,¸´Ğ´´íÎó 
-	else if (status_reg & (1 << 21))	return 4;	//INCERR=1,Êı¾İÒ»ÖÂĞÔ´íÎó
-	else if (status_reg & (1 << 22))	return 5;	//OPERR=1,Ğ´/²Á³ı´íÎó 
-	else if (status_reg & (1 << 23))	return 6;	//RDPERR=1,¶Á±£»¤´íÎó
-	else if (status_reg & (1 << 24))	return 7;	//RDSERR=1,·Ç·¨·ÃÎÊ¼ÓÃÜÇø´íÎó 
-	else if (status_reg & (1 << 25))	return 8;	//SNECCERR=1,1bit eccĞ£Õı´íÎó 
-	else if (status_reg & (1 << 26))	return 9;	//DBECCERR=1,2bit ecc´íÎó
+	if (status_reg & (1 << 17))			return 1;	//WRPERR=1,Ğ´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	else if (status_reg & (1 << 18))	return 2;	//PGSERR=1,ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ğ´ï¿½ï¿½ï¿½
+	else if (status_reg & (1 << 19))	return 3;	//STRBERR=1,ï¿½ï¿½Ğ´ï¿½ï¿½ï¿½ï¿½ 
+	else if (status_reg & (1 << 21))	return 4;	//INCERR=1,ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½Ô´ï¿½ï¿½ï¿½
+	else if (status_reg & (1 << 22))	return 5;	//OPERR=1,Ğ´/ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 
+	else if (status_reg & (1 << 23))	return 6;	//RDPERR=1,ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	else if (status_reg & (1 << 24))	return 7;	//RDSERR=1,ï¿½Ç·ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 
+	else if (status_reg & (1 << 25))	return 8;	//SNECCERR=1,1bit eccĞ£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 
+	else if (status_reg & (1 << 26))	return 9;	//DBECCERR=1,2bit eccï¿½ï¿½ï¿½ï¿½
 	
 	return 0;
 }

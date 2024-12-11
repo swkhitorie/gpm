@@ -3,7 +3,7 @@
  * module spi
 */
 
-#include "lld_spi.h"
+#include "include/lld_spi.h"
 
 static bool lowlevel_spi_pin_source_init(lld_spi_t *obj, uint8_t spi_num, 
     uint8_t spi_nss_selec, uint8_t spi_sck_selec, 

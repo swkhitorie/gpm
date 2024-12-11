@@ -1,4 +1,6 @@
-#include "platforms_common.h"
+
+#include "lld_utils.h"
+#include <stddef.h>
 
 /*! @brief union for Convert memory
  *

@@ -10,9 +10,8 @@ extern "C" {
  * module can
 */
 
-#include "lld_kernel.h"
+#include "lld_h7_global.h"
 #include "lld_gpio.h"
-#include "lld_h7_globalpin.h" 
 
 #define LLD_CANFRAMELIST_LEN    (20)
     

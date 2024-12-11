@@ -3,7 +3,7 @@
  * module i2c
 */
 
-#include "lld_i2c.h"
+#include "include/lld_i2c.h"
 
 lld_i2c_t *mcu_i2c_list[4] = {0, 0, 0, 0};
 
@@ -198,3 +198,88 @@ uint8_t lld_i2c_read_single(lld_i2c_t *obj, uint16_t slave, uint8_t *pData, uint
 	return res;	 
 }
 
+/*****************************************************************
+ *****  CubeH7 I2C interrupt and callback
+ ****************************************************************
+*/
+void HAL_I2C_MasterTxCpltCallback(I2C_HandleTypeDef *hi2c)
+{
+	uint8_t idx = 0;
+	if (hi2c->Instance == I2C1)		idx = 0;
+	else if (hi2c->Instance == I2C2)    idx = 1;
+	else if (hi2c->Instance == I2C3)	idx = 2;
+	else if (hi2c->Instance == I2C4)	idx = 3;
+	if (mcu_i2c_list[idx]) {
+		lld_i2c_irq_cmdcomplete(mcu_i2c_list[idx]);
+	}
+}
+
+void HAL_I2C_MemTxCpltCallback(I2C_HandleTypeDef *hi2c)
+{
+	uint8_t idx = 0;
+	if (hi2c->Instance == I2C1)		idx = 0;
+	else if (hi2c->Instance == I2C2)    idx = 1;
+	else if (hi2c->Instance == I2C3)	idx = 2;
+	else if (hi2c->Instance == I2C4)	idx = 3;
+	if (mcu_i2c_list[idx]) {
+		lld_i2c_irq_cmdcomplete(mcu_i2c_list[idx]);
+	}
+}
+
+void HAL_I2C_MemRxCpltCallback(I2C_HandleTypeDef *hi2c)
+{
+	uint8_t idx = 0;
+	if (hi2c->Instance == I2C1)		idx = 0;
+	else if (hi2c->Instance == I2C2)    idx = 1;
+	else if (hi2c->Instance == I2C3)	idx = 2;
+	else if (hi2c->Instance == I2C4)	idx = 3;
+	if (mcu_i2c_list[idx]) {
+		lld_i2c_irq_cmdcomplete(mcu_i2c_list[idx]);
+	}
+}
+
+void HAL_I2C_ErrorCallback(I2C_HandleTypeDef *I2cHandle)
+{
+	if (HAL_I2C_GetError(I2cHandle) != HAL_I2C_ERROR_AF) {
+	}
+}
+
+void I2C1_EV_IRQHandler(void)
+{
+	HAL_I2C_EV_IRQHandler(&mcu_i2c_list[0]->hi2c);
+}
+
+void I2C1_ER_IRQHandler(void)
+{
+	HAL_I2C_ER_IRQHandler(&mcu_i2c_list[0]->hi2c);
+}
+
+void I2C2_EV_IRQHandler(void)
+{
+	HAL_I2C_EV_IRQHandler(&mcu_i2c_list[1]->hi2c);
+}
+
+void I2C2_ER_IRQHandler(void)
+{
+	HAL_I2C_ER_IRQHandler(&mcu_i2c_list[1]->hi2c);
+}
+
+void I2C3_EV_IRQHandler(void)
+{
+	HAL_I2C_EV_IRQHandler(&mcu_i2c_list[2]->hi2c);
+}
+
+void I2C3_ER_IRQHandler(void)
+{
+	HAL_I2C_ER_IRQHandler(&mcu_i2c_list[2]->hi2c);
+}
+
+void I2C4_EV_IRQHandler(void)
+{
+	HAL_I2C_EV_IRQHandler(&mcu_i2c_list[3]->hi2c);
+}
+
+void I2C4_ER_IRQHandler(void)
+{
+	HAL_I2C_ER_IRQHandler(&mcu_i2c_list[3]->hi2c);
+}

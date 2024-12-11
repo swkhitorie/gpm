@@ -10,9 +10,8 @@ extern "C" {
  * module i2c
 */
 
-#include "lld_kernel.h"
+#include "lld_h7_global.h"
 #include "lld_gpio.h"
-#include "lld_h7_globalpin.h" 
 
 typedef enum __lld_i2c_timing {
     LLD_I2C_STANDARDMODE = 0x00D04BFF, //0x00D04BFF 0x00901954

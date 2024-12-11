@@ -10,9 +10,8 @@ extern "C" {
  * module timer
 */
 
-#include "lld_kernel.h"
+#include "lld_h7_global.h"
 #include "lld_gpio.h"
-#include "lld_h7_globalpin.h" 
 
 typedef enum __lld_timer_mode {
     TIM_MODE_TIMER      = 0x01,	/**< timer mode */
