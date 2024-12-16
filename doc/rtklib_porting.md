@@ -60,7 +60,7 @@
 	extern int ionocorr(...)
 	extern int tropcorr(...)
 	extern int pntpos(...)
-[REMOVE] ./src/postpos.c (数据后处理定位接口)
+[REMOVE] ./src/postpos.c (数据后处理定位接口), 用于数据处理软件rnx2rtkp...
 	extern int postpos(...)
 [REMOVE] ./src/ppp_ar.c (整周模糊度算法)
 	extern int ppp_ar(...) none
@@ -133,7 +133,7 @@
 	extern void rtkinit()
 	extern void rtkfree()
 	extern int rtkpos()
-[REMOVE] ./src/rtksvr.c  (RTK基站接口实现)
+[REMOVE] ./src/rtksvr.c  (RTK基站/差分站/流动站实时接口实现), 用于实时数据处理软件rtknavi
 	extern int rtksvrinit()
 	extern void rtksvrfree()
 	extern void rtksvrlock()
