@@ -2,7 +2,7 @@
 # application configuration defaults section
 ################################################################################
 
-PROJ_CDEFS := USE_HAL_DRIVER STM32H743xx ENAGLO ENAGAL
+PROJ_CDEFS := USE_HAL_DRIVER STM32H743xx
 
 PROJ_CINCDIRS := \
   boards/fankeh7/src/core                                 \
@@ -17,7 +17,6 @@ PROJ_CINCDIRS := \
   platforms/opmd/cherryusb/port/dwc2                      \
   platforms/opmd/cherryusb/demo                           \
   platforms/common/include                                \
-  src/lib/rtklib/src                                      \
   src/app/fmu-v6c_app
 
 # ld script and startup arm file
@@ -76,15 +75,6 @@ CSOURCES += platforms/opmd/cherryusb/core/usbd_core.c
 CSOURCES += platforms/opmd/cherryusb/port/dwc2/usb_dc_dwc2.c
 CSOURCES += platforms/opmd/cherryusb/port/dwc2/usb_glue_st.c
 CSOURCES += platforms/opmd/cherryusb/demo/cdc_acm_template.c
-
-
-CSOURCES += src/lib/rtklib/src/rtcm.c
-CSOURCES += src/lib/rtklib/src/rtcm2.c
-CSOURCES += src/lib/rtklib/src/rtcm3.c
-CSOURCES += src/lib/rtklib/src/rtkcmn.c
-
-# CSOURCES += src/lib/rtklib/rtcm_helper.c
-# CSOURCES += src/lib/rtklib/rtkcmn.c
 
 CPPSOURCES += src/app/fankeh7_eval/app_main.cpp
 
