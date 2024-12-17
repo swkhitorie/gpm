@@ -18,8 +18,6 @@
 *-----------------------------------------------------------------------------*/
 #include "rtklib.h"
 
-static const char rcsid[]="$Id:$";
-
 #define SQR(x)      ((x)*(x))
 #define VAR_NOTEC   SQR(30.0)   /* variance of no tec */
 #define MIN_EL      0.0         /* min elevation angle (rad) */
@@ -277,54 +275,54 @@ static void combtec(nav_t *nav)
 * return : none
 * notes  : see ref [1]
 *-----------------------------------------------------------------------------*/
-extern void readtec(const char *file, nav_t *nav, int opt)
-{
-    FILE *fp;
-    double lats[3]={0},lons[3]={0},hgts[3]={0},rb=0.0,nexp=-1.0;
-    double dcb[MAXSAT]={0},rms[MAXSAT]={0};
-    int i,n;
-    char *efiles[MAXEXFILE];
+//extern void readtec(const char *file, nav_t *nav, int opt)
+//{
+//    FILE *fp;
+//    double lats[3]={0},lons[3]={0},hgts[3]={0},rb=0.0,nexp=-1.0;
+//    double dcb[MAXSAT]={0},rms[MAXSAT]={0};
+//    int i,n;
+//    char *efiles[MAXEXFILE];
     
-    trace(3,"readtec : file=%s\n",file);
+//    trace(3,"readtec : file=%s\n",file);
     
-    /* clear of tec grid data option */
-    if (!opt) {
-        free(nav->tec); nav->tec=NULL; nav->nt=nav->ntmax=0;
-    }
-    for (i=0;i<MAXEXFILE;i++) {
-        if (!(efiles[i]=(char *)malloc(1024))) {
-            for (i--;i>=0;i--) free(efiles[i]);
-            return;
-        }
-    }
-    /* expand wild card in file path */
-    n=expath(file,efiles,MAXEXFILE);
+//    /* clear of tec grid data option */
+//    if (!opt) {
+//        free(nav->tec); nav->tec=NULL; nav->nt=nav->ntmax=0;
+//    }
+//    for (i=0;i<MAXEXFILE;i++) {
+//        if (!(efiles[i]=(char *)malloc(1024))) {
+//            for (i--;i>=0;i--) free(efiles[i]);
+//            return;
+//        }
+//    }
+//    /* expand wild card in file path */
+//    n=expath(file,efiles,MAXEXFILE);
     
-    for (i=0;i<n;i++) {
-        if (!(fp=fopen(efiles[i],"r"))) {
-            trace(2,"ionex file open error %s\n",efiles[i]);
-            continue;
-        }
-        /* read ionex header */
-        if (readionexh(fp,lats,lons,hgts,&rb,&nexp,dcb,rms)<=0.0) {
-            trace(2,"ionex file format error %s\n",efiles[i]);
-            continue;
-        }
-        /* read ionex body */
-        readionexb(fp,lats,lons,hgts,rb,nexp,nav);
+//    for (i=0;i<n;i++) {
+//        if (!(fp=fopen(efiles[i],"r"))) {
+//            trace(2,"ionex file open error %s\n",efiles[i]);
+//            continue;
+//        }
+//        /* read ionex header */
+//        if (readionexh(fp,lats,lons,hgts,&rb,&nexp,dcb,rms)<=0.0) {
+//            trace(2,"ionex file format error %s\n",efiles[i]);
+//            continue;
+//        }
+//        /* read ionex body */
+//        readionexb(fp,lats,lons,hgts,rb,nexp,nav);
         
-        fclose(fp);
-    }
-    for (i=0;i<MAXEXFILE;i++) free(efiles[i]);
+//        fclose(fp);
+//    }
+//    for (i=0;i<MAXEXFILE;i++) free(efiles[i]);
     
-    /* combine tec grid data */
-    if (nav->nt>0) combtec(nav);
+//    /* combine tec grid data */
+//    if (nav->nt>0) combtec(nav);
     
-    /* P1-P2 dcb */
-    for (i=0;i<MAXSAT;i++) {
-        nav->cbias[i][0]=CLIGHT*dcb[i]*1E-9; /* ns->m */
-    }
-}
+//    /* P1-P2 dcb */
+//    for (i=0;i<MAXSAT;i++) {
+//        nav->cbias[i][0]=CLIGHT*dcb[i]*1E-9; /* ns->m */
+//    }
+//}
 /* interpolate tec grid data -------------------------------------------------*/
 static int interptec(const tec_t *tec, int k, const double *posp, double *value,
                      double *rms)
