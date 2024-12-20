@@ -1,52 +1,97 @@
-/*
- * Amazon FreeRTOS POSIX V1.1.0
- * Copyright (C) 2018 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of
- * this software and associated documentation files (the "Software"), to deal in
- * the Software without restriction, including without limitation the rights to
- * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
- * the Software, and to permit persons to whom the Software is furnished to do so,
- * subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
- * FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
- * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
- * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
- * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- *
- * http://aws.amazon.com/freertos
- * http://www.FreeRTOS.org
- */
+#ifndef POSIX_FREERTOS_H_
+#define POSIX_FREERTOS_H_
 
-/**
- * @file FreeRTOS_POSIX.h
- * @brief FreeRTOS+POSIX header.
- *
- * This file must be included before all other FreeRTOS+POSIX includes.
- */
-
-#ifndef _FREERTOS_POSIX_H_
-#define _FREERTOS_POSIX_H_
-
-/* FreeRTOS+POSIX platform-specific configuration headers. */
-#define posixconfigENABLE_PTHREAD_MUTEX_T 1
-#define posixconfigENABLE_PTHREAD_COND_T 1
-#include "portable/fr_posix_portable.h"
-#include "portable/fr_posix_portable_default.h"
-
-/* FreeRTOS includes. */
+#include <stddef.h>
+#include <stdint.h>
 #include "FreeRTOS.h"
 #include "fr_event_groups.h"
-#include "semphr.h"
 #include "fr_task.h"
+#include "semphr.h"
 
-/* FreeRTOS+POSIX data types and internal structs. */
+#include "doubly_linked_list.h"
 #include "sys/types.h"
-#include "fr_posix_internal.h"
 
-#endif /* _FREERTOS_POSIX_H_ */
+/*
+    https://pubs.opengroup.org/onlinepubs/9699919799/functions/
+*/
+
+#define posixconfigPTHREAD_TASK_NAME    "pthread"
+#define posixconfigTIMER_NAME           "timer"
+#define posixconfigMQ_MAX_MESSAGES       10 /**< Maximum number of messages in an mq at one time. */
+#define posixconfigMQ_MAX_SIZE           128 /**< Maximum size (in bytes) of each message. */
+#define PTHREAD_STACK_MIN                configMINIMAL_STACK_SIZE * sizeof(StackType_t)
+/**< Maximum number of bytes in a filename (not including terminating null). */
+#define NAME_MAX                         64
+/**< Maximum value of a sem_t. */
+#define SEM_VALUE_MAX        0x7FFFU
+
+typedef sem_internal_t             posix_semtype_t;
+typedef struct
+{
+    StaticSemaphore_t sem;
+    int val;
+} sem_internal_t;
+
+typedef struct pthread_mutexattr_internal
+{
+    int iType;
+} pthread_mutexattr_internal_t;
+
+typedef struct pthread_mutex_internal
+{
+    BaseType_t xIsInitialized;
+    StaticSemaphore_t xMutex;
+    TaskHandle_t xTaskOwner;
+    pthread_mutexattr_internal_t xAttr;
+} pthread_mutex_internal_t;
+
+#define FREERTOS_POSIX_MUTEX_INITIALIZER \
+    (((pthread_mutex_internal_t)         \
+    {                                    \
+        .xIsInitialized = pdFALSE,       \
+        .xMutex = {{0}},                 \
+        .xTaskOwner = NULL,              \
+        .xAttr = {.iType = 0}            \
+    }))
+
+typedef struct pthread_cond_internal
+{
+    BaseType_t xIsInitialized;
+    StaticSemaphore_t xCondWaitSemaphore;
+    unsigned iWaitingThreads;
+} pthread_cond_internal_t;
+
+#define FREERTOS_POSIX_COND_INITIALIZER \
+    (((pthread_cond_internal_t)         \
+    {                                   \
+        .xIsInitialized = pdFALSE,      \
+        .xCondWaitSemaphore = {{0}},    \
+        .iWaitingThreads = 0            \
+    }))
+
+typedef struct pthread_barrier_internal
+{
+    unsigned uThreadCount;
+    unsigned uThreshold;
+    StaticSemaphore_t xThreadCountSemaphore;
+    StaticEventGroup_t xBarrierEventGroup;
+} pthread_barrier_internal_t;
+
+typedef pthread_mutex_internal_t   PthreadMutexType_t;
+typedef pthread_cond_internal_t    PthreadCondType_t;
+
+typedef struct pthread_mutexattr
+{
+    uint32_t ulpthreadMutexAttrStorage;
+} PthreadMutexAttrType_t;
+    
+typedef struct pthread_attr
+{
+    uint32_t ulpthreadAttrStorage;
+} PthreadAttrType_t;
+    
+typedef pthread_barrier_internal_t PthreadBarrierType_t;
+
+
+
+#endif
