@@ -6,14 +6,13 @@
 #include "include/pthread.h"
 #include "../include/fr_atomic.h"
 
-
 #if ( configUSE_16_BIT_TICKS == 1 )
     #define posixPTHREAD_BARRIER_MAX_COUNT    ( 8 )
 #else
     #define posixPTHREAD_BARRIER_MAX_COUNT    ( 24 )
 #endif
 
-int pthread_barrier_destroy( pthread_barrier_t * barrier )
+int pthread_barrier_destroy(pthread_barrier_t *barrier)
 {
     pthread_barrier_internal_t *p = (pthread_barrier_internal_t *)barrier;
 
@@ -22,101 +21,55 @@ int pthread_barrier_destroy( pthread_barrier_t * barrier )
     return 0;
 }
 
-/*-----------------------------------------------------------*/
-
-int pthread_barrier_init( pthread_barrier_t * barrier,
-                          const pthread_barrierattr_t * attr,
-                          unsigned count )
+int pthread_barrier_init(pthread_barrier_t *barrier, 
+   const pthread_barrierattr_t *attr, unsigned count)
 {
-    int iStatus = 0;
-    pthread_barrier_internal_t * pxNewBarrier = ( pthread_barrier_internal_t * ) ( barrier );
+    int ret = 0;
+    pthread_barrier_internal_t *p = (pthread_barrier_internal_t *)barrier;
 
-    /* Silence warnings about unused parameters. */
-    ( void ) attr;
-
-    /* Ensure count is greater than 0. */
-    if( count == 0 )
-    {
-        iStatus = EINVAL;
+    (void)attr;
+    if (count == 0) {
+        ret = EINVAL;
     }
 
-    /* Ensure that count will fit in a FreeRTOS event group. */
-    if( iStatus == 0 )
-    {
-        if( count > posixPTHREAD_BARRIER_MAX_COUNT )
-        {
+    if (ret == 0) {
+        if (count > posixPTHREAD_BARRIER_MAX_COUNT){
             /* No memory exists in the event group for more than
              * posixPTHREAD_BARRIER_MAX_COUNT threads. */
-            iStatus = ENOMEM;
+            ret = ENOMEM;
         }
     }
 
-    if( iStatus == 0 )
-    {
-        /* Set the current thread count and threshold. */
-        pxNewBarrier->uThreadCount = 0;
-        pxNewBarrier->uThreshold = count;
-
-        /* Create the FreeRTOS event group. This call will not fail when its
-         * argument isn't NULL. */
-        ( void ) xEventGroupCreateStatic( &pxNewBarrier->xBarrierEventGroup );
-
-        /* Create the semaphore that prevents more than count threads from being
-         * unblocked by a single successful pthread_barrier_wait. This semaphore
-         * counts down from count and cannot decrement below 0. */
-        ( void ) xSemaphoreCreateCountingStatic( ( UBaseType_t ) count, /* Max count. */
-                                                 ( UBaseType_t ) count, /* Initial count. */
-                                                 &pxNewBarrier->xThreadCountSemaphore );
+    if (ret == 0) {
+        p->thread_cnt = 0;
+        p->threshold = count;
+        (void)xEventGroupCreateStatic(&p->barrier_eventgrp);
+        (void)xSemaphoreCreateCountingStatic((UBaseType_t)count,
+                (UBaseType_t)count, &p->thread_cnt_sem);
     }
-
-    return iStatus;
+    return ret;
 }
 
-/*-----------------------------------------------------------*/
-
-int pthread_barrier_wait( pthread_barrier_t * barrier )
+int pthread_barrier_wait(pthread_barrier_t *barrier)
 {
-    int iStatus = 0;
-    unsigned i = 0; /* Loop iterator. */
-    pthread_barrier_internal_t * pxBarrier = ( pthread_barrier_internal_t * ) ( barrier );
-    unsigned uThreadNumber = 0;
+    int ret = 0;
+    unsigned i = 0;
+    pthread_barrier_internal_t *p = (pthread_barrier_internal_t *)barrier;
+    unsigned thread_num = 0;
 
-    /* Decrement the number of threads waiting on this barrier. This will prevent more
-     * than pxBarrier->uThreshold threads from being unblocked by a single successful
-     * pthread_barrier_wait call.
-     *
-     * This call will never fail because it blocks forever.
-     */
-    ( void ) xSemaphoreTake( ( SemaphoreHandle_t ) &pxBarrier->xThreadCountSemaphore, portMAX_DELAY );
+    (void)xSemaphoreTake((SemaphoreHandle_t)&p->thread_cnt_sem, portMAX_DELAY);
 
-    uThreadNumber = Atomic_Increment_u32( ( uint32_t * ) &pxBarrier->uThreadCount );
+    thread_num = Atomic_Increment_u32((uint32_t *) &p->thread_cnt);
 
-    /* Set the bit in the event group representing this thread, then wait for the other
-     * threads to set their bit. This call should wait forever until all threads have set
-     * their bit, so the return value is ignored. */
-    ( void ) xEventGroupSync( ( EventGroupHandle_t ) &pxBarrier->xBarrierEventGroup,
-                              1 << uThreadNumber,                 /* Which bit in the event group to set. */
-                              ( 1 << pxBarrier->uThreshold ) - 1, /* Wait for all threads to set their bits. */
-                              portMAX_DELAY );
+    (void)xEventGroupSync((EventGroupHandle_t)&p->barrier_eventgrp,
+                1 << thread_num, (1 << p->threshold) - 1, portMAX_DELAY);
 
-    /* The first thread to enter the barrier gets PTHREAD_BARRIER_SERIAL_THREAD as its
-     * return value and resets xThreadCountSemaphore. */
-
-    if( uThreadNumber == 0 )
-    {
-        iStatus = PTHREAD_BARRIER_SERIAL_THREAD;
-
-        /* uThreadCount can be safely changed without locking xThreadCountMutex
-         * because xThreadCountSemaphore is currently 0. */
-        pxBarrier->uThreadCount = 0;
-
-        /* Reset xThreadCountSemaphore. This allows more threads to enter the
-         * barrier, starting a new cycle. */
-        for( i = 0; i < pxBarrier->uThreshold; i++ )
-        {
-            xSemaphoreGive( ( SemaphoreHandle_t ) &pxBarrier->xThreadCountSemaphore );
+    if (thread_num == 0) {
+        ret = PTHREAD_BARRIER_SERIAL_THREAD;
+        p->thread_cnt = 0;
+        for (i = 0; i < p->threshold; i++) {
+            xSemaphoreGive((SemaphoreHandle_t)&p->thread_cnt_sem);
         }
     }
-
-    return iStatus;
+    return ret;
 }

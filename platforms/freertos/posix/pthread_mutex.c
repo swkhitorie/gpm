@@ -1,373 +1,201 @@
-/*
- * Amazon FreeRTOS POSIX V1.1.0
- * Copyright (C) 2018 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of
- * this software and associated documentation files (the "Software"), to deal in
- * the Software without restriction, including without limitation the rights to
- * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
- * the Software, and to permit persons to whom the Software is furnished to do so,
- * subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
- * FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
- * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
- * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
- * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- *
- * http://aws.amazon.com/freertos
- * http://www.FreeRTOS.org
- */
-
-/**
- * @file FreeRTOS_POSIX_pthread_mutex.c
- * @brief Implementation of mutex functions in pthread.h
- */
-
-/* C standard library includes. */
 #include <stddef.h>
 #include <string.h>
 
-/* FreeRTOS+POSIX includes. */
 #include "include/fr_posix.h"
 #include "include/errno.h"
 #include "include/pthread.h"
 #include "include/utils.h"
 
-/**
- * @brief Initialize a PTHREAD_MUTEX_INITIALIZER mutex.
- *
- * PTHREAD_MUTEX_INITIALIZER sets a flag for a mutex to be initialized later.
- * This function performs the initialization.
- * @param[in] pxMutex The mutex to initialize.
- *
- * @return nothing
- */
-static void prvInitializeStaticMutex( pthread_mutex_internal_t * pxMutex );
-
-/**
- * @brief Default pthread_mutexattr_t.
- */
-static const pthread_mutexattr_internal_t xDefaultMutexAttributes =
+static const pthread_mutexattr_internal_t default_mutex_attr =
 {
-    .iType = PTHREAD_MUTEX_DEFAULT,
+    .type = PTHREAD_MUTEX_DEFAULT,
 };
 
-/*-----------------------------------------------------------*/
-
-static void prvInitializeStaticMutex( pthread_mutex_internal_t * pxMutex )
+static void init_staticmutix(pthread_mutex_internal_t *pxMutex)
 {
-    /* Check if the mutex needs to be initialized. */
-    if( pxMutex->xIsInitialized == pdFALSE )
-    {
-        /* Mutex initialization must be in a critical section to prevent two threads
-         * from initializing it at the same time. */
+    if (pxMutex->initialized == pdFALSE) {
         taskENTER_CRITICAL();
-
-        /* Check again that the mutex is still uninitialized, i.e. it wasn't
-         * initialized while this function was waiting to enter the critical
-         * section. */
-        if( pxMutex->xIsInitialized == pdFALSE )
-        {
-            /* Set the mutex as the default type. */
-            pxMutex->xAttr.iType = PTHREAD_MUTEX_DEFAULT;
-
-            /* Call the correct FreeRTOS mutex initialization function based on
-             * the mutex type. */
+        if (pxMutex->initialized == pdFALSE) {
+            pxMutex->attr.type = PTHREAD_MUTEX_DEFAULT;
             #if PTHREAD_MUTEX_DEFAULT == PTHREAD_MUTEX_RECURSIVE
-                ( void ) xSemaphoreCreateRecursiveMutexStatic( &pxMutex->xMutex );
+                (void)xSemaphoreCreateRecursiveMutexStatic(&pxMutex->mutex);
             #else
-                ( void ) xSemaphoreCreateMutexStatic( &pxMutex->xMutex );
+                (void)xSemaphoreCreateMutexStatic(&pxMutex->mutex);
             #endif
-
-            pxMutex->xIsInitialized = pdTRUE;
+            pxMutex->initialized = pdTRUE;
         }
-
-        /* Exit the critical section. */
         taskEXIT_CRITICAL();
     }
 }
 
-/*-----------------------------------------------------------*/
-
-int pthread_mutex_destroy( pthread_mutex_t * mutex )
+int pthread_mutex_destroy(pthread_mutex_t *mutex)
 {
-    pthread_mutex_internal_t * pxMutex = ( pthread_mutex_internal_t * ) ( mutex );
+    pthread_mutex_internal_t *p = (pthread_mutex_internal_t *)mutex;
 
-    /* Free resources in use by the mutex. */
-    if( pxMutex->xTaskOwner == NULL )
-    {
-        vSemaphoreDelete( ( SemaphoreHandle_t ) &pxMutex->xMutex );
+    if (p->owner == NULL) {
+        vSemaphoreDelete((SemaphoreHandle_t)&p->mutex);
     }
-
     return 0;
 }
 
-/*-----------------------------------------------------------*/
-
-int pthread_mutex_init( pthread_mutex_t * mutex,
-                        const pthread_mutexattr_t * attr )
+int pthread_mutex_init(pthread_mutex_t *mutex, const pthread_mutexattr_t *attr)
 {
-    int iStatus = 0;
-    pthread_mutex_internal_t * pxMutex = ( pthread_mutex_internal_t * ) mutex;
+    int ret = 0;
+    pthread_mutex_internal_t *p = (pthread_mutex_internal_t *)mutex;
 
-    if( pxMutex == NULL )
-    {
-        /* No memory. */
-        iStatus = ENOMEM;
+    if (p == NULL) {
+        ret = ENOMEM;
     }
 
-    if( iStatus == 0 )
-    {
-        *pxMutex = FREERTOS_POSIX_MUTEX_INITIALIZER;
+    if (ret == 0) {
+        *p = FREERTOS_POSIX_MUTEX_INITIALIZER;
 
-        /* No attributes given, use default attributes. */
-        if( attr == NULL )
-        {
-            pxMutex->xAttr = xDefaultMutexAttributes;
-        }
-        /* Otherwise, use provided attributes. */
-        else
-        {
-            pxMutex->xAttr = *( ( pthread_mutexattr_internal_t * ) ( attr ) );
+        if (attr == NULL) {
+            p->attr = default_mutex_attr;
+        } else {
+            p->attr = *((pthread_mutexattr_internal_t *)attr);
         }
 
-        /* Call the correct FreeRTOS mutex creation function based on mutex type. */
-        if( pxMutex->xAttr.iType == PTHREAD_MUTEX_RECURSIVE )
-        {
-            /* Recursive mutex. */
-            ( void ) xSemaphoreCreateRecursiveMutexStatic( &pxMutex->xMutex );
-        }
-        else
-        {
-            /* All other mutex types. */
-            ( void ) xSemaphoreCreateMutexStatic( &pxMutex->xMutex );
+        if (p->attr.type == PTHREAD_MUTEX_RECURSIVE) {
+            (void)xSemaphoreCreateRecursiveMutexStatic(&p->mutex);
+        } else {
+            (void)xSemaphoreCreateMutexStatic(&p->mutex);
         }
 
-        /* Ensure that the FreeRTOS mutex was successfully created. */
-        if( ( SemaphoreHandle_t ) &pxMutex->xMutex == NULL )
-        {
-            /* Failed to create mutex. Set error EAGAIN and free mutex object. */
-            iStatus = EAGAIN;
-            vPortFree( pxMutex );
-        }
-        else
-        {
-            /* Mutex successfully created. */
-            pxMutex->xIsInitialized = pdTRUE;
+        if ((SemaphoreHandle_t)&p->mutex == NULL) {
+            ret = EAGAIN;
+            vPortFree(p);
+        } else {
+            p->initialized = pdTRUE;
         }
     }
-
-    return iStatus;
+    return ret;
 }
 
-/*-----------------------------------------------------------*/
-
-int pthread_mutex_lock( pthread_mutex_t * mutex )
+int pthread_mutex_lock(pthread_mutex_t *mutex)
 {
-    return pthread_mutex_timedlock( mutex, NULL );
+    return pthread_mutex_timedlock(mutex, NULL);
 }
 
-/*-----------------------------------------------------------*/
-
-int pthread_mutex_timedlock( pthread_mutex_t * mutex,
-                             const struct timespec * abstime )
+int pthread_mutex_timedlock(pthread_mutex_t *mutex, const struct timespec *abstime)
 {
-    int iStatus = 0;
-    pthread_mutex_internal_t * pxMutex = ( pthread_mutex_internal_t * ) ( mutex );
-    TickType_t xDelay = portMAX_DELAY;
-    BaseType_t xFreeRTOSMutexTakeStatus = pdFALSE;
+    int ret = 0;
+    pthread_mutex_internal_t *p = (pthread_mutex_internal_t *)mutex;
+    TickType_t delay = portMAX_DELAY;
+    BaseType_t fr_mutex_take_status = pdFALSE;
 
-    /* If mutex in uninitialized, perform initialization. */
-    prvInitializeStaticMutex( pxMutex );
+    init_staticmutix(p);
+    configASSERT(p->initialized == pdTRUE);
 
-    /* At this point, the mutex should be initialized. */
-    configASSERT( pxMutex->xIsInitialized == pdTRUE );
-
-    /* Convert abstime to a delay in TickType_t if provided. */
-    if( abstime != NULL )
-    {
-        struct timespec xCurrentTime = { 0 };
-
-        /* Get current time */
-        if( clock_gettime( CLOCK_REALTIME, &xCurrentTime ) != 0 )
-        {
-            iStatus = EINVAL;
+    if (abstime != NULL) {
+        struct timespec cur = {0};
+        if (clock_gettime(CLOCK_REALTIME, &cur)!= 0) {
+            ret = EINVAL;
+        } else {
+            ret = utils_timespec_todeltaticks(abstime, &cur, &delay);
         }
-        else
-        {
-            iStatus = UTILS_AbsoluteTimespecToDeltaTicks( abstime, &xCurrentTime, &xDelay );
-        }
-
-        /* If abstime was in the past, still attempt to lock the mutex without
-         * blocking, per POSIX spec. */
-        if( iStatus == ETIMEDOUT )
-        {
-            xDelay = 0;
-            iStatus = 0;
+        if (ret == ETIMEDOUT) {
+            delay = 0;
+            ret = 0;
         }
     }
 
-    /* Check if trying to lock a currently owned mutex. */
-    if( ( iStatus == 0 ) &&
-        ( pxMutex->xAttr.iType == PTHREAD_MUTEX_ERRORCHECK ) &&  /* Only PTHREAD_MUTEX_ERRORCHECK type detects deadlock. */
-        ( pxMutex->xTaskOwner == xTaskGetCurrentTaskHandle() ) ) /* Check if locking a currently owned mutex. */
-    {
-        iStatus = EDEADLK;
+    if ((ret == 0) && (p->attr.type == PTHREAD_MUTEX_ERRORCHECK) && 
+        (p->owner == xTaskGetCurrentTaskHandle())) {
+        ret = EDEADLK;
     }
 
-    if( iStatus == 0 )
-    {
-        /* Call the correct FreeRTOS mutex take function based on mutex type. */
-        if( pxMutex->xAttr.iType == PTHREAD_MUTEX_RECURSIVE )
-        {
-            xFreeRTOSMutexTakeStatus = xSemaphoreTakeRecursive( ( SemaphoreHandle_t ) &pxMutex->xMutex, xDelay );
-        }
-        else
-        {
-            xFreeRTOSMutexTakeStatus = xSemaphoreTake( ( SemaphoreHandle_t ) &pxMutex->xMutex, xDelay );
+    if (ret == 0) {
+        if (p->attr.type == PTHREAD_MUTEX_RECURSIVE) {
+            fr_mutex_take_status = xSemaphoreTakeRecursive((SemaphoreHandle_t)&p->mutex, delay);
+        } else {
+            fr_mutex_take_status = xSemaphoreTake((SemaphoreHandle_t)&p->mutex, delay);
         }
 
-        /* If the mutex was successfully taken, set its owner. */
-        if( xFreeRTOSMutexTakeStatus == pdPASS )
-        {
+        if (fr_mutex_take_status == pdPASS) {
             pxMutex->xTaskOwner = xTaskGetCurrentTaskHandle();
-        }
-        /* Otherwise, the mutex take timed out. */
-        else
-        {
-            iStatus = ETIMEDOUT;
+        } else {
+            ret = ETIMEDOUT;
         }
     }
-
-    return iStatus;
+    return ret;
 }
 
-/*-----------------------------------------------------------*/
-
-int pthread_mutex_trylock( pthread_mutex_t * mutex )
+int pthread_mutex_trylock(pthread_mutex_t *mutex)
 {
-    int iStatus = 0;
-    struct timespec xTimeout =
+    int ret = 0;
+    struct timespec timeout =
     {
         .tv_sec  = 0,
         .tv_nsec = 0
     };
 
-    /* Attempt to lock with no timeout. */
-    iStatus = pthread_mutex_timedlock( mutex, &xTimeout );
-
-    /* POSIX specifies that this function should return EBUSY instead of
-     * ETIMEDOUT for attempting to lock a locked mutex. */
-    if( iStatus == ETIMEDOUT )
-    {
-        iStatus = EBUSY;
+    ret = pthread_mutex_timedlock(mutex, &timeout);
+    if (ret == ETIMEDOUT) {
+        ret = EBUSY;
     }
-
-    return iStatus;
+    return ret;
 }
 
-/*-----------------------------------------------------------*/
-
-int pthread_mutex_unlock( pthread_mutex_t * mutex )
+int pthread_mutex_unlock(pthread_mutex_t *mutex)
 {
-    int iStatus = 0;
-    pthread_mutex_internal_t * pxMutex = ( pthread_mutex_internal_t * ) ( mutex );
+    int ret = 0;
+    pthread_mutex_internal_t *p = (pthread_mutex_internal_t *)mutex;
 
-    /* If mutex in uninitialized, perform initialization. */
-    prvInitializeStaticMutex( pxMutex );
+    init_staticmutix(p);
 
-    /* Check if trying to unlock an unowned mutex. */
-    if( ( ( pxMutex->xAttr.iType == PTHREAD_MUTEX_ERRORCHECK ) ||
-          ( pxMutex->xAttr.iType == PTHREAD_MUTEX_RECURSIVE ) ) &&
-        ( pxMutex->xTaskOwner != xTaskGetCurrentTaskHandle() ) )
-    {
-        iStatus = EPERM;
+    if(((p->attr.type == PTHREAD_MUTEX_ERRORCHECK) ||
+        (p->attr.type == PTHREAD_MUTEX_RECURSIVE)) &&
+        (p->owner != xTaskGetCurrentTaskHandle())) {
+        ret = EPERM;
     }
 
-    if( iStatus == 0 )
-    {
-        /* Suspend the scheduler so that
-         * mutex is unlocked AND owner is updated atomically */
+    if (ret == 0) {
         vTaskSuspendAll();
-
-        /* Call the correct FreeRTOS mutex unlock function based on mutex type. */
-        if( pxMutex->xAttr.iType == PTHREAD_MUTEX_RECURSIVE )
-        {
-            ( void ) xSemaphoreGiveRecursive( ( SemaphoreHandle_t ) &pxMutex->xMutex );
+        if (p->attr.type == PTHREAD_MUTEX_RECURSIVE) {
+            (void)xSemaphoreGiveRecursive((SemaphoreHandle_t)&p->mutex);
+        } else {
+            (void)xSemaphoreGive((SemaphoreHandle_t)&p->mutex);
         }
-        else
-        {
-            ( void ) xSemaphoreGive( ( SemaphoreHandle_t ) &pxMutex->xMutex );
-        }
-
-        /* Update the owner of the mutex. A recursive mutex may still have an
-         * owner, so it should be updated with xSemaphoreGetMutexHolder. */
-        pxMutex->xTaskOwner = xSemaphoreGetMutexHolder( ( SemaphoreHandle_t ) &pxMutex->xMutex );
-
-        /* Resume the scheduler */
-        ( void ) xTaskResumeAll();
+        p->owner = xSemaphoreGetMutexHolder((SemaphoreHandle_t)&p->mutex);
+        (void)xTaskResumeAll();
     }
-
-    return iStatus;
+    return ret;
 }
 
-/*-----------------------------------------------------------*/
-
-int pthread_mutexattr_destroy( pthread_mutexattr_t * attr )
+int pthread_mutexattr_destroy(pthread_mutexattr_t *attr)
 {
-    ( void ) attr;
-
+    (void)attr;
     return 0;
 }
 
-/*-----------------------------------------------------------*/
-
-int pthread_mutexattr_gettype( const pthread_mutexattr_t * attr,
-                               int * type )
+int pthread_mutexattr_gettype(const pthread_mutexattr_t *attr, int *type)
 {
-    pthread_mutexattr_internal_t * pxAttr = ( pthread_mutexattr_internal_t * ) ( attr );
-
-    *type = pxAttr->iType;
-
+    pthread_mutexattr_internal_t *p = (pthread_mutexattr_internal_t *)attr;
+    *type = p->type;
     return 0;
 }
 
-/*-----------------------------------------------------------*/
-
-int pthread_mutexattr_init( pthread_mutexattr_t * attr )
+int pthread_mutexattr_init(pthread_mutexattr_t *attr)
 {
-    *( ( pthread_mutexattr_internal_t * ) ( attr ) ) = xDefaultMutexAttributes;
-
+    *((pthread_mutexattr_internal_t *)attr) = default_mutex_attr;
     return 0;
 }
 
-/*-----------------------------------------------------------*/
-
-int pthread_mutexattr_settype( pthread_mutexattr_t * attr,
-                               int type )
+int pthread_mutexattr_settype(pthread_mutexattr_t *attr, int type)
 {
-    int iStatus = 0;
-    pthread_mutexattr_internal_t * pxAttr = ( pthread_mutexattr_internal_t * ) ( attr );
+    int ret = 0;
+    pthread_mutexattr_internal_t *p = (pthread_mutexattr_internal_t *)attr;
 
-    switch( type )
-    {
+    switch (type) {
         case PTHREAD_MUTEX_NORMAL:
         case PTHREAD_MUTEX_RECURSIVE:
         case PTHREAD_MUTEX_ERRORCHECK:
-            pxAttr->iType = type;
+            p->type = type;
             break;
-
         default:
-            iStatus = EINVAL;
+            ret = EINVAL;
             break;
     }
-
-    return iStatus;
+    return ret;
 }
-
-/*-----------------------------------------------------------*/
