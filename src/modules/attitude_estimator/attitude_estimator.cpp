@@ -32,7 +32,7 @@ void AttitudeEstimator::Run()
 void AttitudeEstimator::update_sensors()
 {
     if (!_initialized) return;
-    
+
     // update validator with recent sensor data
     if (_sub_sensor_combined->timestamp > 0) {
         
