@@ -1,0 +1,3 @@
+[submodule "boards/edrvlib"]
+	path = boards/edrvlib
+	url = https://github.com/HatsuneMikudesu/edrvlib.git

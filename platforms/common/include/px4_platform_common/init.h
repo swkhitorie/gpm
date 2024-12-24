@@ -1,6 +1,6 @@
 __BEGIN_DECLS
 
-int px4_platform_init(void);
+int gpm_platform_init(void);
 
 __END_DECLS
 

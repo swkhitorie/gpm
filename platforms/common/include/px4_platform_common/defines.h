@@ -1,7 +1,7 @@
 
 #pragma once
 
-#include <px4_platform_common/log.h>
+#include <gpm_platform_common/log.h>
 
 #define _IOC(type,nr)   ((type)|(nr))
 #define _GPM_IOC(x,y)   _IOC(x,y)

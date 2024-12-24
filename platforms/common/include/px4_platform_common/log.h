@@ -3,25 +3,23 @@
 #include <sys/cdefs.h>
 #include <sys/config.h>
 
-#define _PX4_LOG_LEVEL_DEBUG		0
-#define _PX4_LOG_LEVEL_INFO		    1
-#define _PX4_LOG_LEVEL_WARN		    2
-#define _PX4_LOG_LEVEL_ERROR		3
-#define _PX4_LOG_LEVEL_PANIC		4
+#define _GPM_LOG_LEVEL_DEBUG		0
+#define _GPM_LOG_LEVEL_INFO		    1
+#define _GPM_LOG_LEVEL_WARN		    2
+#define _GPM_LOG_LEVEL_ERROR		3
+#define _GPM_LOG_LEVEL_PANIC		4
 
 static inline void do_nothing(int level, ...) { (void)level; }
 
 __BEGIN_DECLS
 
-/**
- * initialize the orb logging. Logging to console still works without or before calling this.
- */
+/* initialize the orb logging. Logging to console still works without or before calling this. */
 __EXPORT extern void gpm_log_initialize(void);
 
 __END_DECLS
 
 /****************************************************************************
- * __px4_log_omit:
+ * __gpm_log_omit:
  * Compile out the message
  ****************************************************************************/
 #define __gpm_log_omit(level, FMT, ...)   do_nothing(level, ##__VA_ARGS__)
@@ -39,20 +37,19 @@ __END_DECLS
 #include <stdio.h>
 #include <stdarg.h>
 
-#include <px4_platform_common/defines.h>
+#include <gpm_platform_common/defines.h>
 #include <drivers/drv_hrt.h>
 
 __BEGIN_DECLS
 
-__EXPORT extern const char *__px4_log_level_str[_PX4_LOG_LEVEL_PANIC + 1];
-__EXPORT extern const char *__px4_log_level_color[_PX4_LOG_LEVEL_PANIC + 1];
-__EXPORT void px4_log_modulename(int level, const char *moduleName, const char *fmt, ...)
+__EXPORT extern const char *__gpm_log_level_str[_GPM_LOG_LEVEL_PANIC + 1];
+__EXPORT extern const char *__gpm_log_level_color[_GPM_LOG_LEVEL_PANIC + 1];
+__EXPORT void gpm_log_modulename(int level, const char *moduleName, const char *fmt, ...)
 __attribute__((format(printf, 3, 4)));
-__EXPORT void px4_log_raw(int level, const char *fmt, ...)
+__EXPORT void gpm_log_raw(int level, const char *fmt, ...)
 __attribute__((format(printf, 2, 3)));
 
 #if __GNUC__
-// Allow empty format strings.
 #pragma GCC diagnostic ignored "-Wformat-zero-length"
 #endif
 

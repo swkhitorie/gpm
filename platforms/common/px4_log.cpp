@@ -41,9 +41,7 @@
 #endif
 
 #include <px4_platform_common/log.h>
-#if defined(__PX4_POSIX)
-// #include <px4_daemon/server_io.h>
-#endif
+
 
 #include <uORB/uORB.h>
 #include <uORB/topics/log_message.h>
