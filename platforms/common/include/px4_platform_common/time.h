@@ -2,8 +2,6 @@
 
 #include <unistd.h>
 #include <sys/types.h>
-#include <sys/cdefs.h>
-#include <sys/config.h>
 #include <time.h>
 #include <pthread.h>
 
@@ -19,8 +17,3 @@ __END_DECLS
 #define px4_usleep system_usleep
 #define px4_sleep system_sleep
 #define px4_pthread_cond_timedwait system_pthread_cond_timedwait
-
-#ifndef system_pthread_cond_timedwait
-#define system_pthread_cond_timedwait pthread_cond_timedwait
-#endif
-

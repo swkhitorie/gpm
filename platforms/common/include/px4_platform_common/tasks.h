@@ -1,10 +1,54 @@
+/****************************************************************************
+ *
+ *   Copyright (c) 2012-2017 PX4 Development Team. All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in
+ *    the documentation and/or other materials provided with the
+ *    distribution.
+ * 3. Neither the name PX4 nor the names of its contributors may be
+ *    used to endorse or promote products derived from this software
+ *    without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+ * FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+ * COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+ * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+ * BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
+ * OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED
+ * AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+ * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+ * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ *
+ ****************************************************************************/
+
+/**
+ * @file px4_tasks.h
+ *
+ * @author Lorenz Meier <lorenz@px4.io>
+ * @author Mark Charlebois (2015) <charlebm@gmail.com>
+ *
+ * Preserve existing task API call signature with OS abstraction
+ */
+
 #pragma once
 
 #include <stdbool.h>
+
 #include <pthread.h>
 #include <sched.h>
 
 typedef int px4_task_t;
+
 typedef struct {
 	int argc;
 	char **argv;
@@ -59,17 +103,30 @@ typedef int (*px4_main_t)(int argc, char *argv[]);
 
 __BEGIN_DECLS
 
-__EXPORT int px4_task_delete(px4_task_t pid);
-__EXPORT int px4_task_kill(px4_task_t pid, int sig);
-__EXPORT void px4_task_exit(int ret);
-__EXPORT void px4_show_tasks(void);
-__EXPORT bool px4_task_is_running(const char *taskname);
-__EXPORT const char *px4_get_taskname(void);
+/** Starts a task and performs any specific accounting, scheduler setup, etc. */
 __EXPORT px4_task_t px4_task_spawn_cmd(const char *name,
                         int scheduler,
                         int priority,
                         int stack_size,
                         px4_main_t entry,
-				        char *const argv[]);
+                        char *const argv[]);
+
+/** Deletes a task - does not do resource cleanup **/
+__EXPORT int px4_task_delete(px4_task_t pid);
+
+/** Send a signal to a task **/
+__EXPORT int px4_task_kill(px4_task_t pid, int sig);
+
+/** Exit current task with return value **/
+__EXPORT void px4_task_exit(int ret);
+
+/** Show a list of running tasks **/
+__EXPORT void px4_show_tasks(void);
+
+/** See if a task is running **/
+__EXPORT bool px4_task_is_running(const char *taskname);
+
+/** return the name of the current task */
+__EXPORT const char *px4_get_taskname(void);
 
 __END_DECLS
