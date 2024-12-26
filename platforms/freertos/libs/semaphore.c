@@ -50,7 +50,7 @@ int sem_post(sem_t *sem)
     return 0;
 }
 
-int sem_timedwait(sem_t * sem, const struct timespec *abstime)
+int sem_timedwait(sem_t *sem, const struct timespec *abstime)
 {
     int ret = 0;
     sem_internal_t *p = (sem_internal_t *)sem;
@@ -93,7 +93,7 @@ int sem_timedwait(sem_t * sem, const struct timespec *abstime)
 
 /*-----------------------------------------------------------*/
 
-int sem_trywait( sem_t * sem )
+int sem_trywait(sem_t *sem)
 {
     int ret = 0;
 
