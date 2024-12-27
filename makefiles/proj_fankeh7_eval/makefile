@@ -21,19 +21,15 @@ PROJ_CFG           := general_config
 
 include $(MAKEFILES_ROOTDIR)/toolchain_path.mk
 
-#
 # including defines related to configuration
-#
 include ${PROJ_CFG}.mk
 
-#
-# including sources file list
-#
-include app_files_defs.mk
+include app_defs.mk
+include files_board.mk
+include files_platforms.mk
+include files_src.mk
 
-#
 # including common build makefile
-#
 include $(MAKEFILES_ROOTDIR)/common/build.mk
 
 all: prebuild build postbuild #program

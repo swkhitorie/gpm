@@ -4,17 +4,17 @@
 #include <stddef.h>
 #include <stdint.h>
 #include "FreeRTOS.h"
-#include "fr_event_groups.h"
-#include "fr_task.h"
+#include "event_groups.h"
+#include "task.h"
 #include "semphr.h"
 #include "doubly_linked_list.h"
 
-typedef sem_internal_t             posix_semtype_t;
 typedef struct
 {
     StaticSemaphore_t sem;
     int val;
 } sem_internal_t;
+typedef sem_internal_t             posix_semtype_t;
 
 typedef struct pthread_mutexattr_internal
 {
