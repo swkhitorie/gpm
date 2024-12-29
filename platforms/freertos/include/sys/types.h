@@ -1,26 +1,48 @@
-#ifndef POSIX_TYPES_H_
-#define POSIX_TYPES_H_
+#ifndef POSIX_SYS_TYPES_H_
+#define POSIX_SYS_TYPES_H_
 
 #include <stdint.h>
-#include "posix_types.h"
 
-typedef uint32_t                 clock_t;
-typedef int                      clockid_t;
-typedef int                      mode_t;
-typedef int                      pid_t;
-typedef int                      ssize_t;
-typedef int64_t                  time_t;
-typedef void                     *timer_t;
-typedef unsigned long            useconds_t;
-typedef long int                 off_t;
+#ifndef FAR
+#define FAR
+#endif
 
-typedef void                     *pthread_t;
-typedef void                     *pthread_barrierattr_t;
-typedef void                     *pthread_condattr_t;
-typedef pthreadAttrType_t        pthread_attr_t;
-typedef pthreadBarrierType_t     pthread_barrier_t;
-typedef pthreadCondType_t        pthread_cond_t;
-typedef pthreadMutexType_t       pthread_mutex_t;
-typedef pthreadMutexAttrType_t   pthread_mutexattr_t;
+#ifndef TRUE
+#define TRUE  1
+#endif
+
+#ifndef FALSE
+#define FALSE 0
+#endif
+
+#ifndef NULL
+#define NULL ((void*)0)
+#endif
+
+#if !defined(__cplusplus)
+#undef  ERROR
+#define ERROR -1
+#endif
+
+typedef unsigned int mode_t;
+
+typedef uintptr_t    size_t;
+typedef intptr_t     ssize_t;
+typedef uintptr_t    rsize_t;
+
+typedef int16_t      pid_t;
+typedef int32_t      off_t;
+
+#if 1
+typedef uint64_t     clock_t;
+#else
+typedef uint32_t     clock_t;
+#endif
+
+typedef uint32_t     useconds_t;
+typedef int32_t      suseconds_t;
+
+/* Task entry point */
+typedef int (*main_t)(int argc, FAR char *argv[]);
 
 #endif

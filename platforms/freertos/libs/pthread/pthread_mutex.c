@@ -1,67 +1,43 @@
 #include <stddef.h>
 #include <string.h>
+#include "pthread.h"
+#include "errno.h"
+#include "utils.h"
 
-#include "include/fr_posix.h"
-#include "include/errno.h"
-#include "include/pthread.h"
-#include "include/utils.h"
-
-static const pthread_mutexattr_internal_t default_mutex_attr =
+static void init_staticmutix(pthread_mutex_t *mutex)
 {
-    .type = PTHREAD_MUTEX_DEFAULT,
-};
-
-static void init_staticmutix(pthread_mutex_internal_t *pxMutex)
-{
-    if (pxMutex->initialized == pdFALSE) {
+    if (mutex->initialized == pdFALSE) {
         taskENTER_CRITICAL();
-        if (pxMutex->initialized == pdFALSE) {
-            pxMutex->attr.type = PTHREAD_MUTEX_DEFAULT;
+        if (mutex->initialized == pdFALSE) {
+            mutex->attr.type = PTHREAD_MUTEX_DEFAULT;
             #if PTHREAD_MUTEX_DEFAULT == PTHREAD_MUTEX_RECURSIVE
-                (void)xSemaphoreCreateRecursiveMutexStatic(&pxMutex->mutex);
+                (void)xSemaphoreCreateRecursiveMutexStatic(&mutex->mutex);
             #else
-                (void)xSemaphoreCreateMutexStatic(&pxMutex->mutex);
+                (void)xSemaphoreCreateMutexStatic(&mutex->mutex);
             #endif
-            pxMutex->initialized = pdTRUE;
+            mutex->initialized = pdTRUE;
         }
         taskEXIT_CRITICAL();
     }
 }
 
-int pthread_mutex_destroy(pthread_mutex_t *mutex)
-{
-    pthread_mutex_internal_t *p = (pthread_mutex_internal_t *)mutex;
-
-    if (p->owner == NULL) {
-        vSemaphoreDelete((SemaphoreHandle_t)&p->mutex);
-    }
-    return 0;
-}
-
 int pthread_mutex_init(pthread_mutex_t *mutex, const pthread_mutexattr_t *attr)
 {
     int ret = 0;
-    pthread_mutex_internal_t *p = (pthread_mutex_internal_t *)mutex;
-
+    pthread_mutex_t *p = (pthread_mutex_t *)mutex;
+    pthread_mutexattr_t m_default = { .type = PTHREAD_MUTEX_NORMAL, };
     if (p == NULL) {
         ret = ENOMEM;
     }
 
     if (ret == 0) {
-        *p = FREERTOS_POSIX_MUTEX_INITIALIZER;
-
-        if (attr == NULL) {
-            p->attr = default_mutex_attr;
-        } else {
-            p->attr = *((pthread_mutexattr_internal_t *)attr);
-        }
-
+        *p = PTHREAD_MUTEX_INITIALIZER;
+        p->attr = (attr == NULL) ? m_default : *attr;
         if (p->attr.type == PTHREAD_MUTEX_RECURSIVE) {
             (void)xSemaphoreCreateRecursiveMutexStatic(&p->mutex);
         } else {
             (void)xSemaphoreCreateMutexStatic(&p->mutex);
         }
-
         if ((SemaphoreHandle_t)&p->mutex == NULL) {
             ret = EAGAIN;
             vPortFree(p);
@@ -72,6 +48,15 @@ int pthread_mutex_init(pthread_mutex_t *mutex, const pthread_mutexattr_t *attr)
     return ret;
 }
 
+int pthread_mutex_destroy(pthread_mutex_t *mutex)
+{
+    pthread_mutex_t *p = (pthread_mutex_t *)mutex;
+    if (p->owner == NULL) {
+        vSemaphoreDelete((SemaphoreHandle_t)&p->mutex);
+    }
+    return 0;
+}
+
 int pthread_mutex_lock(pthread_mutex_t *mutex)
 {
     return pthread_mutex_timedlock(mutex, NULL);
@@ -80,7 +65,7 @@ int pthread_mutex_lock(pthread_mutex_t *mutex)
 int pthread_mutex_timedlock(pthread_mutex_t *mutex, const struct timespec *abstime)
 {
     int ret = 0;
-    pthread_mutex_internal_t *p = (pthread_mutex_internal_t *)mutex;
+    pthread_mutex_t *p = (pthread_mutex_t *)mutex;
     TickType_t delay = portMAX_DELAY;
     BaseType_t fr_mutex_take_status = pdFALSE;
 
@@ -113,7 +98,7 @@ int pthread_mutex_timedlock(pthread_mutex_t *mutex, const struct timespec *absti
         }
 
         if (fr_mutex_take_status == pdPASS) {
-            pxMutex->xTaskOwner = xTaskGetCurrentTaskHandle();
+            p->owner = xTaskGetCurrentTaskHandle();
         } else {
             ret = ETIMEDOUT;
         }
@@ -140,7 +125,7 @@ int pthread_mutex_trylock(pthread_mutex_t *mutex)
 int pthread_mutex_unlock(pthread_mutex_t *mutex)
 {
     int ret = 0;
-    pthread_mutex_internal_t *p = (pthread_mutex_internal_t *)mutex;
+    pthread_mutex_t *p = (pthread_mutex_t *)mutex;
 
     init_staticmutix(p);
 
@@ -163,6 +148,28 @@ int pthread_mutex_unlock(pthread_mutex_t *mutex)
     return ret;
 }
 
+int pthread_mutex_getprioceiling(const pthread_mutex_t *mutex, int *prioceiling)
+{
+    (void)mutex;
+    (void)prioceiling;
+    return -1;
+}
+
+int pthread_mutex_setprioceiling(pthread_mutex_t *mutex, int prioceiling, int *old_ceiling)
+{
+    (void)mutex;
+    (void)prioceiling;
+    (void)old_ceiling;
+    return -1;
+}
+
+int pthread_mutexattr_init(pthread_mutexattr_t *attr)
+{
+    pthread_mutexattr_t m_default = { .type = PTHREAD_MUTEX_NORMAL, };
+    *attr = m_default;
+    return 0;
+}
+
 int pthread_mutexattr_destroy(pthread_mutexattr_t *attr)
 {
     (void)attr;
@@ -171,21 +178,15 @@ int pthread_mutexattr_destroy(pthread_mutexattr_t *attr)
 
 int pthread_mutexattr_gettype(const pthread_mutexattr_t *attr, int *type)
 {
-    pthread_mutexattr_internal_t *p = (pthread_mutexattr_internal_t *)attr;
+    pthread_mutexattr_t *p = (pthread_mutexattr_t *)attr;
     *type = p->type;
-    return 0;
-}
-
-int pthread_mutexattr_init(pthread_mutexattr_t *attr)
-{
-    *((pthread_mutexattr_internal_t *)attr) = default_mutex_attr;
     return 0;
 }
 
 int pthread_mutexattr_settype(pthread_mutexattr_t *attr, int type)
 {
     int ret = 0;
-    pthread_mutexattr_internal_t *p = (pthread_mutexattr_internal_t *)attr;
+    pthread_mutexattr_t *p = (pthread_mutexattr_t *)attr;
 
     switch (type) {
         case PTHREAD_MUTEX_NORMAL:
@@ -198,4 +199,46 @@ int pthread_mutexattr_settype(pthread_mutexattr_t *attr, int type)
             break;
     }
     return ret;
+}
+
+int pthread_mutexattr_setpshared(pthread_mutexattr_t *attr, int pshared)
+{
+    (void)attr;
+    (void)pshared;
+    return -1;
+}
+
+int pthread_mutexattr_getpshared(pthread_mutexattr_t *attr, int *pshared)
+{
+    (void)attr;
+    (void)pshared;
+    return -1;
+}
+
+int pthread_mutexattr_getprioceiling(const pthread_mutexattr_t *attr, int *prioceiling)
+{
+    (void)attr;
+    (void)prioceiling;
+    return -1;
+}
+
+int pthread_mutexattr_setprioceiling(const pthread_mutexattr_t *attr, int prioceiling)
+{
+    (void)attr;
+    (void)prioceiling;
+    return -1;
+}
+
+int pthread_mutexattr_getprotocol(const pthread_mutexattr_t *attr, int *protocol)
+{
+    (void)attr;
+    (void)protocol;
+    return -1;
+}
+
+int pthread_mutexattr_setprotocol(const pthread_mutexattr_t *attr, int protocol)
+{
+    (void)attr;
+    (void)protocol;
+    return -1;
 }

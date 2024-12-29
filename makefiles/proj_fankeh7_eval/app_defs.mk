@@ -7,7 +7,7 @@ PROJ_CINCDIRS := \
     boards/edrvlib/pkg/cubeh7/drivers                       \
 	boards/fankeh7                                          \
     platforms/freertos/arch/cortex_m7/gcc                   \
-    platforms/freertos/sched/include                        \
+    platforms/freertos/include/fr                           \
     platforms/freertos/include                              \
     platforms/opmd/cherryusb/class/cdc                      \
     platforms/opmd/cherryusb/common                         \

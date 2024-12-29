@@ -1,8 +1,7 @@
 #include <stddef.h>
 #include <limits.h>
-#include "include/fr_posix.h"
-#include "include/errno.h"
-#include "include/utils.h"
+#include "utils.h"
+#include "errno.h"
 
 size_t utils_strlen(const char *p, size_t maxlen)
 {

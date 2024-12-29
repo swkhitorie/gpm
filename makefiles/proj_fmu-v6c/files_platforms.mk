@@ -16,3 +16,11 @@ CSOURCES += platforms/freertos/sched/tasks.c
 CSOURCES += platforms/freertos/sched/timers.c
 CSOURCES += platforms/freertos/sched/user.c
 
+CSOURCES += platforms/freertos/libs/utils.c
+CSOURCES += $(subst ${SDK_ROOTDIR}/,,$(wildcard ${SDK_ROOTDIR}/platforms/freertos/libs/mqueue/*c))
+CSOURCES += $(subst ${SDK_ROOTDIR}/,,$(wildcard ${SDK_ROOTDIR}/platforms/freertos/libs/pthread/*c))
+CSOURCES += $(subst ${SDK_ROOTDIR}/,,$(wildcard ${SDK_ROOTDIR}/platforms/freertos/libs/queue/*c))
+CSOURCES += $(subst ${SDK_ROOTDIR}/,,$(wildcard ${SDK_ROOTDIR}/platforms/freertos/libs/semaphore/*c))
+CSOURCES += $(subst ${SDK_ROOTDIR}/,,$(wildcard ${SDK_ROOTDIR}/platforms/freertos/libs/time/*c))
+CSOURCES += $(subst ${SDK_ROOTDIR}/,,$(wildcard ${SDK_ROOTDIR}/platforms/freertos/libs/timer/*c))
+CSOURCES += $(subst ${SDK_ROOTDIR}/,,$(wildcard ${SDK_ROOTDIR}/platforms/freertos/libs/unistd/*c))

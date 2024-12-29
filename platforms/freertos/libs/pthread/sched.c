@@ -1,5 +1,6 @@
-#include "include/fr_posix.h"
-#include "include/sched.h"
+#include <FreeRTOS.h>
+#include <task.h>
+#include "sched.h"
 
 int sched_get_priority_max(int policy)
 {

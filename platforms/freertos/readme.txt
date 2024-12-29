@@ -5,7 +5,7 @@ file source:
         FreeRTOS\Source\portable\MemMang\*
     ./sched         [RTOS Core]
         FreeRTOS\Source\*.c
-    ./sched/include [RTOS Core]
+    ./include/fr    [RTOS Core]
         FreeRTOS\Source\Include\*.h
     ./include
     ./libs [freertos posix interface]

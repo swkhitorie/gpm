@@ -1,28 +1,22 @@
 #ifndef POSIX_FCNTL_H_
 #define POSIX_FCNTL_H_
 
-#define O_CLOEXEC      0x0001 /**< Close the file descriptor upon exec(). */
-#define O_CREAT        0x0002 /**< Create file if it does not exist. */
-#define O_DIRECTORY    0x0004 /**< Fail if file is a non-directory file. */
-#define O_EXCL         0x0008 /**< Exclusive use flag. */
-#define O_NOCTTY       0x0010 /**< Do not assign controlling terminal. */
-#define O_NOFOLLOW     0x0020 /**< Do not follow symbolic links. */
-#define O_TRUNC        0x0040 /**< Truncate flag. */
-#define O_TTY_INIT     0x0080 /**< termios structure provides conforming behavior. */
+#include "sys/types.h"
 
-#define O_APPEND      0x0100 /**< Set append mode. */
-#define O_DSYNC       0x0200 /**< Write according to synchronized I/O data integrity completion. */
-#define O_NONBLOCK    0x0400 /**< Non-blocking mode. */
-#define O_RSYNC       0x0800 /**< Synchronized read I/O operations. */
-#define O_SYNC        0x0200 /**< Write according to synchronized I/O file integrity completion. */
-
-#define O_ACCMODE    0xF000
-
-#define O_EXEC      0x1000  /**< Open for execute only (non-directory files). */
-#define O_RDONLY    0x2000  /**< Open for reading only. */
-#define O_RDWR      0xA000  /**< Open for reading and writing. */
-#define O_SEARCH    0x4000  /**< Open directory for search only. */
-#define O_WRONLY    0x8000  /**< Open for writing only. */
-
+#define O_RDONLY    (1 << 0)        /* Open for read access (only) */
+#define O_RDOK      O_RDONLY        /* Read access is permitted (non-standard) */
+#define O_WRONLY    (1 << 1)        /* Open for write access (only) */
+#define O_WROK      O_WRONLY        /* Write access is permitted (non-standard) */
+#define O_RDWR      (O_RDOK|O_WROK) /* Open for both read & write access */
+#define O_CREAT     (1 << 2)        /* Create file/sem/mq object */
+#define O_EXCL      (1 << 3)        /* Name must not exist when opened  */
+#define O_APPEND    (1 << 4)        /* Keep contents, append to end */
+#define O_TRUNC     (1 << 5)        /* Delete contents */
+#define O_NONBLOCK  (1 << 6)        /* Don't wait for data */
+#define O_NDELAY    O_NONBLOCK      /* Synonym for O_NONBLOCK */
+#define O_SYNC      (1 << 7)        /* Synchronize output on write */
+#define O_DSYNC     O_SYNC          /* Equivalent to OSYNC */
+#define O_BINARY    (1 << 8)        /* Open the file in binary (untranslated) mode. */
+#define O_DIRECT    (1 << 9)        /* Avoid caching, write directly to hardware */
 
 #endif
