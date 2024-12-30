@@ -1,10 +1,15 @@
 {
+    "sub_task_path" : {
+        "sub_task1" : "./makefiles/proj_fankeh7_eval",
+        "sub_task2" : "./makefiles/proj_fmu-v2",
+        "sub_task3" : "./makefiles/proj_fmu-v6c"
+    },
     "version": "2.0.0",
     "tasks" : [
         {
             "label": "build",
             "type": "shell",
-            "command":"cd ./build/makefile/project/comb_nav; make distclean; make all",
+            "command":"cd ${sub_task1}; make distclean; make all",
             "group" : {
                 "kind": "build",
                 "isDefault": true

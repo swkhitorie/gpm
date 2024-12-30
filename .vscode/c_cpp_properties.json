@@ -17,14 +17,16 @@
                 "${gcc_arm_path}/../lib/gcc/arm-none-eabi/10.3.1/include-fixed",
                 "${gcc_arm_path}/../lib/gcc/arm-none-eabi/10.3.1/../../../../arm-none-eabi/include",
 
-                "${workspaceFolder}/boards/ahl/stdf1",
-                "${workspaceFolder}/boards/ahl/stdf4",
-                "${workspaceFolder}/boards/ahl/cubeh7",
+                "${workspaceFolder}/boards/edrvlib/common",
+                "${workspaceFolder}/boards/edrvlib/cubeh7/include",
 
-                "${workspaceFolder}/boards/fmu-v6c/src",
-                "${workspaceFolder}/boards/fmu-v6c/src/core",
-                "${workspaceFolder}/boards/fmu-v6c/src/drivers"
+                "${workspaceFolder}/boards/edrvlib/pkg/cubeh7/core",
+                "${workspaceFolder}/boards/edrvlib/pkg/cubeh7/drivers",
+                "${workspaceFolder}/boards/edrvlib/pkg/cubeh7/dev",
 
+                "${workspaceFolder}/boards/edrvlib/pkg/cubef4/core",
+                "${workspaceFolder}/boards/edrvlib/pkg/cubef4/drivers",
+                "${workspaceFolder}/boards/edrvlib/pkg/cubef4/dev"
             ],
             "intelliSenseMode": "gcc-x64",
             "cStandard": "c17",

@@ -6,7 +6,7 @@ void heart(void *p)
 {
     for (;;) {
         cdc_acm_print(0, "[heart] a\r\n");
-        // board_blue_led_toggle();
+        board_blue_led_toggle();
         vTaskDelay(500);
     }
 }
