@@ -41,10 +41,6 @@
 
 #include <px4_platform_common/log.h>
 
-/****************************************************************************
- * Defines for all platforms.
- ****************************************************************************/
-
 #define PX4_ERROR (-1)
 #define PX4_OK 0
 
@@ -53,15 +49,14 @@ constexpr bool PX4_ISFINITE(float x) { return __builtin_isfinite(x); }
 constexpr bool PX4_ISFINITE(double x) { return __builtin_isfinite(x); }
 #endif
 
+#define _PX4_IOC(x,y)   _IOC(x,y)
+
+#define USEC_PER_TICK   (1000000/PX4_TICKS_PER_SEC)
+#define USEC2TICK(x)    (((x)+(USEC_PER_TICK/2))/USEC_PER_TICK)
+
 __BEGIN_DECLS
 extern long PX4_TICKS_PER_SEC;
 __END_DECLS
-
-#define _IOC(type,nr)   ((type)|(nr))
-#define _PX4_IOC(x,y)   _IOC(x,y)
-
-#define USEC_PER_TICK (1000000/PX4_TICKS_PER_SEC)
-#define USEC2TICK(x) (((x)+(USEC_PER_TICK/2))/USEC_PER_TICK)
 
 #if 0
 #define OK 0

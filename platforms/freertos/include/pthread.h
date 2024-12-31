@@ -55,7 +55,14 @@
 
 typedef void* pthread_t;
 typedef void* pthread_barrierattr_t;
+#if 0
 typedef void* pthread_condattr_t;
+#else
+typedef struct {
+    int      is_initialized;
+    clock_t  clock;           /* specifiy clock for timeouts */
+} pthread_condattr_t;
+#endif
 
 typedef struct __pthread_attr
 {

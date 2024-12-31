@@ -66,7 +66,7 @@
 #define SHELL_TASK_ID (PX4_MAX_TASKS+1)
 
 pthread_t _shell_task_id = 0;
-pthread_mutex_t task_mutex;// = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t task_mutex = PTHREAD_MUTEX_INITIALIZER;
 
 struct task_entry {
 	pthread_t pid;
@@ -114,7 +114,6 @@ static void *entry_adapter(void *ptr)
 px4_task_t px4_task_spawn_cmd(const char *name, int scheduler, int priority, int stack_size, px4_main_t entry,
 			      char *const argv[])
 {
-
 	int i;
 	int argc = 0;
 	unsigned int len = 0;
