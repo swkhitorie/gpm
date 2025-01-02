@@ -246,6 +246,7 @@ WorkQueueManagerRun(int, char **)
 			}
 
 			// stack size
+			const size_t stacksize = math::max((uint16_t)PTHREAD_STACK_MIN, wq->stacksize);
 #if defined(__PX4_QURT)
 			const size_t stacksize = math::max(8 * 1024, PX4_STACK_ADJUSTED(wq->stacksize));
 #elif defined(__PX4_NUTTX)
@@ -313,11 +314,11 @@ WorkQueueManagerStart()
 		_wq_manager_should_exit.store(false);
 
 		int task_id = px4_task_spawn_cmd("wq:manager",
-						 SCHED_DEFAULT,
-						 SCHED_PRIORITY_MAX,
-						 1280,
-						 (px4_main_t)&WorkQueueManagerRun,
-						 nullptr);
+                        SCHED_DEFAULT,
+                        SCHED_PRIORITY_MAX,
+                        1280,
+                        (px4_main_t)&WorkQueueManagerRun,
+                        nullptr);
 
 		if (task_id < 0) {
 			_wq_manager_should_exit.store(true);

@@ -2347,6 +2347,38 @@ TCB_t *pxTCB;
 }
 /*-----------------------------------------------------------*/
 
+void pcTaskSetName( TaskHandle_t xTaskToQuery , const char *name )
+{
+TCB_t *pxTCB;
+int x;
+	/* If null is passed in here then the name of the calling task is being
+	queried. */
+	pxTCB = prvGetTCBFromHandle( xTaskToQuery );
+	configASSERT( pxTCB );
+	if( name != NULL )
+	{
+		for( x = ( UBaseType_t ) 0; x < ( UBaseType_t ) configMAX_TASK_NAME_LEN; x++ )
+		{
+			pxTCB->pcTaskName[ x ] = name[ x ];
+
+			if( name[ x ] == ( char ) 0x00 )
+			{
+				break;
+			}
+			else
+			{
+				mtCOVERAGE_TEST_MARKER();
+			}
+		}
+		pxTCB->pcTaskName[ configMAX_TASK_NAME_LEN - 1 ] = '\0';
+	}
+	else
+	{
+		pxTCB->pcTaskName[ 0 ] = 0x00;
+	}
+}
+/*-----------------------------------------------------------*/
+
 #if ( INCLUDE_xTaskGetHandle == 1 )
 
 	static TCB_t *prvSearchForNameWithinSingleList( List_t *pxList, const char pcNameToQuery[] )

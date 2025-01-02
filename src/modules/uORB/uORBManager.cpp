@@ -36,7 +36,7 @@
 #include <stdarg.h>
 #include <fcntl.h>
 
-#include <px4_platform_common/px4_config.h>
+// #include <px4_platform_common/px4_config.h>
 #include <px4_platform_common/posix.h>
 #include <px4_platform_common/tasks.h>
 

@@ -286,7 +286,7 @@ extern "C"
  * either as macros or via syscalls.
  */
 
-//FAR int *get_errno_ptr(void);
+// FAR int *get_errno_ptr(void);
 
 #undef EXTERN
 #if defined(__cplusplus)

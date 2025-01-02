@@ -8,9 +8,11 @@
 #include <task.h>
 #include <semphr.h>
 #include <event_groups.h>
-
+#include <errno.h>
 #include "time.h"
 #include "sched.h"
+
+#define PTHREAD_STACK_MIN          (configMINIMAL_STACK_SIZE * sizeof(BaseType_t))
 
 #define PTHREAD_CREATE_DETACHED    0
 #define PTHREAD_CREATE_JOINABLE    1

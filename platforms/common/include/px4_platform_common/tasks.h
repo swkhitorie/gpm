@@ -40,6 +40,9 @@
  * Preserve existing task API call signature with OS abstraction
  */
 
+/************************************************************
+ * px4 task interface base on pthread sched
+ ***********************************************************/
 #pragma once
 
 #include <stdbool.h>
@@ -47,12 +50,42 @@
 #include <pthread.h>
 #include <sched.h>
 
+#if defined(__PX4_NUTTX)
+typedef int px4_task_t;
+
+#include <sys/prctl.h>
+#define px4_prctl prctl
+
+#if CONFIG_RR_INTERVAL > 0
+# define SCHED_DEFAULT  SCHED_RR
+#else
+# define SCHED_DEFAULT  SCHED_FIFO
+#endif
+
+#define px4_task_exit(x) _exit(x)
+
+#elif defined(__PX4_FR)
+
+#include <pthread.h>
+#include <sched.h>
+
+#define SCHED_DEFAULT	SCHED_FIFO
+#define SCHED_PRIORITY_MAX sched_get_priority_max(SCHED_FIFO)
+#define SCHED_PRIORITY_MIN sched_get_priority_min(SCHED_FIFO)
+#define SCHED_PRIORITY_DEFAULT (((sched_get_priority_max(SCHED_FIFO) - sched_get_priority_min(SCHED_FIFO)) / 2) + sched_get_priority_min(SCHED_FIFO))
+
+#define PR_SET_NAME	1
+
 typedef int px4_task_t;
 
 typedef struct {
 	int argc;
 	char **argv;
 } px4_task_args_t;
+
+#else
+#error "No target OS defined"
+#endif
 
 // PX4 work queue starting high priority
 #define PX4_WQ_HP_BASE (SCHED_PRIORITY_MAX - 15)

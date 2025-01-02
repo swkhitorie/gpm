@@ -45,7 +45,7 @@
 #include <inttypes.h>
 
 #include <px4_platform_common/time.h>
-#include <queue.h>
+#include <sdqueue.h>
 
 __BEGIN_DECLS
 

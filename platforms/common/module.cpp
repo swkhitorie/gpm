@@ -36,15 +36,11 @@
  * Implementation of the API declared in px4_module.h.
  */
 
-#ifndef MODULE_NAME
-#define MODULE_NAME "module"
-#endif
-
 #include <px4_platform_common/module.h>
 #include <px4_platform_common/defines.h>
 #include <px4_platform_common/log.h>
 
-pthread_mutex_t px4_modules_mutex;// = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t px4_modules_mutex = PTHREAD_MUTEX_INITIALIZER;
 
 #ifndef __PX4_NUTTX
 
@@ -103,7 +99,7 @@ void PRINT_MODULE_USAGE_PARAMS_I2C_SPI_DRIVER(bool i2c_support, bool spi_support
 	}
 
 	PRINT_MODULE_USAGE_PARAM_INT('b', -1, 0, 16, "bus (board-specific internal (default=all) or n-th external (default=1))",
-				     true);
+                    true);
 
 	if (spi_support) {
 		PRINT_MODULE_USAGE_PARAM_INT('c', 1, 1, 10, "chip-select index (for external SPI)", true);

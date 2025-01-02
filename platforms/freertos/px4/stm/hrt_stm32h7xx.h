@@ -2,7 +2,7 @@
 #define HRT_STM32H7XX_H_
 
 #include <stdint.h>
-#include "stm32h7xx.h"
+#include <board_config.h>
 
 #define HRT_TIMER_CHANNEL     (1)
 #define HRT_TIMER             (1)
@@ -57,12 +57,12 @@
 #define STM32_RCC_APB2ENR          (RCC->APB2ENR)
 #define STM32_RCC_APB1ENR          (RCC_C1->APB1LENR)
 
-#define RCC_APB2ENR_TIM1EN         (RCC_APB2ENR_TIM1EN)
+// #define RCC_APB2ENR_TIM1EN         (RCC_APB2ENR_TIM1EN)
 #define RCC_APB1ENR_TIM2EN         (RCC_APB1LENR_TIM2EN)
 #define RCC_APB1ENR_TIM3EN         (RCC_APB1LENR_TIM3EN)
 #define RCC_APB1ENR_TIM4EN         (RCC_APB1LENR_TIM4EN)
 #define RCC_APB1ENR_TIM5EN         (RCC_APB1LENR_TIM5EN)
-#define RCC_APB2ENR_TIM8EN         (RCC_APB2ENR_TIM8EN)
+// #define RCC_APB2ENR_TIM8EN         (RCC_APB2ENR_TIM8EN)
 
 #define STM32_IRQ_TIM1CC           (TIM1_CC_IRQn)
 #define STM32_IRQ_TIM2             (TIM2_IRQn)

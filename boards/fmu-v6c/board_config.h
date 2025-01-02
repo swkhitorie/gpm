@@ -23,8 +23,8 @@
 
 #define APP_LOAD_ADDRESS      (0x08020000)
 
-#define HSE_VALUE             ((uint32_t)16000000)
-#define LSE_VALUE             ((uint32_t)32768)
+#define HSE_VALUE             (16000000UL)
+#define LSE_VALUE             (32768UL)
 #define __FPU_PRESENT         1
 #define __FPU_USED            1
 

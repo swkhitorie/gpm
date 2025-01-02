@@ -211,11 +211,16 @@ void cdc_acm_data_send_with_dtr_test(uint8_t busid)
 #include <string.h>
 #include <stdio.h>
 #include <stdarg.h>
-void cdc_acm_print(uint8_t busid, const char *fmt, ...)
+FILE __stdin, __stdout, __stderr;
+__attribute__((weak)) int _write(int file, char *ptr, int len)
 {
-    va_list args;
-    va_start(args, fmt);
-    vsnprintf(write_buffer, 2048, fmt, args);
-    usbd_ep_start_write(busid, CDC_IN_EP, write_buffer, strlen(write_buffer));
-    va_end(args);
+    const int stdin_fileno = 0;
+    const int stdout_fileno = 1;
+    const int stderr_fileno = 2;
+
+    if (file == stdout_fileno) {
+        memcpy(&write_buffer[0], ptr, len);
+        usbd_ep_start_write(0, CDC_IN_EP, write_buffer, len);
+    }
+    return len;
 }

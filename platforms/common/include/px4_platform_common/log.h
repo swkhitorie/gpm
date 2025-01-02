@@ -37,12 +37,16 @@
  */
 
 #pragma once
-
+#include "visibility.h"
 #define _PX4_LOG_LEVEL_DEBUG		0
 #define _PX4_LOG_LEVEL_INFO		    1
 #define _PX4_LOG_LEVEL_WARN		    2
 #define _PX4_LOG_LEVEL_ERROR		3
 #define _PX4_LOG_LEVEL_PANIC		4
+
+#ifndef MODULE_NAME
+#define MODULE_NAME "module"
+#endif
 
 // Used to silence unused variable warning
 static inline void do_nothing(int level, ...) { (void)level; }
@@ -319,11 +323,7 @@ __END_DECLS
  ****************************************************************************/
 #define PX4_INFO(FMT, ...) 	__px4_log_modulename(_PX4_LOG_LEVEL_INFO, FMT, ##__VA_ARGS__)
 
-#ifdef __NUTTX
 #define PX4_INFO_RAW		printf
-#else
-#define PX4_INFO_RAW(FMT, ...) 	__px4_log_raw(_PX4_LOG_LEVEL_INFO, FMT, ##__VA_ARGS__)
-#endif
 
 #if defined(TRACE_BUILD)
 /****************************************************************************

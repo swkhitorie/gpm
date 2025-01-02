@@ -49,6 +49,19 @@ constexpr bool PX4_ISFINITE(float x) { return __builtin_isfinite(x); }
 constexpr bool PX4_ISFINITE(double x) { return __builtin_isfinite(x); }
 #endif
 
+#if defined(__PX4_NUTTX)
+
+#define PX4_ROOTFSDIR ""
+#define PX4_STORAGEDIR PX4_ROOTFSDIR "/fs/microsd"
+#define _PX4_IOC(x,y) _IOC(x,y)
+
+// mode for open with O_CREAT
+#define PX4_O_MODE_777 0777
+#define PX4_O_MODE_666 0666
+#define PX4_O_MODE_600 0600
+
+#elif defined(__PX4_FR)
+
 #define _PX4_IOC(x,y)   _IOC(x,y)
 
 #define USEC_PER_TICK   (1000000/PX4_TICKS_PER_SEC)
@@ -58,9 +71,15 @@ __BEGIN_DECLS
 extern long PX4_TICKS_PER_SEC;
 __END_DECLS
 
-#if 0
+#endif
+
+#ifndef OK
 #define OK 0
+#endif
+#ifndef ERROR
 #define ERROR -1
+#endif
+#ifndef MAX_RAND
 #define MAX_RAND 32767
 #endif
 

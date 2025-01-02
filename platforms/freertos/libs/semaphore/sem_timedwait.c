@@ -1,7 +1,7 @@
 #include "errno.h"
 #include "semaphore.h"
 #include "utils.h"
-
+#include "atomic.h"
 
 int sem_timedwait(sem_t *sem, const struct timespec *abstime)
 {

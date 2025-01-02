@@ -27,7 +27,6 @@ CSOURCES += boards/edrvlib/pkg/cubeh7/drivers/stm32h7xx_hal_tim_ex.c
 CSOURCES += boards/fankeh7/board_irq.c
 CSOURCES += boards/fankeh7/board_rcc_init.c
 
-CSOURCES += boards/fankeh7/board_hrt.c
 CSOURCES += boards/fankeh7/board_usb.c
 CSOURCES += boards/fankeh7/board_init.c
 

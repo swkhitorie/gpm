@@ -37,16 +37,23 @@
  * Synchronization primitive: Semaphore
  */
 
+/************************************************************
+ * px4 sem interface
+ * 1. RTOS (Implemented internally according to the POSIX standard)
+ * 2. Posix (realize PC-like)
+ ***********************************************************/
 #pragma once
 
 #include <semaphore.h>
 
-#if 0
+#if !defined(__PX4_NUTTX)
 #define SEM_PRIO_NONE             0
 #define SEM_PRIO_INHERIT          1
 #define SEM_PRIO_PROTECT          2
 #define sem_setprotocol(s,p)
 #endif
+
+#if defined(__PX4_POSIX)
 
 __BEGIN_DECLS
 
@@ -66,3 +73,22 @@ __EXPORT int		px4_sem_getvalue(px4_sem_t *s, int *sval);
 __EXPORT int		px4_sem_destroy(px4_sem_t *s);
 
 __END_DECLS
+
+#else
+
+typedef sem_t px4_sem_t;
+
+__BEGIN_DECLS
+
+#define px4_sem_init		sem_init
+#define px4_sem_setprotocol	sem_setprotocol
+#define px4_sem_wait		sem_wait
+#define px4_sem_trywait		sem_trywait
+#define px4_sem_post		sem_post
+#define px4_sem_getvalue	sem_getvalue
+#define px4_sem_destroy		sem_destroy
+#define px4_sem_timedwait	sem_timedwait
+
+__END_DECLS
+
+#endif

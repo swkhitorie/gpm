@@ -37,6 +37,12 @@
  * Includes POSIX-like functions for virtual character devices
  */
 
+/************************************************************
+ * px4 posix interface
+ * 1. Nuttx (defined in Nuttx component)
+ * 2. Posix (basical on posix pthread, pthread_mutex standard, clock time)
+ *          (only use for character device driver)
+ ***********************************************************/
 #pragma once
 
 #include <px4_platform_common/defines.h>
@@ -44,8 +50,38 @@
 #include <stdint.h>
 #include <unistd.h>
 #include <fcntl.h>
-#include <sys/types.h>
+#include "sys/types.h"
 #include "sem.h"
+
+#define  PX4_F_RDONLY 1
+#define  PX4_F_WRONLY 2
+
+#ifdef __PX4_NUTTX
+
+#include <poll.h>
+
+typedef struct pollfd px4_pollfd_struct_t;
+typedef pollevent_t px4_pollevent_t;
+
+#if defined(__cplusplus)
+#define _GLOBAL ::
+#else
+#define _GLOBAL
+#endif
+#define px4_open 	_GLOBAL open
+#define px4_close 	_GLOBAL close
+#define px4_ioctl 	_GLOBAL ioctl
+#define px4_write 	_GLOBAL write
+#define px4_read 	_GLOBAL read
+#define px4_poll 	_GLOBAL poll
+#define px4_access 	_GLOBAL access
+#define px4_getpid 	_GLOBAL getpid
+
+#define  PX4_STACK_OVERHEAD	0
+
+#else
+
+#define	 PX4_STACK_OVERHEAD	(1024 * 5)
 
 __BEGIN_DECLS
 
@@ -76,3 +112,14 @@ __EXPORT int		px4_access(const char *pathname, int mode);
 __EXPORT px4_task_t	px4_getpid(void);
 
 __END_DECLS
+// #else
+// #error "No TARGET OS Provided"
+#endif
+
+
+// The stack size is intended for 32-bit architectures; therefore
+// we often run out of stack space when pointers are larger than 4 bytes.
+// Double the stack size on posix when we're on a 64-bit architecture.
+// Most full-scale OS use 1-4K of memory from the stack themselves
+#define PX4_STACK_ADJUSTED(_s) (_s * (__SIZEOF_POINTER__ >> 2) + PX4_STACK_OVERHEAD)
+

@@ -27,7 +27,6 @@ CSOURCES += boards/edrvlib/pkg/cubeh7/drivers/stm32h7xx_hal_tim_ex.c
 CSOURCES += boards/fmu-v6c/board_irq.c
 CSOURCES += boards/fmu-v6c/board_rcc_init.c
 
-CSOURCES += boards/fmu-v6c/board_hrt.c
 CSOURCES += boards/fmu-v6c/board_usb.c
 CSOURCES += boards/fmu-v6c/board_init.c
 

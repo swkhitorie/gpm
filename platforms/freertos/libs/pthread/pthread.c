@@ -2,7 +2,7 @@
 #include <string.h>
 #include "pthread.h"
 #include "errno.h"
-
+int frerrno;
 typedef struct __pthread_obj
 {
     pthread_attr_t attr;
@@ -134,13 +134,18 @@ int pthread_kill(pthread_t thread, int sig)
 }
 
 int pthread_setname_np(pthread_t thread, const char *name) 
-{ 
-    return -1; 
+{
+    pthread_obj_t *p = (pthread_obj_t *)pthread_self();
+    pcTaskSetName(p->handle, name);
+    return 0;
 }
 
 int pthread_getname_np(pthread_t thread, char *name, int namelen)
 {
-    return -1; 
+    pthread_obj_t *p = (pthread_obj_t *)pthread_self();
+    name = pcTaskGetName(p->handle);
+    (void)namelen;
+    return 0; 
 }
 
 int pthread_getschedparam(pthread_t thread, int *policy, struct sched_param *param)

@@ -5,4 +5,7 @@
 #include "board_config.h"
 #include "cdc_acm_user.h"
 
+#include "FreeRTOS.h"
+#include "task.h"
+
 #endif

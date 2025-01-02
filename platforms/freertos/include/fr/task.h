@@ -1392,7 +1392,7 @@ UBaseType_t uxTaskGetNumberOfTasks( void ) PRIVILEGED_FUNCTION;
  * \ingroup TaskUtils
  */
 char *pcTaskGetName( TaskHandle_t xTaskToQuery ) PRIVILEGED_FUNCTION; /*lint !e971 Unqualified char types are allowed for strings and single characters only. */
-
+void pcTaskSetName( TaskHandle_t xTaskToQuery , const char *name );
 /**
  * task. h
  * <PRE>TaskHandle_t xTaskGetHandle( const char *pcNameToQuery );</PRE>

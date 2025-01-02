@@ -128,10 +128,10 @@ public:
 	static int main(int argc, char *argv[])
 	{
 		if (argc <= 1 ||
-		    strcmp(argv[1], "-h")    == 0 ||
-		    strcmp(argv[1], "help")  == 0 ||
-		    strcmp(argv[1], "info")  == 0 ||
-		    strcmp(argv[1], "usage") == 0) {
+            strcmp(argv[1], "-h")    == 0 ||
+            strcmp(argv[1], "help")  == 0 ||
+            strcmp(argv[1], "info")  == 0 ||
+            strcmp(argv[1], "usage") == 0) {
 			return T::print_usage();
 		}
 

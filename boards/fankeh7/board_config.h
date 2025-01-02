@@ -10,9 +10,8 @@
 #include <stdbool.h>
 
 #define APP_LOAD_ADDRESS      (0x08000000)
-
-#define HSE_VALUE             ((uint32_t)25000000)
-#define LSE_VALUE             ((uint32_t)32768)
+#define HSE_VALUE             (25000000UL)
+#define LSE_VALUE             (32768UL)
 #define __FPU_PRESENT         1
 #define __FPU_USED            1
 
@@ -22,11 +21,12 @@
 #define BOARD_BLUE_LED(on_true)            HAL_GPIO_WritePin(GPIO_nLED_BLUE_PORT, \
                                                     GPIO_nLED_BLUE_PIN, !(on_true))
 
-#define STM32_PLL1P_FREQUENCY   (HSE_VALUE/25*160/2)
+#define STM32_PLL1P_FREQUENCY   (((HSE_VALUE/25)*160)/2)
 #define STM32_SYSCLK_FREQUENCY  (STM32_PLL1P_FREQUENCY)
 #define STM32_CPUCLK_FREQUENCY  (STM32_SYSCLK_FREQUENCY/1)
 #define STM32_HCLK_FREQUENCY    (STM32_CPUCLK_FREQUENCY/2)
 #define STM32_PCLK1_FREQUENCY   (STM32_HCLK_FREQUENCY/2)
+#define STM32_PCLK2_FREQUENCY   (STM32_HCLK_FREQUENCY/2)
 
 #define STM32_APB1_TIM2_CLKIN   (2*STM32_PCLK1_FREQUENCY)
 #define STM32_APB1_TIM3_CLKIN   (2*STM32_PCLK1_FREQUENCY)

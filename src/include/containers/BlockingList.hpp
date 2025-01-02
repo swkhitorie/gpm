@@ -84,7 +84,7 @@ public:
 
 private:
 
-	pthread_mutex_t	_mutex;// = PTHREAD_MUTEX_INITIALIZER;
-	pthread_cond_t	_cv;// = PTHREAD_COND_INITIALIZER;
+	pthread_mutex_t	_mutex = PTHREAD_MUTEX_INITIALIZER;
+	pthread_cond_t	_cv = PTHREAD_COND_INITIALIZER;
 
 };

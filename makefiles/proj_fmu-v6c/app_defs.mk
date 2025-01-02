@@ -9,9 +9,9 @@ PROJ_CINCDIRS := \
     platforms/freertos/arch/cortex_m7/gcc                   \
     platforms/freertos/include                              \
     platforms/freertos/include/fr                           \
-    platforms/opmd/cherryusb/class/cdc                      \
-    platforms/opmd/cherryusb/common                         \
-    platforms/opmd/cherryusb/core                           \
-    platforms/opmd/cherryusb/port/dwc2                      \
-    platforms/opmd/cherryusb/demo                           \
+    platforms/component/cherryusb/class/cdc                 \
+    platforms/component/cherryusb/common                    \
+    platforms/component/cherryusb/core                      \
+    platforms/component/cherryusb/port/dwc2                 \
+    platforms/component/cherryusb/demo                      \
     src/app/fmu-v6c_app

@@ -1,6 +1,7 @@
 #include "errno.h"
 #include "semaphore.h"
 #include "utils.h"
+#include "atomic.h"
 
 int sem_post(sem_t *sem)
 {

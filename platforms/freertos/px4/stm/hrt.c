@@ -35,13 +35,11 @@
 #include <stdbool.h>
 
 #include <assert.h>
-#include <debug.h>
 #include <time.h>
-#include <queue.h>
+#include <sdqueue.h>
 #include <errno.h>
 #include <string.h>
 
-#include <board_config.h>
 #include <drivers/drv_hrt.h>
 
 #include "./hrt_stm32h7xx.h"
@@ -54,7 +52,7 @@
 
 #ifdef HRT_TIMER
 
-static int		hrt_tim_isr(void);
+static void hrt_tim_isr(void);
 
 /* HRT configuration */
 #if   HRT_TIMER == 1
@@ -115,7 +113,7 @@ void TIM8_CC_IRQHandler() { hrt_tim_isr(); }
 #if (HRT_TIMER_CLOCK % 1000000) != 0
 # error HRT_TIMER_CLOCK must be a multiple of 1MHz
 #endif
-#if HRT_TIMER_CLOCK <= 1000000
+#if ((HRT_TIMER_CLOCK) <= 1000000)
 # error HRT_TIMER_CLOCK must be greater than 1MHz
 #endif
 
@@ -270,7 +268,7 @@ static void hrt_tim_init(void)
 	up_enable_irq(HRT_TIMER_VECTOR);
 }
 
-static int hrt_tim_isr(int irq, void *context, void *arg)
+static void hrt_tim_isr()
 {
 	uint32_t status;
 
@@ -295,8 +293,6 @@ static int hrt_tim_isr(int irq, void *context, void *arg)
 		/* and schedule the next interrupt */
 		hrt_call_reschedule();
 	}
-
-	return OK;
 }
 
 /**
