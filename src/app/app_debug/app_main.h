@@ -9,5 +9,8 @@
 #include "task.h"
 #endif
 
+void debug_led_toggle();
+
+
 #endif
 

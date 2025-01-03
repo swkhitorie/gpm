@@ -1,6 +1,9 @@
 #include "./app_main.h"
 #include <stdio.h>
 
+#include <drivers/drv_hrt.h>
+#include <px4_platform_common/log.h>
+
 void debug_led_toggle()
 {
 #if   BOARD_SELECT == BOARD_FMUV2
@@ -18,8 +21,11 @@ void fr_heart(void *p)
     char newname[] = "h2_d1";
     pcTaskSetName(xTaskGetCurrentTaskHandle(), &newname[0]);
     for (;;) {
-        fprintf(stdout, "[heart] stdio %s, kernel %d\r\n", 
-            pcTaskGetName(xTaskGetCurrentTaskHandle()), HAL_GetTick());
+        float a1 = HAL_GetTick()/1e3f;
+        float a2 = hrt_absolute_time()/1e6f;
+        fprintf(stdout, "[heart] %s, kernel %.6f %.6f %.6f\r\n", 
+            pcTaskGetName(xTaskGetCurrentTaskHandle()), 
+            a1, a2, a2-a1);
         debug_led_toggle();
         vTaskDelay(500);
     }
@@ -39,6 +45,8 @@ void debug()
 int main(void)
 {
     board_init();
+
+    hrt_init();
 
     xTaskCreate(fr_heart, "ht_debug", 1024, NULL, 3, NULL);
     vTaskStartScheduler();

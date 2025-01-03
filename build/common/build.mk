@@ -81,15 +81,12 @@ vpath %.asm $(dir ${BUILD_ASMSOURCES})
 ##################################
 ${TARGET_ROOTDIR}:
 	$(call MK_MKDIR,"$(call MK_PATHTOWIN,$@)")
-	$(call MK_ECHO, mkdir $@)
 
 ${OBJS_FOLDER}:
 	$(call MK_MKDIR,"$(call MK_PATHTOWIN,$@)")
-	$(call MK_ECHO, mkdir $@)
 
 ${TARGET_DEST_ROOTDIR}:
 	$(call MK_MKDIR,"$(call MK_PATHTOWIN,$@)")
-	$(call MK_ECHO, mkdir $@)
 
 ##################################
 # Targets section - Via files

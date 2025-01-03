@@ -102,10 +102,10 @@ void board_config_power_rcc()
     RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
 
     /* HSE=25M Kernel Clock(400MHZ)= HSE/PLLM*PLLN/PLLP */
-	RCC_OscInitStruct.PLL.PLLM = 5;
-	RCC_OscInitStruct.PLL.PLLN = 160;
-	RCC_OscInitStruct.PLL.PLLP = 2;
-	RCC_OscInitStruct.PLL.PLLQ = 4;
+	RCC_OscInitStruct.PLL.PLLM = STM32_PLLCFG_PLL1M;
+	RCC_OscInitStruct.PLL.PLLN = STM32_PLLCFG_PLL1N;
+	RCC_OscInitStruct.PLL.PLLP = STM32_PLLCFG_PLL1P;
+	RCC_OscInitStruct.PLL.PLLQ = STM32_PLLCFG_PLL1Q;
     RCC_OscInitStruct.PLL.PLLRGE = RCC_PLL1VCIRANGE_2;
     RCC_OscInitStruct.PLL.PLLVCOSEL = RCC_PLL1VCOWIDE;
     //RCC_OscInitStruct.PLL.PLLFRACN = 0;

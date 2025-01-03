@@ -21,7 +21,14 @@
 #define BOARD_BLUE_LED(on_true)            HAL_GPIO_WritePin(GPIO_nLED_BLUE_PORT, \
                                                     GPIO_nLED_BLUE_PIN, !(on_true))
 
-#define STM32_PLL1P_FREQUENCY   (((HSE_VALUE/25)*160)/2)
+#define STM32_PLLCFG_PLL1M       (5)
+#define STM32_PLLCFG_PLL1N       (160)
+#define STM32_PLLCFG_PLL1P       (2)
+#define STM32_PLLCFG_PLL1Q       (4)
+
+#define STM32_PLL1P_FREQUENCY   \
+                (((HSE_VALUE/STM32_PLLCFG_PLL1M)*STM32_PLLCFG_PLL1N)/STM32_PLLCFG_PLL1P)
+
 #define STM32_SYSCLK_FREQUENCY  (STM32_PLL1P_FREQUENCY)
 #define STM32_CPUCLK_FREQUENCY  (STM32_SYSCLK_FREQUENCY/1)
 #define STM32_HCLK_FREQUENCY    (STM32_CPUCLK_FREQUENCY/2)
