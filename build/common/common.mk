@@ -57,7 +57,7 @@ TARGET_DEST_FILENAME_LIST := ${TARGET_DEST_ROOTDIR}/${TARGET_DEST_FILENAME}.${MO
 #####################################
 
 # Configuration file
-CONFIG_FILE := ${MAKEFILES_PROJDIR}/${PROJ_CFG}.mk
+# CONFIG_FILE := ${MAKEFILES_PROJDIR}/${PROJ_CFG}.mk
 
 # Assembler options file
 ASMOPTS_FILE := ${TARGET_ROOTDIR}/asmopts.via
@@ -69,7 +69,7 @@ COPTS_FILE := ${TARGET_ROOTDIR}/copts.via
 LOPTS_FILE := ${TARGET_ROOTDIR}/lopts.via
 
 # Project makefile
-PROJ_MAKEFILE := ${MAKEFILES_PROJDIR}/makefile
+PROJ_MAKEFILE := ${SDK_ROOTDIR}/Makefile
 
 # scatter file name
 SCF_FILE_NAME := ${SDK_ROOTDIR}/${SCF_FILE}.${TC_SCFEXT}

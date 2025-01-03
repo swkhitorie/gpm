@@ -1,10 +1,6 @@
 #ifndef BOARD_CONFIG_H_
 #define BOARD_CONFIG_H_
 
-#ifdef __cplusplus
-    extern "C" {
-#endif
-
 /** 
  * Fanke STM32H427VET6 Evaluation Board Config Header File
  * HSE 24MHZ
@@ -25,15 +21,33 @@
 #define BOARD_LED(on_true)   HAL_GPIO_WritePin(GPIO_nLED_PORT, \
                             GPIO_nLED_PIN, !(on_true))
 
+#ifdef __cplusplus
+    extern "C" {
+#endif
+
 void board_irqreset();
 
 void board_reboot();
 
-void board_init();
+void board_led_toggle();
 
+/**
+ * initialize cherryusb module
+ * 1. usb clock
+ * 2. cherry usb
+ * 3. usb dm dp
+ */
 void board_usb_init();
 
-void board_led_toggle();
+/**
+ * initialize board
+ * 1. set vector for app
+ * 2. reset all interrupt
+ * 3. config hal systick, power, rcc clock
+ * 4. config io
+ * 5. call board_usb_init()
+ */
+void board_init();
 
 #ifdef __cplusplus
 }

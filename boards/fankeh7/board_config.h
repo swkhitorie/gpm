@@ -46,11 +46,25 @@ void board_irqreset();
 
 void board_reboot();
 
-void board_init();
+void board_blue_led_toggle();
 
+/**
+ * initialize cherryusb module
+ * 1. usb clock
+ * 2. cherry usb
+ * 3. usb dm dp
+ */
 void board_usb_init();
 
-void board_blue_led_toggle();
+/**
+ * initialize board
+ * 1. set vector for app
+ * 2. reset all interrupt
+ * 3. config mpu, cache, hal systick, power, rcc clock
+ * 4. config io
+ * 5. call board_usb_init()
+ */
+void board_init();
 
 #ifdef __cplusplus
 }

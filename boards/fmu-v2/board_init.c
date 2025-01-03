@@ -87,6 +87,8 @@ void board_init()
     BOARD_LED(false);
 
     HAL_Delay(800);
+
+    board_usb_init();
 }
 
 void board_led_toggle()

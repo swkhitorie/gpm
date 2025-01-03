@@ -81,12 +81,15 @@ vpath %.asm $(dir ${BUILD_ASMSOURCES})
 ##################################
 ${TARGET_ROOTDIR}:
 	$(call MK_MKDIR,"$(call MK_PATHTOWIN,$@)")
+	$(call MK_ECHO, mkdir $@)
 
 ${OBJS_FOLDER}:
 	$(call MK_MKDIR,"$(call MK_PATHTOWIN,$@)")
+	$(call MK_ECHO, mkdir $@)
 
 ${TARGET_DEST_ROOTDIR}:
 	$(call MK_MKDIR,"$(call MK_PATHTOWIN,$@)")
+	$(call MK_ECHO, mkdir $@)
 
 ##################################
 # Targets section - Via files
@@ -203,13 +206,13 @@ postbuild: ${TARGET_POSTBUILD} #${OZONE_PROJ}
 # exported targets
 #
 clean:
-	$(call MK_ECHO,Executing clean on target ${PROJ_CFG})
+	$(call MK_ECHO,Executing clean on target ${PROJ_NAME})
 	$(call MK_RMFILE,${PROJ_OBJS})
 	$(call MK_RMFILE,${TARGET_SRC_FILENAME_EXE})
 	$(call MK_RMFILE,${TARGET_SRC_FILENAME_LIST})
 
 distclean:
-	$(call MK_ECHO,Executing distclean on target ${PROJ_CFG})
+	$(call MK_ECHO,Executing distclean on target ${PROJ_NAME})
 	$(call MK_RMDIR,${TARGET_ROOTDIR})
 
 program: ${TARGET_POSTBUILD}

@@ -1,10 +1,6 @@
 #ifndef BOARD_CONFIG_H_
 #define BOARD_CONFIG_H_
 
-#ifdef __cplusplus
-    extern "C" {
-#endif
-
 /**
  * PIXHAWK FMU V6C Board Config Header File (STM32H743VIT6) rely on STM32CubeH7 v1.11.2
  * HSE 16MHZ
@@ -86,17 +82,35 @@
 #define BOARD_RED_LED(on_true)            HAL_GPIO_WritePin(GPIO_nLED_RED_PORT, \
                                                     GPIO_nLED_RED_PIN, !(on_true))
 
+#ifdef __cplusplus
+    extern "C" {
+#endif
+
 void board_irqreset();
 
 void board_reboot();
 
-void board_init();
-
-void board_usb_init();
-
 void board_blue_led_toggle();
 
 void board_red_led_toggle();
+
+/**
+ * initialize cherryusb module
+ * 1. usb clock
+ * 2. cherry usb
+ * 3. usb dm dp
+ */
+void board_usb_init();
+
+/**
+ * initialize board
+ * 1. set vector for app
+ * 2. reset all interrupt
+ * 3. config mpu, cache, hal systick, power, rcc clock
+ * 4. config io
+ * 5. call board_usb_init()
+ */
+void board_init();
 
 #ifdef __cplusplus
 }

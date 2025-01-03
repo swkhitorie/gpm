@@ -21,7 +21,7 @@ MOD_LNKLSTEXT   :=  txt
 #
 
 # name of project
-PROJ_NAME             :=  $(notdir ${CURDIR:%/=%})
+# PROJ_NAME             :=  $(notdir ${CURDIR:%/=%})
 
 # folder for project files
 PROJ_PATH             :=  $(realpath ${CURDIR:%/=%})

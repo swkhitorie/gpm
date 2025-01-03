@@ -1,6 +1,4 @@
 #include "board_config.h"
-#include "FreeRTOS.h"
-#include "task.h"
 
 void NMI_Handler(void) {}
 void HardFault_Handler(void) {}
@@ -13,14 +11,8 @@ void DebugMon_Handler(void) {}
 // {
 // }
 
-// void SVC_Handler(void)
-// {
-// }
-
-// void PendSV_Handler(void)
-// {
-// }
-
+#include "FreeRTOS.h"
+#include "task.h"
 void SysTick_Handler(void)
 {
     if (xTaskGetSchedulerState() != taskSCHEDULER_NOT_STARTED) {
@@ -28,3 +20,11 @@ void SysTick_Handler(void)
     }
     HAL_IncTick();
 }
+
+// void SVC_Handler(void)
+// {
+// }
+
+// void PendSV_Handler(void)
+// {
+// }
