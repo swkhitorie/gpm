@@ -17,7 +17,7 @@ extern "C"
 #define EXTERN extern
 #endif
 
-unsigned int sleep(unsigned int seconds);
+unsigned int sleep(unsigned int ms);
 int     usleep(useconds_t usec);
 
 #undef EXTERN

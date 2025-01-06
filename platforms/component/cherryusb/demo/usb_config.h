@@ -14,6 +14,8 @@
 #define CONFIG_USB_DBG_LEVEL USB_DBG_INFO
 #endif
 
+#define CONFIG_USB_DWC2_DMA_ENABLE
+
 /* Enable print with color */
 #define CONFIG_USB_PRINTF_COLOR_ENABLE
 
@@ -29,7 +31,7 @@
 
 /* Ep0 in and out transfer buffer */
 #ifndef CONFIG_USBDEV_REQUEST_BUFFER_LEN
-#define CONFIG_USBDEV_REQUEST_BUFFER_LEN 512
+#define CONFIG_USBDEV_REQUEST_BUFFER_LEN 1024
 #endif
 
 /* Setup packet log for debug */
@@ -177,16 +179,16 @@
 //#define CONFIG_USBDEV_FSDEV_PMA_ACCESS 2 // maybe 1 or 2, many chips may have a difference
 
 /* ---------------- DWC2 Configuration ---------------- */
-// #define CONFIG_USB_DWC2_RXALL_FIFO_SIZE (1024 / 4)
-// #define CONFIG_USB_DWC2_TX0_FIFO_SIZE (64 / 4)
-// #define CONFIG_USB_DWC2_TX1_FIFO_SIZE (512 / 4)
-// #define CONFIG_USB_DWC2_TX2_FIFO_SIZE (64 / 4)
-// #define CONFIG_USB_DWC2_TX3_FIFO_SIZE (64 / 4)
-// #define CONFIG_USB_DWC2_TX4_FIFO_SIZE (0 / 4)
-// #define CONFIG_USB_DWC2_TX5_FIFO_SIZE (0 / 4)
-// #define CONFIG_USB_DWC2_TX6_FIFO_SIZE (0 / 4)
-// #define CONFIG_USB_DWC2_TX7_FIFO_SIZE (0 / 4)
-// #define CONFIG_USB_DWC2_TX8_FIFO_SIZE (0 / 4)
+#define CONFIG_USB_DWC2_RXALL_FIFO_SIZE (1024 / 4)
+#define CONFIG_USB_DWC2_TX0_FIFO_SIZE (64 / 4)
+#define CONFIG_USB_DWC2_TX1_FIFO_SIZE (512 / 4)
+#define CONFIG_USB_DWC2_TX2_FIFO_SIZE (64 / 4)
+#define CONFIG_USB_DWC2_TX3_FIFO_SIZE (64 / 4)
+#define CONFIG_USB_DWC2_TX4_FIFO_SIZE (0 / 4)
+#define CONFIG_USB_DWC2_TX5_FIFO_SIZE (0 / 4)
+#define CONFIG_USB_DWC2_TX6_FIFO_SIZE (0 / 4)
+#define CONFIG_USB_DWC2_TX7_FIFO_SIZE (0 / 4)
+#define CONFIG_USB_DWC2_TX8_FIFO_SIZE (0 / 4)
 #if defined (STM32F427xx)
  #define CONFIG_USB_DWC2_RXALL_FIFO_SIZE (512 / 4)
  #define CONFIG_USB_DWC2_TX0_FIFO_SIZE (64 / 4)

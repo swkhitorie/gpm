@@ -21,3 +21,8 @@ int sched_yield()
     taskYIELD();
     return 0;
 }
+
+void sched_start()
+{
+    vTaskStartScheduler();
+}

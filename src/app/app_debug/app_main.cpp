@@ -18,16 +18,27 @@ void debug_led_toggle()
 
 void fr_heart(void *p)
 {
-    char newname[] = "h2_d1";
-    pcTaskSetName(xTaskGetCurrentTaskHandle(), &newname[0]);
+    static portTickType xLastWakeTime;  
+    const portTickType xFrequency = pdMS_TO_TICKS(500);
+    xLastWakeTime = xTaskGetTickCount();
     for (;;) {
         float a1 = HAL_GetTick()/1e3f;
         float a2 = hrt_absolute_time()/1e6f;
+        debug_led_toggle();
         fprintf(stdout, "[heart] %s, kernel %.6f %.6f %.6f\r\n", 
             pcTaskGetName(xTaskGetCurrentTaskHandle()), 
             a1, a2, a2-a1);
-        debug_led_toggle();
-        vTaskDelay(500);
+        vTaskDelayUntil(&xLastWakeTime, xFrequency);
+    }
+}
+
+void fr_heart2(void *p)
+{
+    static char fr_debug_str[512];
+    for (;;) {
+        vTaskList(&fr_debug_str[0]);
+        fprintf(stdout, "%s \r\n", fr_debug_str);
+        vTaskDelay(1000/portTICK_PERIOD_MS);
     }
 }
 
@@ -48,7 +59,8 @@ int main(void)
 
     hrt_init();
 
-    xTaskCreate(fr_heart, "ht_debug", 1024, NULL, 3, NULL);
+    xTaskCreate(fr_heart, "ht_debug1", 1024, NULL, 3, NULL);
+    xTaskCreate(fr_heart2, "ht_debug2", 2048, NULL, 1, NULL);
     vTaskStartScheduler();
     for (;;);
 }

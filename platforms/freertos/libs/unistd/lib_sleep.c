@@ -4,8 +4,8 @@
 #include <FreeRTOS.h>
 #include <task.h>
 
-unsigned sleep(unsigned seconds)
+unsigned sleep(unsigned ms)
 {
-    vTaskDelay(pdMS_TO_TICKS(seconds * 1000));
+    vTaskDelay(pdMS_TO_TICKS(ms));
     return 0;
 }

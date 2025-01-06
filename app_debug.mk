@@ -22,4 +22,5 @@ include ${MAKEFILES_ROOTDIR}/files_defs_cherryusb.mk
 include ${MAKEFILES_ROOTDIR}/files_defs_px4.mk
 
 PROJ_CINCDIRS += src/app
-CPPSOURCES += src/app/app_debug/app_main.cpp
+#CPPSOURCES += src/app/app_debug/app_main.cpp
+CPPSOURCES += src/app/app_debug_posix/app_main.cpp

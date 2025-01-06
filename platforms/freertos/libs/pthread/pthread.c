@@ -142,9 +142,20 @@ int pthread_setname_np(pthread_t thread, const char *name)
 
 int pthread_getname_np(pthread_t thread, char *name, int namelen)
 {
+    char *tmp = NULL;
+    int i = 0;
     pthread_obj_t *p = (pthread_obj_t *)pthread_self();
-    name = pcTaskGetName(p->handle);
-    (void)namelen;
+    
+    if (namelen > 16) return -1;
+
+    tmp = pcTaskGetName(p->handle);
+    if (!tmp) return -1;
+    for (i = 0; i < namelen; i++) {
+        if (tmp[i] == 0x00 || tmp[i] == '\n') {
+            break;
+        }
+        name[i] = tmp[i];
+    }
     return 0; 
 }
 

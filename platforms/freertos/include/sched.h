@@ -27,6 +27,9 @@ extern "C"
 #define EXTERN extern
 #endif
 
+/* start scheduler in freertos */
+void   sched_start(void);
+
 int    sched_yield(void);
 int    sched_get_priority_max(int policy);
 int    sched_get_priority_min(int policy);

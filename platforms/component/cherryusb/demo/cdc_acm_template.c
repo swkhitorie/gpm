@@ -4,6 +4,12 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 #include "cdc_acm_user.h"
+
+#include <string.h>
+#include <stdio.h>
+#include <stdarg.h>
+FILE __stdin, __stdout, __stderr;
+
 /*!< endpoint address */
 #define CDC_IN_EP  0x81
 #define CDC_OUT_EP 0x02
@@ -138,10 +144,6 @@ static void usbd_event_handler(uint8_t busid, uint8_t event)
 void usbd_cdc_acm_bulk_out(uint8_t busid, uint8_t ep, uint32_t nbytes)
 {
     USB_LOG_RAW("actual out len:%d\r\n", nbytes);
-    // for (int i = 0; i < 100; i++) {
-    //     printf("%02x ", read_buffer[i]);
-    // }
-    // printf("\r\n");
     /* setup next out ep read transfer */
     usbd_ep_start_read(busid, CDC_OUT_EP, read_buffer, 2048);
 }
@@ -174,11 +176,6 @@ static struct usbd_interface intf1;
 
 void cdc_acm_init(uint8_t busid, uintptr_t reg_base)
 {
-    const uint8_t data[10] = { 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38, 0x39, 0x30 };
-
-    memcpy(&write_buffer[0], data, 10);
-    memset(&write_buffer[10], 'a', 2038);
-
     usbd_desc_register(busid, cdc_descriptor);
     usbd_add_interface(busid, usbd_cdc_acm_init_intf(busid, &intf0));
     usbd_add_interface(busid, usbd_cdc_acm_init_intf(busid, &intf1));
@@ -187,7 +184,7 @@ void cdc_acm_init(uint8_t busid, uintptr_t reg_base)
     usbd_initialize(busid, reg_base, usbd_event_handler);
 }
 
-volatile uint8_t dtr_enable = 0;
+volatile uint8_t dtr_enable = 1;
 
 void usbd_cdc_acm_set_dtr(uint8_t busid, uint8_t intf, bool dtr)
 {
@@ -208,19 +205,25 @@ void cdc_acm_data_send_with_dtr_test(uint8_t busid)
     }
 }
 
-#include <string.h>
-#include <stdio.h>
-#include <stdarg.h>
-FILE __stdin, __stdout, __stderr;
+/**
+ * cdc acm bug:
+ * t1: init()
+ * t2: init() + 5s
+ * between t1 ~ t2, cdc acm cannot use?? (sscom)
+ */
 __attribute__((weak)) int _write(int file, char *ptr, int len)
 {
     const int stdin_fileno = 0;
     const int stdout_fileno = 1;
     const int stderr_fileno = 2;
 
+    if (ep_tx_busy_flag) return 0;
+
+    ep_tx_busy_flag = true;
     if (file == stdout_fileno) {
         memcpy(&write_buffer[0], ptr, len);
         usbd_ep_start_write(0, CDC_IN_EP, write_buffer, len);
     }
+
     return len;
 }
