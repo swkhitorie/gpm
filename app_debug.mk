@@ -11,9 +11,9 @@ PROJ_TC  :=  gae
 
 TARGET_POSTBUILD := ${TARGET_DEST_FILENAME_BIN}
 
-include ${MAKEFILES_ROOTDIR}/boards_fankeh7.mk
+include ${MAKEFILES_ROOTDIR}/bsp_fankeh7.mk
 
-include ${MAKEFILES_ROOTDIR}/files_defs_edrv.mk
+include ${MAKEFILES_ROOTDIR}/files_defs_bsp.mk
 
 include ${MAKEFILES_ROOTDIR}/files_defs_freertos.mk
 
