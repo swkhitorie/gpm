@@ -1,7 +1,7 @@
-[submodule "boards/edrvlib"]
-	path = boards/edrvlib
-	url = https://github.com/HatsuneMikudesu/edrvlib.git
-	branch = master
+[submodule "boards/bsp"]
+	path = boards/bsp
+	url = https://github.com/swkhitorie/bsp.git
+	branch = main
 [submodule "platforms/nuttx/nuttx/nuttx"]
 	path = platforms/nuttx/nuttx/nuttx
 	url = https://github.com/apache/nuttx.git
