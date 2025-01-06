@@ -94,7 +94,7 @@ void* t2_process(void *p)
     char name[16] = {'\0'};
     int i = 0;
 
-    while(hrt_absolute_time()/1e6f < 10.0f);
+    // while(hrt_absolute_time()/1e6f < 10.0f);
 
     pthread_getname_np(pthread_self(), &name[0], 16);
     fprintf(stdout, "[%s] %.6f t2_process start\r\n", name, hrt_absolute_time()/1e6f);

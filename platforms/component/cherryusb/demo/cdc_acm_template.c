@@ -15,6 +15,14 @@ FILE __stdin, __stdout, __stderr;
 #define CDC_OUT_EP 0x02
 #define CDC_INT_EP 0x83
 
+/*
+PX4 Firmware:
+#define USBD_VID           0x3185
+#define USBD_PID           0x0038
+default:
+#define USBD_VID           0xFFFF
+#define USBD_PID           0xFFFF
+*/
 #define USBD_VID           0xFFFF
 #define USBD_PID           0xFFFF
 #define USBD_MAX_POWER     100
