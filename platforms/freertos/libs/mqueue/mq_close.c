@@ -6,10 +6,10 @@ int mq_close(mqd_t mqdes)
     int ret = 0;
     queuelist_element_t *p = (queuelist_element_t *)mqdes;
     BaseType_t removed = pdFALSE;
-    StaticSemaphore_t queue_listmutex = get_queue_listmutex();
+    StaticSemaphore_t *queue_listmutex = get_queue_listmutex();
     init_queuelist();
 
-    (void)xSemaphoreTake((SemaphoreHandle_t)&queue_listmutex, portMAX_DELAY);
+    (void)xSemaphoreTake((SemaphoreHandle_t)queue_listmutex, portMAX_DELAY);
 
     /* Attempt to find the message queue based on the given descriptor. */
     if (find_queue_inlist(NULL, NULL, mqdes) == pdTRUE) {
@@ -30,7 +30,7 @@ int mq_close(mqd_t mqdes)
         ret = -1;
     }
 
-    (void)xSemaphoreGive((SemaphoreHandle_t)&queue_listmutex);
+    (void)xSemaphoreGive((SemaphoreHandle_t)queue_listmutex);
 
     if (removed == pdTRUE) {
         delete_messagequeue(p);

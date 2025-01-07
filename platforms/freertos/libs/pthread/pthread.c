@@ -45,7 +45,7 @@ int pthread_create(pthread_t *tid, const pthread_attr_t *attr, void *(*start)(vo
 
     pthread = (pthread_obj_t *)pvPortMalloc(sizeof(pthread_obj_t));
     if (pthread == NULL) {
-        ret = EAGAIN;
+        ret = ENOMEM;
         goto pthread_create_exit;
     }
 
@@ -60,6 +60,7 @@ int pthread_create(pthread_t *tid, const pthread_attr_t *attr, void *(*start)(vo
     }
 
     vTaskSuspendAll();
+
     if (xTaskCreate(run_thread,"pthread",
         (uint16_t)(pthread->attr.stacksize/sizeof(StackType_t)), (void *)pthread,
         sched_p.sched_priority, &pthread->handle) != pdPASS) {

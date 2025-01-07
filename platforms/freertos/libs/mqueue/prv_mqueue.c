@@ -3,16 +3,16 @@
 /**< Maximum number of bytes in a filename (not including terminating null). */
 #define NAME_MAX                         64
 
-StaticSemaphore_t get_queue_listmutex()
+StaticSemaphore_t *get_queue_listmutex()
 {
     static StaticSemaphore_t queue_listmutex = { { 0 }, .u = { 0 } };
-    return queue_listmutex;
+    return &queue_listmutex;
 }
 
-Link_t get_queue_listhead()
+Link_t *get_queue_listhead()
 {
     static Link_t queue_listhead = { 0 };
-    return queue_listhead;
+    return &queue_listhead;
 }
 
 int cal_ticktimeout(long flag, const struct timespec *ptimeout, TickType_t *ptimeout_ticks)
@@ -44,7 +44,7 @@ BaseType_t create_new_messagequeue(queuelist_element_t **p,
     const struct mq_attr *pattr, const char *name, size_t len)
 {
     BaseType_t ret = pdTRUE;
-    Link_t queue_listhead = get_queue_listhead();
+    Link_t *queue_listhead = get_queue_listhead();
 
     *p = pvPortMalloc(sizeof(queuelist_element_t));
     if (*p == NULL) {
@@ -74,7 +74,7 @@ BaseType_t create_new_messagequeue(queuelist_element_t **p,
         (*p)->attr = *pattr;
         (*p)->open_descriptors = 1;
         (*p)->pending_unlink = pdFALSE;
-        listADD(&queue_listhead, &(*p)->link);
+        listADD(queue_listhead, &(*p)->link);
     }
     return ret;
 }
@@ -96,10 +96,10 @@ BaseType_t find_queue_inlist(queuelist_element_t **p, const char *name, mqd_t de
     Link_t * queue_listlink = NULL;
     queuelist_element_t *msg_queue = NULL;
     BaseType_t found = pdFALSE;
-    Link_t queue_listhead = get_queue_listhead();
+    Link_t *queue_listhead = get_queue_listhead();
 
     /* Iterate through the list of queues. */
-    listFOR_EACH(queue_listlink, &queue_listhead) {
+    listFOR_EACH(queue_listlink, queue_listhead) {
         msg_queue = listCONTAINER(queue_listlink, queuelist_element_t, link);
 
         if ( name != NULL && strcmp(msg_queue->name, name) == 0) {
@@ -122,13 +122,13 @@ BaseType_t find_queue_inlist(queuelist_element_t **p, const char *name, mqd_t de
 void init_queuelist( void )
 {
     static BaseType_t queuelist_initialized = pdFALSE;
-    Link_t queue_listhead = get_queue_listhead();
-    StaticSemaphore_t queue_listmutex = get_queue_listmutex();
+    Link_t *queue_listhead = get_queue_listhead();
+    StaticSemaphore_t *queue_listmutex = get_queue_listmutex();
     if (queuelist_initialized == pdFALSE) {
         taskENTER_CRITICAL();
         if (queuelist_initialized == pdFALSE) {
-            (void)xSemaphoreCreateMutexStatic(&queue_listmutex);
-            listINIT_HEAD(&queue_listhead);
+            (void)xSemaphoreCreateMutexStatic(queue_listmutex);
+            listINIT_HEAD(queue_listhead);
             queuelist_initialized = pdTRUE;
         }
         taskEXIT_CRITICAL();

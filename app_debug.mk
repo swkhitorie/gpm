@@ -11,6 +11,8 @@ PROJ_TC  :=  gae
 
 TARGET_POSTBUILD := ${TARGET_DEST_FILENAME_BIN}
 
+BSP_DEVICE_DRV := 1
+
 include ${MAKEFILES_ROOTDIR}/bsp_fankeh7.mk
 
 include ${MAKEFILES_ROOTDIR}/files_defs_bsp.mk

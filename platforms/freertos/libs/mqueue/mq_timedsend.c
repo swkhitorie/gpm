@@ -7,10 +7,10 @@ int mq_timedsend( mqd_t mqdes, const char *msg_ptr, size_t msg_len, unsigned int
     TickType_t timeout_ticks = 0;
     queuelist_element_t *p = ( queuelist_element_t * ) mqdes;
     queue_element_t send = { 0 };
-    StaticSemaphore_t queue_listmutex = get_queue_listmutex();
+    StaticSemaphore_t *queue_listmutex = get_queue_listmutex();
 
     (void)msg_prio;
-    (void)xSemaphoreTake((SemaphoreHandle_t)&queue_listmutex, portMAX_DELAY);
+    (void)xSemaphoreTake((SemaphoreHandle_t)queue_listmutex, portMAX_DELAY);
 
     if (find_queue_inlist(NULL, NULL, mqdes) == pdFALSE) {
         // errno = EBADF;
@@ -33,7 +33,7 @@ int mq_timedsend( mqd_t mqdes, const char *msg_ptr, size_t msg_len, unsigned int
         }
     }
 
-    (void)xSemaphoreGive((SemaphoreHandle_t)&queue_listmutex);
+    (void)xSemaphoreGive((SemaphoreHandle_t)queue_listmutex);
 
     if (ret == 0) {
         send.size = msg_len;

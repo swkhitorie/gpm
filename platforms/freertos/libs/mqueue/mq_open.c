@@ -8,7 +8,7 @@ mqd_t mq_open(const char *name, int oflag, mode_t mode, struct mq_attr *attr)
 {
     mqd_t msg_queue = NULL;
     size_t name_len = 0;
-    StaticSemaphore_t queue_listmutex = get_queue_listmutex();
+    StaticSemaphore_t *queue_listmutex = get_queue_listmutex();
     /* Default mq_attr. */
     struct mq_attr queue_creation_attr =
     {
@@ -34,19 +34,19 @@ mqd_t mq_open(const char *name, int oflag, mode_t mode, struct mq_attr *attr)
     }
 
     if (msg_queue == NULL) {
-        (void)xSemaphoreTake((SemaphoreHandle_t)&queue_listmutex, portMAX_DELAY);
+        (void)xSemaphoreTake((SemaphoreHandle_t)queue_listmutex, portMAX_DELAY);
         if (find_queue_inlist((queuelist_element_t **)&msg_queue, name, (mqd_t)NULL) == pdTRUE) {
             if ((oflag & O_EXCL) && (oflag & O_CREAT)) {
                 // errno = EEXIST;
                 msg_queue = (mqd_t)-1;
             } else {
-                if(((queuelist_element_t *)msg_queue )->pending_unlink == pdTRUE) {
+                if(((queuelist_element_t *)msg_queue)->pending_unlink == pdTRUE) {
                     /* Queue pending deletion. Don't allow it to be re-opened. */
                     // errno = EINVAL;
                     msg_queue = ( mqd_t ) -1;
                 } else {
                     /* Increase count of open file descriptors for queue. */
-                    ((queuelist_element_t *) msg_queue)->open_descriptors++;
+                    ((queuelist_element_t *)msg_queue)->open_descriptors++;
                 }
             }
         } else {
@@ -67,7 +67,7 @@ mqd_t mq_open(const char *name, int oflag, mode_t mode, struct mq_attr *attr)
                 msg_queue = (mqd_t)-1;
             }
         }
-        (void)xSemaphoreGive((SemaphoreHandle_t)&queue_listmutex);
+        (void)xSemaphoreGive((SemaphoreHandle_t)queue_listmutex);
     }
     return msg_queue;
 }

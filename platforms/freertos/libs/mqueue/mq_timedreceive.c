@@ -8,9 +8,9 @@ ssize_t mq_timedreceive(mqd_t mqdes, char *msg_ptr, size_t msg_len, unsigned *ms
     TickType_t timeout_ticks = 0;
     queuelist_element_t *p = (queuelist_element_t *)mqdes;
     queue_element_t rcv = { 0 };
-    StaticSemaphore_t queue_listmutex = get_queue_listmutex();
+    StaticSemaphore_t *queue_listmutex = get_queue_listmutex();
     (void)msg_prio;
-    (void)xSemaphoreTake((SemaphoreHandle_t)&queue_listmutex, portMAX_DELAY);
+    (void)xSemaphoreTake((SemaphoreHandle_t)queue_listmutex, portMAX_DELAY);
 
     if (find_queue_inlist(NULL, NULL, mqdes) == pdFALSE) {
         // errno = EBADF;
@@ -33,7 +33,7 @@ ssize_t mq_timedreceive(mqd_t mqdes, char *msg_ptr, size_t msg_len, unsigned *ms
         }
     }
 
-    (void)xSemaphoreGive((SemaphoreHandle_t)&queue_listmutex);
+    (void)xSemaphoreGive((SemaphoreHandle_t)queue_listmutex);
 
     if (ret == 0) {
         if (xQueueReceive(p->queue, &rcv, timeout_ticks) == pdFALSE) {

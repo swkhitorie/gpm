@@ -7,7 +7,7 @@ int mq_unlink(const char *name)
     size_t name_size = 0;
     BaseType_t queue_removed = pdFALSE;
     queuelist_element_t *p = NULL;
-    StaticSemaphore_t queue_listmutex = get_queue_listmutex();
+    StaticSemaphore_t *queue_listmutex = get_queue_listmutex();
 
     init_queuelist();
 
@@ -17,7 +17,7 @@ int mq_unlink(const char *name)
     }
 
     if (ret == 0) {
-        (void)xSemaphoreTake((SemaphoreHandle_t)&queue_listmutex, portMAX_DELAY);
+        (void)xSemaphoreTake((SemaphoreHandle_t)queue_listmutex, portMAX_DELAY);
         if (find_queue_inlist(&p, name, (mqd_t)NULL) == pdTRUE) {
             if (p->open_descriptors == 0) {
                 listREMOVE(&p->link);
@@ -29,7 +29,7 @@ int mq_unlink(const char *name)
             // errno = ENOENT;
             ret = -1;
         }
-        (void)xSemaphoreGive((SemaphoreHandle_t)&queue_listmutex);
+        (void)xSemaphoreGive((SemaphoreHandle_t)queue_listmutex);
     }
 
     if( queue_removed == pdTRUE ) {

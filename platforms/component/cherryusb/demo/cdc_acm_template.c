@@ -5,10 +5,10 @@
  */
 #include "cdc_acm_user.h"
 
-#include <string.h>
-#include <stdio.h>
-#include <stdarg.h>
-FILE __stdin, __stdout, __stderr;
+// #include <string.h>
+// #include <stdio.h>
+// #include <stdarg.h>
+// FILE __stdin, __stdout, __stderr;
 
 /*!< endpoint address */
 #define CDC_IN_EP  0x81
@@ -213,25 +213,25 @@ void cdc_acm_data_send_with_dtr_test(uint8_t busid)
     }
 }
 
-/**
- * cdc acm bug:
- * t1: init()
- * t2: init() + 5s
- * between t1 ~ t2, cdc acm cannot use?? (sscom)
- */
-__attribute__((weak)) int _write(int file, char *ptr, int len)
-{
-    const int stdin_fileno = 0;
-    const int stdout_fileno = 1;
-    const int stderr_fileno = 2;
+// /**
+//  * cdc acm bug:
+//  * t1: init()
+//  * t2: init() + 5s
+//  * between t1 ~ t2, cdc acm cannot use?? (sscom)
+//  */
+// __attribute__((weak)) int _write(int file, char *ptr, int len)
+// {
+//     const int stdin_fileno = 0;
+//     const int stdout_fileno = 1;
+//     const int stderr_fileno = 2;
 
-    if (ep_tx_busy_flag) return 0;
+//     if (ep_tx_busy_flag) return 0;
 
-    ep_tx_busy_flag = true;
-    if (file == stdout_fileno) {
-        memcpy(&write_buffer[0], ptr, len);
-        usbd_ep_start_write(0, CDC_IN_EP, write_buffer, len);
-    }
+//     ep_tx_busy_flag = true;
+//     if (file == stdout_fileno) {
+//         memcpy(&write_buffer[0], ptr, len);
+//         usbd_ep_start_write(0, CDC_IN_EP, write_buffer, len);
+//     }
 
-    return len;
-}
+//     return len;
+// }

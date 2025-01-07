@@ -32,8 +32,8 @@ typedef struct QueueListElement
     BaseType_t pending_unlink;
 } queuelist_element_t;
 
-StaticSemaphore_t get_queue_listmutex();
-Link_t get_queue_listhead();
+StaticSemaphore_t *get_queue_listmutex();
+Link_t *get_queue_listhead();
 
 int cal_ticktimeout(long flag, const struct timespec *ptimeout, TickType_t *ptimeout_ticks);
 

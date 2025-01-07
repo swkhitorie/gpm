@@ -1,8 +1,20 @@
 
 PROJ_CDEFS += USE_HAL_DRIVER
 
-PROJ_CINCDIRS += boards/bsp/stm32/libs/cmsis
+ifeq (${BSP_DEVICE_DRV}, 1)
 
+PROJ_CINCDIRS += boards/bsp/common
+PROJ_CINCDIRS += boards/bsp/stm32/libs/drivers/include
+CSOURCES += boards/bsp/common/lld_utils.c
+CSOURCES += boards/bsp/stm32/libs/drivers/lld_gpio.c
+CSOURCES += boards/bsp/stm32/libs/drivers/lld_uart.c
+
+endif
+
+
+
+
+PROJ_CINCDIRS += boards/bsp/stm32/libs/cmsis
 ifeq (${CHIP_SOFT}, H7_HAL)
 
 #
