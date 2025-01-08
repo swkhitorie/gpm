@@ -2,7 +2,7 @@
 #include <stdio.h>
 
 #include "app_posix_debug.h"
-
+#include "app_px4_debug.h"
 
 void debug_led_toggle()
 {
@@ -59,11 +59,11 @@ int main(void)
     hrt_init();
 
 
-    // xTaskCreate(fr_heart, "ht_debug1", 1024, NULL, 3, NULL);
-    // xTaskCreate(fr_heart2, "ht_debug2", 2048, NULL, 1, NULL);
-    // vTaskStartScheduler();
+    xTaskCreate(fr_heart, "ht_debug1", 1024, NULL, 3, NULL);
+    xTaskCreate(fr_heart2, "ht_debug2", 2048, NULL, 1, NULL);
+    vTaskStartScheduler();
 
-    app_posix_freertos_debug_init();
-    sched_start();
+    // app_posix_freertos_debug_init();
+    // sched_start();
     for (;;);
 }

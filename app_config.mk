@@ -55,3 +55,4 @@ PROJ_CINCDIRS += src/app
 
 CPPSOURCES += src/app/app_debug/app_main.cpp
 CPPSOURCES += src/app/app_debug/app_posix_debug.cpp
+CPPSOURCES += src/app/app_debug/app_px4_debug.cpp

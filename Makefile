@@ -10,7 +10,7 @@ MAKEFILES_ROOTDIR := ${SDK_ROOTDIR}/build
 # get compile time 
 include ${SDK_ROOTDIR}/tools/compile_time.mk
 
-CONFIG_FILE := app_debug.mk
+CONFIG_FILE := app_config.mk
 include ${CONFIG_FILE}
 
 # # in home
