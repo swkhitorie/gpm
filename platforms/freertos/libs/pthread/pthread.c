@@ -2,13 +2,16 @@
 #include <string.h>
 #include "pthread.h"
 #include "errno.h"
-int frerrno;
+
+int g_irqerrno;
+
 typedef struct __pthread_obj
 {
     pthread_attr_t attr;
     void *(*start)(void *);
     void *arg;
     void *ret;
+    int pterrno;
     TaskHandle_t handle;             /**< FreeRTOS task handle. */
     StaticSemaphore_t join_barrier;  /**< Synchronizes the two callers of pthread_join. */
     StaticSemaphore_t join_mutex;    /**< Ensures that only one other thread may join this thread. */
@@ -32,6 +35,12 @@ static void run_thread(void *xarg)
     pthread_obj_t *p = (pthread_obj_t *)xarg;
     p->ret = p->start((void *)p->arg);
     exit_thread();
+}
+
+int *get_errno_ptr()
+{
+    pthread_obj_t *p = (pthread_obj_t *)pthread_self();
+    return p->pterrno;
 }
 
 int pthread_create(pthread_t *tid, const pthread_attr_t *attr, void *(*start)(void *), void *arg)

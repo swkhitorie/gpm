@@ -1,22 +1,4 @@
-#include "./app_main.h"
-#include <drivers/drv_hrt.h>
-#include <stdio.h>
-#include <string.h>
-
-#include <sys/ioctl.h>
-#include <sys/stat.h>
-#include <sys/types.h>
-#include <errno.h>
-#include <fcntl.h>
-#include <mqueue.h>
-#include <sched.h>
-#include <sdqueue.h>
-#include <semaphore.h>
-#include <signal.h>
-#include <time.h>
-#include <unistd.h>
-#include <utils.h>
-#include <pthread.h>
+#include "./app_posix_debug.h"
 
 typedef struct __pthread_test{
     pthread_attr_t attr;
@@ -36,30 +18,12 @@ pthread_test_t p2;
 pthread_test_t p3;
 pthread_test_t p4;
 pthread_test_t p5;
+pthread_test_t p6;
+pthread_test_t p7;
+pthread_test_t p8;
+pthread_test_t p9;
 mqd_t msg_1;
 
-/**
- * 1. test simple pthread
- * 2. test time clock delay, like Delay and Delay Until
- * 3. soft timer triggle
- * 4. msg queue debug
- */
-#define POSIX_TEST_ITEM      (4)
-
-// 1:Delay 2:Delay Until
-#define POSIX_DELAY_METHOD   (2)
-
-void debug_led_toggle()
-{
-#if   BOARD_SELECT == BOARD_FMUV2
-    board_led_toggle();
-#elif BOARD_SELECT == BOARD_FANKEH7
-    board_blue_led_toggle();
-#elif BOARD_SELECT == BOARD_FMUV6C
-    board_blue_led_toggle();
-    board_red_led_toggle();
-#endif
-}
 
 void utils_fr_posix_debug()
 {
@@ -180,7 +144,7 @@ void* p4_entry(void *p)
     pthread_setname_np(pthread_self(), &name[0]);
 
     msg_1 = mq_open("/node0", O_RDWR | O_CREAT | O_NONBLOCK, 0, NULL);
-    fprintf(stdout, "[%s] msg_1 : %d\r\n", &name[0], msg_1);
+    fprintf(stdout, "[%s] msg_1 : %d %d\r\n", &name[0], msg_1, msg_1 < 0);
 
     euler_t tmp = {.pitch = 1.0f, .roll = 2.0f, .yaw = 3.14f,};
     for (;;) {
@@ -204,17 +168,121 @@ void* p5_entry(void *p)
     strcpy(&name[0], "p5_edited");
     pthread_setname_np(pthread_self(), &name[0]);
 
-    // mqd_t rcv = mq_open("/d1", 0x00, 0, NULL);
-    // if (rcv == NULL) {
-    //     fprintf(stdout, "can not find msg /d1\r\n");
-    // }
-
     euler_t tmp_rcv;
     char rcv_array[64];
+    struct mq_attr attr;
+    mq_getattr(msg_1, &attr);
+
     for (;;) {
-        mq_receive(msg_1, &rcv_array[0], sizeof(euler_t), NULL);
+        int res = mq_receive(msg_1, &rcv_array[0], attr.mq_msgsize, NULL);
         memcpy((char *)&tmp_rcv, &rcv_array[0], sizeof(euler_t));
-        fprintf(stdout, "[%s] rcv data: %.3f, %.3f, %.3f\r\n", &name[0], tmp_rcv.pitch, tmp_rcv.roll, tmp_rcv.yaw);
+        fprintf(stdout, "[%s] rcv data: %.3f, %.3f, %.3f, %d\r\n", &name[0], tmp_rcv.pitch, tmp_rcv.roll, tmp_rcv.yaw, res);
+        sleep(1000);
+        debug_led_toggle();
+    }
+
+    return NULL;
+}
+
+sem_t a_sem;
+void* p6_entry(void *p)
+{
+    float *value = (float *)p;
+    char name[16] = {'\0'};
+    int i = 0;
+    strcpy(&name[0], "p6_edited");
+    pthread_setname_np(pthread_self(), &name[0]);
+
+    sem_init(&a_sem, 0, 1);
+    int val;
+    sem_getvalue(&a_sem, &val);
+    for (;;) {
+
+        fprintf(stdout, "[%s] sem val: %d\r\n", &name[0], val);
+        if (0 == sem_wait(&a_sem)) {
+            sem_getvalue(&a_sem, &val);
+            fprintf(stdout, "[%s] get sem : %d\r\n", &name[0], val);
+        }
+        sem_post(&a_sem);
+        sem_getvalue(&a_sem, &val);
+        fprintf(stdout, "[%s] post sem : %d\r\n", &name[0], val);
+        sleep(500);
+    }
+
+    return NULL;
+}
+
+void* p7_entry(void *p)
+{
+    float *value = (float *)p;
+    char name[16] = {'\0'};
+    int i = 0;
+    strcpy(&name[0], "p7_edited");
+    pthread_setname_np(pthread_self(), &name[0]);
+
+    int val;
+    sem_getvalue(&a_sem, &val);
+    for (;;) {
+
+        fprintf(stdout, "[%s] sem val: %d\r\n", &name[0], val);
+        if (0 == sem_wait(&a_sem)) {
+            sem_getvalue(&a_sem, &val);
+            fprintf(stdout, "[%s] get sem : %d\r\n", &name[0], val);
+        }
+        sem_post(&a_sem);
+        sem_getvalue(&a_sem, &val);
+        fprintf(stdout, "[%s] post sem : %d\r\n", &name[0], val);
+        sleep(1000);
+        debug_led_toggle();
+    }
+
+    return NULL;
+}
+
+pthread_mutex_t lock1;
+int critical_val = 3;
+void* p8_entry(void *p)
+{
+    float *value = (float *)p;
+    char name[16] = {'\0'};
+    int i = 0;
+    strcpy(&name[0], "p8_edited");
+    pthread_setname_np(pthread_self(), &name[0]);
+
+    if (!lock1.initialized) {
+        pthread_mutex_init(&lock1, NULL);
+    }
+
+    for (;;) {
+        pthread_mutex_lock(&lock1);
+        critical_val++;
+        pthread_mutex_unlock(&lock1);
+
+        fprintf(stdout, "[%s] lock after val : %d\r\n", &name[0], critical_val);
+        sleep(1000);
+    }
+
+    return NULL;
+}
+
+void* p9_entry(void *p)
+{
+    float *value = (float *)p;
+    char name[16] = {'\0'};
+    int i = 0;
+    strcpy(&name[0], "p9_edited");
+    pthread_setname_np(pthread_self(), &name[0]);
+
+    if (!lock1.initialized) {
+        pthread_mutex_init(&lock1, NULL);
+    }
+
+    for (;;) {
+        pthread_mutex_lock(&lock1);
+        critical_val--;
+        pthread_mutex_unlock(&lock1);
+
+        fprintf(stdout, "[%s] lock after val : %d\r\n", &name[0], critical_val);
         sleep(1000);
         debug_led_toggle();
     }
@@ -227,10 +295,10 @@ void tr1_entry(union sigval value)
     fprintf(stdout, "[tr1] %.6f sign event \r\n",hrt_absolute_time()/1e6f);
 }
 
-int main(void)
+
+
+void app_posix_freertos_debug_init()
 {
-    board_init();
-    hrt_init();
 
 #if POSIX_TEST_ITEM == 1
     {
@@ -315,7 +383,7 @@ int main(void)
 #if POSIX_TEST_ITEM == 4
     {
         int rv;
-        p4.param.sched_priority = 4;
+        p4.param.sched_priority = 6;
         p4.arg = -41.0f;
         pthread_attr_init(&p4.attr);
         pthread_attr_setdetachstate(&p4.attr, PTHREAD_CREATE_JOINABLE);
@@ -329,7 +397,7 @@ int main(void)
 
     {
         int rv;
-        p5.param.sched_priority = 6;
+        p5.param.sched_priority = 4;
         p5.arg = 0.123f;
         pthread_attr_init(&p5.attr);
         // PTHREAD_CREATE_DETACHED PTHREAD_CREATE_JOINABLE
@@ -343,6 +411,70 @@ int main(void)
     }
 #endif
 
-    sched_start();
-    for (;;);
+
+#if POSIX_TEST_ITEM == 5
+    {
+        int rv;
+        p6.param.sched_priority = 6;
+        p6.arg = -41.0f;
+        pthread_attr_init(&p6.attr);
+        pthread_attr_setdetachstate(&p6.attr, PTHREAD_CREATE_JOINABLE);
+        pthread_attr_setschedparam(&p6.attr, &p6.param);
+        pthread_attr_setstacksize(&p6.attr, 512*sizeof(StackType_t));
+        rv = pthread_create(&p6.id, &p6.attr, &p6_entry, &p6.arg);
+        if (rv != 0) {
+            fprintf(stdout, "[p6] %.6f create pthread failed\r\n",hrt_absolute_time()/1e6f);
+        }
+    }
+
+    {
+        int rv;
+        p7.param.sched_priority = 4;
+        p7.arg = 0.123f;
+        pthread_attr_init(&p7.attr);
+        // PTHREAD_CREATE_DETACHED PTHREAD_CREATE_JOINABLE
+        pthread_attr_setdetachstate(&p7.attr, PTHREAD_CREATE_JOINABLE);
+        pthread_attr_setschedparam(&p7.attr, &p7.param);
+        pthread_attr_setstacksize(&p7.attr, 512*sizeof(StackType_t));
+        rv = pthread_create(&p7.id, &p7.attr, &p7_entry, &p7.arg);
+        if (rv != 0) {
+            fprintf(stdout, "[p7] %.6f create pthread failed\r\n",hrt_absolute_time()/1e6f);
+        }
+    }
+#endif
+
+
+#if POSIX_TEST_ITEM == 6
+    {
+        int rv;
+        p8.param.sched_priority = 6;
+        p8.arg = -41.0f;
+        pthread_attr_init(&p8.attr);
+        pthread_attr_setdetachstate(&p8.attr, PTHREAD_CREATE_JOINABLE);
+        pthread_attr_setschedparam(&p8.attr, &p8.param);
+        pthread_attr_setstacksize(&p8.attr, 512*sizeof(StackType_t));
+        rv = pthread_create(&p8.id, &p8.attr, &p8_entry, &p8.arg);
+        if (rv != 0) {
+            fprintf(stdout, "[p8] %.6f create pthread failed\r\n",hrt_absolute_time()/1e6f);
+        }
+    }
+
+    {
+        int rv;
+        p9.param.sched_priority = 4;
+        p9.arg = 0.123f;
+        pthread_attr_init(&p9.attr);
+        // PTHREAD_CREATE_DETACHED PTHREAD_CREATE_JOINABLE
+        pthread_attr_setdetachstate(&p9.attr, PTHREAD_CREATE_JOINABLE);
+        pthread_attr_setschedparam(&p9.attr, &p9.param);
+        pthread_attr_setstacksize(&p9.attr, 512*sizeof(StackType_t));
+        rv = pthread_create(&p9.id, &p9.attr, &p9_entry, &p9.arg);
+        if (rv != 0) {
+            fprintf(stdout, "[p9] %.6f create pthread failed\r\n",hrt_absolute_time()/1e6f);
+        }
+    }
+#endif
+
 }
+
+

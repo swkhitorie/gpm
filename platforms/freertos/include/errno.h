@@ -265,9 +265,7 @@
 #define ESTRPIPE            143                         /* Linux errno extension */
 #define ESTRPIPE_STR        "Streams pipe error"
 
-
-extern int frerrno;
-#define errno frerrno
+#define errno *get_errno_ptr()
 
 #undef EXTERN
 #if defined(__cplusplus)
@@ -286,7 +284,7 @@ extern "C"
  * either as macros or via syscalls.
  */
 
-// FAR int *get_errno_ptr(void);
+int *get_errno_ptr(void);
 
 #undef EXTERN
 #if defined(__cplusplus)

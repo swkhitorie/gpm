@@ -1,8 +1,8 @@
 #include "./app_main.h"
 #include <stdio.h>
 
-#include <drivers/drv_hrt.h>
-#include <px4_platform_common/log.h>
+#include "app_posix_debug.h"
+
 
 void debug_led_toggle()
 {
@@ -56,11 +56,14 @@ void debug()
 int main(void)
 {
     board_init();
-
     hrt_init();
 
-    xTaskCreate(fr_heart, "ht_debug1", 1024, NULL, 3, NULL);
-    xTaskCreate(fr_heart2, "ht_debug2", 2048, NULL, 1, NULL);
-    vTaskStartScheduler();
+
+    // xTaskCreate(fr_heart, "ht_debug1", 1024, NULL, 3, NULL);
+    // xTaskCreate(fr_heart2, "ht_debug2", 2048, NULL, 1, NULL);
+    // vTaskStartScheduler();
+
+    app_posix_freertos_debug_init();
+    sched_start();
     for (;;);
 }
