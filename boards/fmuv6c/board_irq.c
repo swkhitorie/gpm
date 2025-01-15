@@ -19,10 +19,3 @@ void SysTick_Handler(void)
     }
     HAL_IncTick();
 }
-
-// void SVC_Handler(void)
-// {
-// }
-// void PendSV_Handler(void)
-// {
-// }

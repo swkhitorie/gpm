@@ -2,6 +2,10 @@
 	path = boards/bsp
 	url = https://github.com/swkhitorie/bsp.git
 	branch = main
+[submodule "platforms/frtos"]
+	path = platforms/frtos
+	url = https://github.com/swkhitorie/frtos.git
+	branch = main
 [submodule "platforms/nuttx/nuttx/nuttx"]
 	path = platforms/nuttx/nuttx/nuttx
 	url = https://github.com/apache/nuttx.git
@@ -10,3 +14,4 @@
 	path = platforms/nuttx/nuttx/apps
 	url = https://github.com/apache/nuttx-apps.git
 	branch = releases/12.4
+
