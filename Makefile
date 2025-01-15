@@ -5,14 +5,10 @@ SDK_DIR_CUR = $(CURRENT_DIR)
 SDK_ROOTDIR := ${SDK_DIR_MK}
 
 # Absolute path to makefiles
-MAKEFILES_ROOTDIR := ${SDK_ROOTDIR}/build
-
-# get compile time 
-include ${SDK_ROOTDIR}/tools/compile_time.mk
+MAKEFILES_ROOTDIR := ${SDK_ROOTDIR}/boards/bsp/make
 
 CONFIG_FILE := ${SDK_ROOTDIR}/src/app/app_config.mk
 include ${CONFIG_FILE}
-
 
 
 TC_PATH_INST_ARMCC := C:\Keil_v5\ARM\ARMCC
@@ -23,4 +19,4 @@ TC_OPENOCD_PATH := D:\envir\openocd\xpack-openocd-0.11.0-1
 # including common build makefile
 include $(MAKEFILES_ROOTDIR)/common/build.mk
 
-all: prebuild build postbuild #program
+all: prebuild build postbuild
