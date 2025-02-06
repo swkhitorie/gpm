@@ -98,9 +98,10 @@ CPPSOURCES += src/modules/uORB/topics_sources/log_message.cpp
 #####################################
 # app configuration
 #####################################
-PROJ_CDEFS += BSP_COM_PRINTF
+#PROJ_CDEFS += BSP_COM_PRINTF
 PROJ_CDEFS += BSP_MODULE_FR
-#PROJ_CDEFS += BSP_MODULE_USB_CHERRY
+PROJ_CDEFS += BSP_MODULE_USB_CHERRY
+PROJ_CDEFS += CRUSB_PRINTF_ENABLE
 
 PROJ_CINCDIRS += src/app
 

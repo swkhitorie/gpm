@@ -57,14 +57,14 @@ int main(void)
 {
     board_init();
     hrt_init();
+    printf("[app] hrt init completed \r\n");
 
-
-    // xTaskCreate(fr_heart, "ht_debug1", 1024, NULL, 3, NULL);
+    xTaskCreate(fr_heart, "ht_debug1", 1024, NULL, 3, NULL);
     // xTaskCreate(fr_heart2, "ht_debug2", 2048, NULL, 1, NULL);
     // vTaskStartScheduler();
 
     // app_posix_freertos_debug_init();
-    app_px4_debug_init();
+    // app_px4_debug_init();
     sched_start();
     for (;;);
 }
