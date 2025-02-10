@@ -16,6 +16,8 @@ void debug_led_toggle()
 #endif
 }
 
+static char buf_12[512];
+int size_12;
 void fr_heart(void *p)
 {
     static portTickType xLastWakeTime;  
@@ -25,9 +27,14 @@ void fr_heart(void *p)
         float a1 = HAL_GetTick()/1e3f;
         float a2 = hrt_absolute_time()/1e6f;
         debug_led_toggle();
-        fprintf(stdout, "[heart] %s, kernel %.6f %.6f %.6f\r\n", 
-            pcTaskGetName(xTaskGetCurrentTaskHandle()), 
-            a1, a2, a2-a1);
+        // fprintf(stdout, "[heart] %s, kernel %.6f %.6f %.6f\r\n", 
+        //     pcTaskGetName(xTaskGetCurrentTaskHandle()), 
+        //     a1, a2, a2-a1);
+        printf("size: %d \r\n", dev_cdc_acm_rsize(0));
+        int ret = fread(&buf_12[0], 1, 512, stdin);
+        if (ret > 0) {
+            printf("%s\r\n", buf_12);
+        }
         vTaskDelayUntil(&xLastWakeTime, xFrequency);
     }
 }
