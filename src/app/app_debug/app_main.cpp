@@ -4,6 +4,9 @@
 #include "app_posix_debug.h"
 #include "app_px4_debug.h"
 
+#include "app_cli.h"
+
+
 void debug_led_toggle()
 {
 #if   BOARD_SELECT == BOARD_FMUV2
@@ -16,8 +19,6 @@ void debug_led_toggle()
 #endif
 }
 
-static char buf_12[512];
-int size_12;
 void fr_heart(void *p)
 {
     static portTickType xLastWakeTime;  
@@ -30,11 +31,6 @@ void fr_heart(void *p)
         // fprintf(stdout, "[heart] %s, kernel %.6f %.6f %.6f\r\n", 
         //     pcTaskGetName(xTaskGetCurrentTaskHandle()), 
         //     a1, a2, a2-a1);
-        printf("size: %d \r\n", dev_cdc_acm_rsize(0));
-        int ret = fread(&buf_12[0], 1, 512, stdin);
-        if (ret > 0) {
-            printf("%s\r\n", buf_12);
-        }
         vTaskDelayUntil(&xLastWakeTime, xFrequency);
     }
 }
@@ -65,6 +61,7 @@ int main(void)
     board_init();
     hrt_init();
     printf("[app] hrt init completed \r\n");
+    app_fr_cli_init();
 
     xTaskCreate(fr_heart, "ht_debug1", 1024, NULL, 3, NULL);
     // xTaskCreate(fr_heart2, "ht_debug2", 2048, NULL, 1, NULL);
