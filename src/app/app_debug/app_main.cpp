@@ -59,9 +59,10 @@ void debug()
 int main(void)
 {
     board_init();
-    hrt_init();
     printf("[app] hrt init completed \r\n");
-    app_fr_cli_init();
+
+    fcli_init();
+    hrt_init();
 
     xTaskCreate(fr_heart, "ht_debug1", 1024, NULL, 3, NULL);
     // xTaskCreate(fr_heart2, "ht_debug2", 2048, NULL, 1, NULL);
