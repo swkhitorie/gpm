@@ -48,6 +48,7 @@ CONFIG_FR_POSIX=y
 CONFIG_FR_USB=y
 CONFIG_FR_PX4_SUPPORT=y
 CONFIG_FR_APPS_CLI=y
+CONFIG_FR_FATFS=y
 include ${FR_ROOTDIR}/Make.mk
 
 CSOURCES          += ${addprefix platforms/frtos/,${FR_CSOURCES}}
@@ -99,13 +100,14 @@ CPPSOURCES += src/modules/uORB/topics_sources/log_message.cpp
 #####################################
 # app configuration
 #####################################
-#PROJ_CDEFS += BSP_COM_PRINTF
+PROJ_CDEFS += BSP_COM_PRINTF
 PROJ_CDEFS += BSP_MODULE_FR
-PROJ_CDEFS += BSP_MODULE_USB_CHERRY
-PROJ_CDEFS += CRUSB_STD_INOUT_ENABLE
+# PROJ_CDEFS += BSP_MODULE_USB_CHERRY
+# PROJ_CDEFS += CRUSB_STD_INOUT_ENABLE
 
 PROJ_CINCDIRS += src/app
 
 CPPSOURCES += src/app/app_debug/app_main.cpp
 CPPSOURCES += src/app/app_debug/app_posix_debug.cpp
 CPPSOURCES += src/app/app_debug/app_px4_debug.cpp
+CSOURCES += src/app/app_debug/app_fatfs_debug.c
