@@ -1,113 +1,87 @@
 
-#
-# application configuration file
-#
-PROJ_NAME  :=  fankeh7_eval
+PROJ_NAME  :=  test
 
-#
-# Toolchain used in this project
-#
-PROJ_TC  :=  gae
+PROJ_TC    :=  gae
 
 TARGET_POSTBUILD := ${TARGET_DEST_FILENAME_BIN}
 
-#####################################
 # bsp configuration
-#####################################
+include ${SDK_ROOTDIR}/bsp/make.mk
 
-BSP_ROOT           := boards/bsp
-BSP_ABSROOTDIR     := ${SDK_ROOTDIR}/${BSP_ROOT}
-
-CONFIG_PX4_HRTIMER := y
-include ${BSP_ABSROOTDIR}/stm32/stm32h743_eval/make.mk
-
-PROJ_CDEFS        += ${BSP_CDEFS}
-
-CSOURCES          += ${BSP_CSRCS}
-
-PROJ_CINCDIRS     += ${BSP_CINCDIRS}
-
-ASMSOURCES        := ${BSP_ASMSOURCES}
-
-SCF_FILE          := ${BSP_LNK_FILE}
-
-PROJ_ENTRY_POINT  := ${BSP_BOARD_ENTRY_POINT}
-
-PROJ_OPENOCD_LOAD_ADDR := 0x08000000
-
-MOD_ARCH  =  m7
-
-#####################################
-# platform os configuration
-#####################################
-FR_ROOTDIR := ${SDK_ROOTDIR}/platforms/frtos
-CONFIG_FR_ARCH=m7
+# os and library configuration
+CONFIG_FR_ARCH=${MOD_ARCH}
 CONFIG_FR_TOOLCHAIN=gcc
 CONFIG_FR_MEM_METHOD=4
-CONFIG_FR_POSIX=y
-CONFIG_FR_USB=y
-CONFIG_FR_PX4_SUPPORT=y
-CONFIG_FR_APPS_CLI=y
-CONFIG_FR_FATFS=y
-include ${FR_ROOTDIR}/Make.mk
+CONFIG_FR_LIB_CPP=y
+CONFIG_FR_LIB_PX4_SUPPORT=y
+CONFIG_FR_LIB_POSIX=y
+CONFIG_FR_FAT_FATFS=n
+CONFIG_CRUSB=n
+CONFIG_USE_DRV_HRT_INTERNAL=n
+CONFIG_FR_LIB_UORB=n
 
-CSOURCES          += ${addprefix platforms/frtos/,${FR_CSOURCES}}
+include ${SDK_ROOTDIR}/sched/make.mk
+include ${SDK_ROOTDIR}/mm/make.mk
+include ${SDK_ROOTDIR}/libs/make.mk
+include ${SDK_ROOTDIR}/include/make.mk
+include ${SDK_ROOTDIR}/usb/make.mk
+CSOURCES      += ${FR_CSOURCES}
+CPPSOURCES    += ${FR_CPPSOURCES}
+PROJ_CINCDIRS += ${FR_CINCDIRS}
 
-CPPSOURCES        += ${addprefix platforms/frtos/,${FR_CPPSOURCES}}
+#####################################
+# app configuration
+#####################################
+PROJ_CDEFS += CONFIG_BOARD_COM_STDINOUT
+PROJ_CDEFS += CONFIG_BOARD_FREERTOS_ENABLE
+# PROJ_CDEFS += CONFIG_BOARD_CRUSB_CDC_ACM_ENABLE
+# PROJ_CDEFS += CONFIG_BOARD_CRUSB_CDC_ACM_STDINOUT
+PROJ_CDEFS += CONFIG_FR_MALLOC_FAILED_HANDLE
+PROJ_CDEFS += CONFIG_FR_IDLE_TIMER_TASKCREATE_HANDLE
 
-PROJ_CINCDIRS     += ${addprefix platforms/frtos/,${FR_CINCDIRS}}
+PUSER_CINCDIRS += src/app
+PUSER_CPPSOURCES += src/app/app_debug/app_main.cpp
+
+CONFIG_LINK_PRINTF_FLOAT:=y
+CONFIG_LINK_SCANF_FLOAT:=n
+CONFIG_COMPILE_OPTIMIZE:=O1
 
 #####################################
 # px4 Layer configuration
 #####################################
 PROJ_CDEFS += __PX4_FR
 
-PROJ_CINCDIRS += platforms/common/include
-PROJ_CINCDIRS += platforms/common/include/px4_platform_common
-PROJ_CINCDIRS += platforms/common/include/px4_platform_common/px4_work_queue
-PROJ_CINCDIRS += src/lib/cdev
-PROJ_CINCDIRS += src/lib/cdev/posix
-PROJ_CINCDIRS += src/lib/perf
-PROJ_CINCDIRS += src/include
-PROJ_CINCDIRS += src/lib/systemlib
-PROJ_CINCDIRS += src/drivers
-PROJ_CINCDIRS += src
-PROJ_CINCDIRS += src/lib
-PROJ_CINCDIRS += src/modules
+PUSER_CINCDIRS += platforms/common/include
+PUSER_CINCDIRS += platforms/common/include/px4_platform_common
+PUSER_CINCDIRS += platforms/common/include/px4_platform_common/px4_work_queue
+PUSER_CINCDIRS += src/lib/cdev
+PUSER_CINCDIRS += src/lib/cdev/posix
+PUSER_CINCDIRS += src/lib/perf
+PUSER_CINCDIRS += src/include
+PUSER_CINCDIRS += src/lib/systemlib
+PUSER_CINCDIRS += src/drivers
+PUSER_CINCDIRS += src
+PUSER_CINCDIRS += src/lib
+PUSER_CINCDIRS += src/modules
 
-CPPSOURCES += platforms/common/px4_work_queue/ScheduledWorkItem.cpp
-CPPSOURCES += platforms/common/px4_work_queue/WorkItem.cpp
-CPPSOURCES += platforms/common/px4_work_queue/WorkItemSingleShot.cpp
-CPPSOURCES += platforms/common/px4_work_queue/WorkQueue.cpp
-CPPSOURCES += platforms/common/px4_work_queue/WorkQueueManager.cpp
-CPPSOURCES += platforms/common/module.cpp
-CPPSOURCES += platforms/common/px4_log.cpp
+PUSER_CPPSOURCES += platforms/common/px4_work_queue/ScheduledWorkItem.cpp
+PUSER_CPPSOURCES += platforms/common/px4_work_queue/WorkItem.cpp
+PUSER_CPPSOURCES += platforms/common/px4_work_queue/WorkItemSingleShot.cpp
+PUSER_CPPSOURCES += platforms/common/px4_work_queue/WorkQueue.cpp
+PUSER_CPPSOURCES += platforms/common/px4_work_queue/WorkQueueManager.cpp
+PUSER_CPPSOURCES += platforms/common/module.cpp
+PUSER_CPPSOURCES += platforms/common/px4_log.cpp
 
-CPPSOURCES += src/lib/cdev/posix/cdev_platform.cpp
-CPPSOURCES += src/lib/cdev/CDev.cpp
-CPPSOURCES += src/lib/perf/perf_counter.cpp
+PUSER_CPPSOURCES += src/lib/cdev/posix/cdev_platform.cpp
+PUSER_CPPSOURCES += src/lib/cdev/CDev.cpp
+PUSER_CPPSOURCES += src/lib/perf/perf_counter.cpp
 
-CPPSOURCES += src/modules/uORB/Subscription.cpp
-CPPSOURCES += src/modules/uORB/uORB.cpp
-CPPSOURCES += src/modules/uORB/uORBDeviceMaster.cpp
-CPPSOURCES += src/modules/uORB/uORBDeviceNode.cpp
-CPPSOURCES += src/modules/uORB/uORBMain.cpp
-CPPSOURCES += src/modules/uORB/uORBManager.cpp
-CPPSOURCES += src/modules/uORB/uORBUtils.cpp
+PUSER_CPPSOURCES += src/modules/uORB/Subscription.cpp
+PUSER_CPPSOURCES += src/modules/uORB/uORB.cpp
+PUSER_CPPSOURCES += src/modules/uORB/uORBDeviceMaster.cpp
+PUSER_CPPSOURCES += src/modules/uORB/uORBDeviceNode.cpp
+PUSER_CPPSOURCES += src/modules/uORB/uORBMain.cpp
+PUSER_CPPSOURCES += src/modules/uORB/uORBManager.cpp
+PUSER_CPPSOURCES += src/modules/uORB/uORBUtils.cpp
 
-CPPSOURCES += src/modules/uORB/topics_sources/log_message.cpp
-
-#####################################
-# app configuration
-#####################################
-PROJ_CDEFS += BSP_COM_PRINTF
-PROJ_CDEFS += BSP_MODULE_FR
-# PROJ_CDEFS += BSP_MODULE_USB_CHERRY
-# PROJ_CDEFS += CRUSB_STD_INOUT_ENABLE
-
-PROJ_CINCDIRS += src/app
-
-CPPSOURCES += src/app/app_debug/app_main.cpp
-CPPSOURCES += src/app/app_debug/app_posix_debug.cpp
-CPPSOURCES += src/app/app_debug/app_px4_debug.cpp
-CSOURCES += src/app/app_debug/app_fatfs_debug.c
+PUSER_CPPSOURCES += src/modules/uORB/topics_sources/log_message.cpp

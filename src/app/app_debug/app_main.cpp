@@ -3,8 +3,8 @@
 
 #include "app_posix_debug.h"
 #include "app_px4_debug.h"
-#include "app_fatfs_debug.h"
-#include "app_cli.h"
+// #include "app_fatfs_debug.h"
+// #include "app_cli.h"
 
 
 void debug_led_toggle()
@@ -62,10 +62,10 @@ int main(void)
     printf("\r\n[app] bsp init completed \r\n");
 
     //fcli_init();
-    hrt_init();
+    //hrt_init();
 
-    ff_ls("0:/");
-    ff_display("0:/my tech.txt");
+    //ff_ls("0:/");
+    //ff_display("0:/my tech.txt");
 
     xTaskCreate(fr_heart, "ht_debug1", 1024, NULL, 3, NULL);
     // xTaskCreate(fr_heart2, "ht_debug2", 2048, NULL, 1, NULL);
