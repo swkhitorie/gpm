@@ -15,7 +15,12 @@ PUSER_ROOTDIR := ${GPM_ROOTDIR}
 # Absolute path to makefiles
 MAKEFILES_ROOTDIR := ${SDK_ROOTDIR}/make
 
-CONFIG_FILE := ${GPM_ROOTDIR}/src/app/app_config.mk
+MAKE_TARGET_CLEANS := y
+ifeq (,$(findstring clean,$(MAKECMDGOALS))$(findstring distclean,$(MAKECMDGOALS)))
+MAKE_TARGET_CLEANS := n
+endif
+
+CONFIG_FILE := ${GPM_ROOTDIR}/src/apps/app_config.mk
 include ${CONFIG_FILE}
 
 # including common build makefile
