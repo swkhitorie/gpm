@@ -1,5 +1,5 @@
 
-PROJ_NAME  :=  test_fmuv2_bsp
+PROJ_NAME  :=  fmuv2_bsp
 PROJ_TC    :=  gae
 
 CONFIG_LINK_PRINTF_FLOAT:=y
