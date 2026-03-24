@@ -1,4 +1,0 @@
-[submodule "platforms/gpthread"]
-	path = platforms/gpthread
-	url = https://github.com/swkhitorie/gpthread.git
-
